@@ -1,0 +1,89 @@
+{
+	"type": "box",
+	"direction": "column",
+	"title": "Coordonnées Personnelles",
+	"children": [
+		{
+			"type": "box",
+			"direction": "row",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "select",
+					"label": "Civilité",
+					"key": "civility",
+					"options": ["Mr", "Mme", "Mlle"],
+					"required": true
+				},
+				{
+					"type": "input",
+					"inputType": "text",
+					"label": "Prénom",
+					"key": "firstName",
+					"required": true
+				},
+				{
+					"type": "input",
+					"inputType": "text",
+					"label": "Nom",
+					"key": "lastName",
+					"required": true
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "row",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "email",
+					"label": "Email",
+					"key": "email",
+					"required": true
+				},
+				{
+					"type": "input",
+					"inputType": "tel",
+					"label": "Téléphone",
+					"key": "phone",
+					"required": true
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "Adresse",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "text",
+					"label": "Rue",
+					"key": "street",
+					"required": true
+				},
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "text",
+							"label": "Code Postal",
+							"key": "zipCode",
+							"required": true
+						},
+						{
+							"type": "input",
+							"inputType": "text",
+							"label": "Ville",
+							"key": "city",
+							"required": true
+						}
+					]
+				}
+			]
+		}
+	]
+}
