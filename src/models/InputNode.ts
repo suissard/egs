@@ -28,6 +28,10 @@ export class InputNode extends FormNode {
 		this.max = config.max;
 		this.step = config.step;
 		this.hasActionReport = config.hasActionReport || false;
+
+		if (this.inputType === "checkbox" && this.options.length > 0) {
+			this.value = [];
+		}
 	}
 
 	validate(): boolean {
