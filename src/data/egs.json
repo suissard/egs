@@ -1,0 +1,282 @@
+{
+	"type": "box",
+	"direction": "column",
+	"title": "Évaluation Gériatrique Standardisée (EGS)",
+	"children": [
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "Identification & Traitement",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "text",
+							"label": "NOM",
+							"key": "patientNom",
+							"required": true
+						},
+						{
+							"type": "input",
+							"inputType": "text",
+							"label": "PRÉNOM",
+							"key": "patientPrenom",
+							"required": true
+						},
+						{
+							"type": "input",
+							"inputType": "date",
+							"label": "Date de l'évaluation",
+							"key": "dateEval"
+						}
+					]
+				},
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "number",
+							"label": "Nombre total de médicaments",
+							"key": "iatrogenieNbMedoc",
+							"hasActionReport": true
+						},
+						{
+							"type": "input",
+							"inputType": "radio",
+							"label": "Risque iatrogène identifié",
+							"key": "iatrogenieRisque",
+							"options": ["OUI", "NON"],
+							"hasActionReport": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "1. Autonomie Fonctionnelle (ADL)",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Toilette",
+							"key": "adlToilette",
+							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"minWidth": "33%"
+						},
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Habillage",
+							"key": "adlHabillage",
+							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"minWidth": "33%"
+						},
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Alimentation",
+							"key": "adlAlimentation",
+							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"minWidth": "33%"
+						}
+					]
+				},
+				{
+					"type": "input",
+					"inputType": "radio",
+					"label": "Conclusion Autonomie",
+					"key": "autonomieConcl",
+					"options": ["Autonome", "Dépendance partielle", "Dépendance sévère"],
+					"hasActionReport": true
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "2. Mobilité & Risque de Chute",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Lever de chaise",
+							"key": "mobiliteLever",
+							"options": ["Facile", "Difficile", "Impossible"],
+							"hasActionReport": true
+						},
+						{
+							"type": "input",
+							"inputType": "radio",
+							"label": "Chute < 6 mois",
+							"key": "chute6Mois",
+							"options": ["OUI", "NON"],
+							"hasActionReport": true
+						}
+					]
+				},
+				{
+					"type": "input",
+					"inputType": "select",
+					"label": "Mode de déplacement",
+					"key": "mobiliteMarche",
+					"options": ["Marche libre", "Aides techniques", "Fauteuil roulant"]
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "3. Évaluation Cognitive & Psychologique",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "number",
+							"label": "Score MMS / 30",
+							"key": "cognitifMms",
+							"min": 0,
+							"max": 30
+						},
+						{
+							"type": "input",
+							"inputType": "radio",
+							"label": "Trouble neuro-cognitif",
+							"key": "cognitifTroubleVerif",
+							"options": ["OUI", "NON"],
+							"hasActionReport": true
+						}
+					]
+				},
+				{
+					"type": "input",
+					"inputType": "checkbox",
+					"label": "Troubles du comportement",
+					"key": "comportementList",
+					"options": [
+						"Idées délirantes",
+						"Hallucinations",
+						"Agitation / Agressivité",
+						"Apathie / Indifférence",
+						"Déambulation / Fugues",
+						"Désorientation temporo-spatiale"
+					],
+					"hasActionReport": true
+				},
+				{
+					"type": "input",
+					"inputType": "radio",
+					"label": "Dépression / Anxiété",
+					"key": "psyDepAnx",
+					"options": ["OUI", "NON"],
+					"hasActionReport": true
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "4. Nutrition & Déglutition",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "number",
+							"label": "IMC ($kg/m^2$)",
+							"key": "nutriImc",
+							"hasActionReport": true
+						},
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "État nutritionnel",
+							"key": "nutriConclusion",
+							"options": ["Bon état", "Dénutrition modérée", "Dénutrition sévère"],
+							"hasActionReport": true
+						}
+					]
+				},
+				{
+					"type": "input",
+					"inputType": "checkbox",
+					"label": "Troubles associés",
+					"key": "nutriTroublesAssoc",
+					"options": ["Mastication", "Déglutition", "Refus de soins"],
+					"hasActionReport": true
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "5. Sensoriel & Douleur",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "radio",
+							"label": "Déficit visuel",
+							"key": "sensorielVision",
+							"options": ["OUI", "NON", "À réévaluer"],
+							"hasActionReport": true
+						},
+						{
+							"type": "input",
+							"inputType": "radio",
+							"label": "Déficit auditif",
+							"key": "sensorielAudition",
+							"options": ["OUI", "NON", "À réévaluer"],
+							"hasActionReport": true
+						}
+					]
+				},
+				{
+					"type": "input",
+					"inputType": "radio",
+					"label": "Douleur chronique",
+					"key": "douleurChronique",
+					"options": ["OUI", "NON"],
+					"hasActionReport": true
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "Synthèse des Risques & Plan d'Action",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "textarea",
+					"label": "Actions à entreprendre",
+					"key": "planActionTexte",
+					"placeholder": "Détaillez les échéances et interventions...",
+					"minWidth": "100%"
+				}
+			]
+		}
+	]
+}

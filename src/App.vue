@@ -74,6 +74,7 @@ import { InputNode } from './models/InputNode';
 import FormRenderer from './components/FormRenderer.vue';
 import personalCoordinates from './data/personalCoordinates.json';
 import fullFormExample from './data/fullFormExample.json';
+import egs from './data/egs.json';
 import geriatricAssessment from './data/geriatricAssessment.json';
 import type { FormConfig } from './types/FormConfig';
 
@@ -91,15 +92,18 @@ const fileInput = ref<HTMLInputElement | null>(null);
 const STORAGE_KEY = 'egs-form-data';
 
 const availableModels = [
+  { key: 'egs', title: 'Évaluation Gériatrique Standardisée (EGS)', data: egs },
   { title: 'Coordonnées Personnelles', key: 'personal' },
   { title: 'Exemple Complet', key: 'full' },
   { title: 'Évaluation Gériatrique Standardisée', key: 'geriatric' }
 ];
-const selectedModelKey = ref('personal');
+const selectedModelKey = ref('egs');
 
 function loadSelectedModel() {
   let config: any;
-  if (selectedModelKey.value === 'full') {
+  if (selectedModelKey.value === 'egs') {
+    config = egs;
+  } else if (selectedModelKey.value === 'full') {
     config = fullFormExample;
   } else if (selectedModelKey.value === 'geriatric') {
     config = geriatricAssessment;

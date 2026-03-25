@@ -38,6 +38,7 @@ export interface InputElement extends FormElement {
 	min?: number;
 	max?: number;
 	step?: number;
+	hasActionReport?: boolean;
 }
 
 export type FormConfig = BoxElement;
