@@ -74,19 +74,12 @@ export function generatePdf(rootNode: FormNode) {
 }
 
 /**
- * Generates a Visual PDF by capturing the HTML element.
+ * Generates a Visual PDF by capturing individual blocks.
  */
 export async function generateVisualPdf(
 	element: HTMLElement,
 	filename: string = "formulaire.pdf",
 ) {
-	const canvas = await html2canvas(element, {
-		scale: 2, // Higher resolution
-		useCORS: true,
-		logging: false,
-	});
-
-	const imgData = canvas.toDataURL("image/png");
 	const pdf = new jsPDF({
 		orientation: "p",
 		unit: "mm",
@@ -94,14 +87,67 @@ export async function generateVisualPdf(
 	});
 
 	const pdfWidth = pdf.internal.pageSize.getWidth();
-	const imgWidth = canvas.width;
-	const imgHeight = canvas.height;
+	const pdfHeight = pdf.internal.pageSize.getHeight();
+	const margin = 10;
+	let currentY = margin;
 
-	// Simple fit to width:
-	const finalWidth = pdfWidth;
-	const finalHeight = (imgHeight * pdfWidth) / imgWidth;
+	// Add title from h1 if exists
+	const titleElement = document.querySelector('h1.text-h3');
+	if (titleElement) {
+		const canvas = await html2canvas(titleElement as HTMLElement, {
+			scale: 2,
+			useCORS: true,
+			logging: false,
+		});
+		const imgData = canvas.toDataURL("image/png");
+		const imgWidth = canvas.width;
+		const imgHeight = canvas.height;
+		const finalWidth = pdfWidth - margin * 2;
+		const finalHeight = (imgHeight * finalWidth) / imgWidth;
 
-	pdf.addImage(imgData, "PNG", 0, 0, finalWidth, finalHeight);
+		pdf.addImage(imgData, "PNG", margin, currentY, finalWidth, finalHeight);
+		currentY += finalHeight + 10;
+	}
+
+	// Find all card elements or top level blocks.
+	// We'll target the immediate children of the form element which are the blocks
+	const blocks = Array.from(element.querySelectorAll('form > .form-renderer > .card'));
+
+	if (blocks.length === 0) {
+	    // Fallback if no blocks found
+	    const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false });
+	    const imgData = canvas.toDataURL("image/png");
+	    const finalWidth = pdfWidth;
+	    const finalHeight = (canvas.height * pdfWidth) / canvas.width;
+	    pdf.addImage(imgData, "PNG", 0, 0, finalWidth, finalHeight);
+	    pdf.save(filename);
+	    return;
+	}
+
+	for (let i = 0; i < blocks.length; i++) {
+		const block = blocks[i] as HTMLElement;
+		const canvas = await html2canvas(block, {
+			scale: 2,
+			useCORS: true,
+			logging: false,
+		});
+
+		const imgData = canvas.toDataURL("image/png");
+		const imgWidth = canvas.width;
+		const imgHeight = canvas.height;
+
+		const finalWidth = pdfWidth - margin * 2;
+		const finalHeight = (imgHeight * finalWidth) / imgWidth;
+
+		if (currentY + finalHeight > pdfHeight - margin) {
+			pdf.addPage();
+			currentY = margin;
+		}
+
+		pdf.addImage(imgData, "PNG", margin, currentY, finalWidth, finalHeight);
+		currentY += finalHeight + 10; // add some spacing
+	}
+
 	pdf.save(filename);
 }
 

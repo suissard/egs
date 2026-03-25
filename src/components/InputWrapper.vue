@@ -40,12 +40,27 @@
       </label>
     </div>
 
-    <!-- Checkbox (Single) -->
-    <div v-else-if="node.inputType === 'checkbox'" class="input-group d-flex align-center gap-3">
-      <label class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" v-model="node.value" :required="node.required">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
+    <!-- Checkbox (Single or Multiple) -->
+    <div v-else-if="node.inputType === 'checkbox'" class="input-group">
+      <label class="input-label" v-if="node.options && node.options.length > 0">
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
+
+      <!-- Multiple checkboxes -->
+      <div v-if="node.options && node.options.length > 0" class="d-flex flex-wrap gap-3">
+        <label v-for="opt in node.options" :key="opt" class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" v-model="node.value" :value="opt">
+          {{ opt }}
+        </label>
+      </div>
+
+      <!-- Single checkbox -->
+      <div v-else class="d-flex align-center gap-3">
+        <label class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" v-model="node.value" :required="node.required">
+          <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
+        </label>
+      </div>
     </div>
 
     <!-- Date Input -->
