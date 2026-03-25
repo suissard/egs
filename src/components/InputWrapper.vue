@@ -1,79 +1,106 @@
 <template>
   <div class="input-wrapper">
     <!-- Text Input -->
-    <v-text-field
-      v-if="['text', 'email', 'tel', 'number', 'password'].includes(node.inputType)"
-      v-model="node.value"
-      :label="node.label"
-      :type="node.inputType"
-      :required="node.required"
-      :rules="rules"
-      variant="outlined"
-      density="comfortable"
-    ></v-text-field>
+    <div v-if="['text', 'email', 'tel', 'number', 'password'].includes(node.inputType)" class="input-group">
+      <label class="input-label">
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span>
+      </label>
+      <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field"
+         />
+    </div>
 
     <!-- Select Input -->
-    <v-select
-      v-else-if="node.inputType === 'select'"
-      v-model="node.value"
-      :items="node.options"
-      :label="node.label"
-      :required="node.required"
-      :rules="rules"
-      variant="outlined"
-      density="comfortable"
-    ></v-select>
+    <div v-else-if="node.inputType === 'select'" class="input-group">
+      <label class="input-label">
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span>
+      </label>
+      <select v-model="node.value" :required="node.required" class="input-field" :multiple="node.multiple">
+        <option v-for="opt in node.options" :key="opt" :value="opt">{{ opt }}</option>
+      </select>
+    </div>
 
-    <!-- Checkbox -->
-    <v-checkbox
-      v-else-if="node.inputType === 'checkbox'"
-      v-model="node.value"
-      :label="node.label"
-      :required="node.required"
-      :rules="rules"
-    ></v-checkbox>
+    <!-- Radio Group -->
+    <div v-else-if="node.inputType === 'radio'" class="input-group">
+      <label class="input-label">
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span>
+      </label>
+      <div class="d-flex flex-wrap gap-3">
+        <label v-for="opt in node.options" :key="opt" class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
+          <input type="radio" v-model="node.value" :value="opt" name="radio-group">
+          {{ opt }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Switch -->
+    <div v-else-if="node.inputType === 'switch'" class="input-group d-flex align-center gap-3">
+      <label class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
+        <input type="checkbox" v-model="node.value">
+        <span class="font-weight-bold">{{ node.label }}</span>
+      </label>
+    </div>
+
+    <!-- Checkbox (Single) -->
+    <div v-else-if="node.inputType === 'checkbox'" class="input-group d-flex align-center gap-3">
+      <label class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
+        <input type="checkbox" v-model="node.value" :required="node.required">
+        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
+      </label>
+    </div>
 
     <!-- Date Input -->
-    <v-text-field
-      v-else-if="node.inputType === 'date'"
-      v-model="node.value"
-      :label="node.label"
-      type="date"
-      :required="node.required"
-      :rules="rules"
-      variant="outlined"
-      density="comfortable"
-    ></v-text-field>
+    <div v-else-if="node.inputType === 'date'" class="input-group">
+      <label class="input-label">
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span>
+      </label>
+      <input v-model="node.value" type="date" :required="node.required" class="input-field" />
+    </div>
 
     <!-- Textarea -->
-    <v-textarea
-      v-else-if="node.inputType === 'textarea'"
-      v-model="node.value"
-      :label="node.label"
-      :required="node.required"
-      :rules="rules"
-      variant="outlined"
-      density="comfortable"
-    ></v-textarea>
+    <div v-else-if="node.inputType === 'textarea'" class="input-group">
+      <label class="input-label">
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span>
+      </label>
+      <textarea v-model="node.value" :required="node.required" class="input-field" rows="3"></textarea>
+    </div>
+
+    <!-- Slider -->
+    <div v-else-if="node.inputType === 'slider'" class="input-group">
+      <label class="input-label">
+        {{ node.label }}: {{ node.value }}
+      </label>
+      <input type="range" v-model="node.value" :min="node.min" :max="node.max" :step="node.step" class="w-100" />
+    </div>
+
+    <!-- File Input -->
+    <div v-else-if="node.inputType === 'file'" class="input-group">
+      <label class="input-label">
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span>
+      </label>
+      <input type="file" @change="(e: any) => node.value = e.target.files[0]" :required="node.required"
+        class="input-field" />
+    </div>
+
+    <!-- Time Input -->
+    <div v-else-if="node.inputType === 'time'" class="input-group">
+      <label class="input-label">
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span>
+      </label>
+      <input v-model="node.value" type="time" :required="node.required" class="input-field" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { InputNode } from '../models/InputNode';
 
-const props = defineProps<{
+defineProps<{
   node: InputNode;
 }>();
-
-const rules = computed(() => {
-  const r = [];
-  if (props.node.required) {
-    r.push((v: any) => !!v || `${props.node.label} est requis`);
-  }
-  if (props.node.inputType === 'email') {
-    r.push((v: string) => /.+@.+\..+/.test(v) || 'Email invalide');
-  }
-  return r;
-});
 </script>
+
+<style scoped>
+.text-error {
+  color: var(--error);
+}
+</style>

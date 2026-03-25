@@ -1,31 +1,29 @@
 <template>
-  <div class="form-renderer" style="width: 100%">
+  <div class="form-renderer">
     <template v-if="isBox(node)">
-       <component :is="node.title ? 'v-card' : 'div'" :class="node.title ? 'mb-4 pa-4' : 'mb-2'" :variant="node.title ? 'tonal' : undefined">
-         <v-card-title v-if="node.title">{{ node.title }}</v-card-title>
-         <v-card-text :class="{'pa-0': !node.title}">
-           
-           <!-- Row Layout: render children in columns -->
-           <v-row v-if="node.direction === 'row'" dense>
-             <v-col 
-               v-for="child in node.children" 
-               :key="child.id" 
-               cols="12" 
-               md="6"
-             >
-               <FormRenderer :node="child" />
-             </v-col>
-           </v-row>
+      <div :class="[
+        'rounded-lg',
+        node.title ? 'card' : ''
+      ]">
+        <div v-if="node.title" class="card-title bg-primary text-white font-weight-bold text-subtitle-1">
+          {{ node.title }}
+        </div>
 
-           <!-- Column Layout: render children stacked -->
-           <div v-else class="d-flex flex-column">
-             <div v-for="child in node.children" :key="child.id" class="mb-2">
-                <FormRenderer :node="child" />
-             </div>
-           </div>
+        <div :class="[node.title ? 'pa-4' : 'pa-0', 'd-flex', 'flex-column']">
+          <!-- Row Layout: Flexbox with gap -->
+          <div v-if="node.direction === 'row'" class="d-flex flex-wrap" style="gap: 16px">
+            <FormRenderer v-for="child in node.children" :key="child.id" :node="child" class="flex-grow-1"
+              :style="{ minWidth: child.minWidth || '200px' }" />
+          </div>
 
-         </v-card-text>
-       </component>
+          <!-- Column Layout: Flexbox with gap -->
+          <div v-else class="d-flex flex-column" style="gap: 16px">
+            <div v-for="child in node.children" :key="child.id">
+              <FormRenderer :node="child" />
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
 
     <template v-else-if="isInput(node)">
@@ -35,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-
 import { FormNode } from '../models/FormNode';
 import { BoxNode } from '../models/BoxNode';
 import { InputNode } from '../models/InputNode';

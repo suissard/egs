@@ -8,6 +8,10 @@ export class InputNode extends FormNode {
 	required: boolean;
 	options: string[];
 	placeholder: string;
+	multiple: boolean;
+	min?: number;
+	max?: number;
+	step?: number;
 	value: any = null; // To hold the user input
 
 	constructor(config: InputElement) {
@@ -18,6 +22,10 @@ export class InputNode extends FormNode {
 		this.required = config.required || false;
 		this.options = config.options || [];
 		this.placeholder = config.placeholder || "";
+		this.multiple = config.multiple || false;
+		this.min = config.min;
+		this.max = config.max;
+		this.step = config.step;
 	}
 
 	validate(): boolean {

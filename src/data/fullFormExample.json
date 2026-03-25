@@ -1,0 +1,150 @@
+{
+	"type": "box",
+	"direction": "column",
+	"title": "Comprehensive Form Demonstration",
+	"children": [
+		{
+			"type": "box",
+			"direction": "row",
+			"title": "Personal Information (Row Layout)",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "text",
+					"label": "Full Name",
+					"key": "fullName",
+					"placeholder": "John Doe",
+					"required": true,
+					"minWidth": "300px"
+				},
+				{
+					"type": "input",
+					"inputType": "email",
+					"label": "Email Address",
+					"key": "email",
+					"placeholder": "john@example.com",
+					"required": true
+				},
+				{
+					"type": "input",
+					"inputType": "tel",
+					"label": "Phone Number",
+					"key": "phone",
+					"placeholder": "+1 555 0123"
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "row",
+			"title": "Account Security (Row Layout)",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "text",
+					"label": "Username",
+					"key": "username",
+					"placeholder": "johndoe123",
+					"required": true
+				},
+				{
+					"type": "input",
+					"inputType": "password",
+					"label": "Password",
+					"key": "password",
+					"required": true
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "row",
+			"title": "Details (Row Layout)",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "number",
+					"label": "Age",
+					"key": "age",
+					"placeholder": "25",
+					"minWidth": "100px"
+				},
+				{
+					"type": "input",
+					"inputType": "date",
+					"label": "Date of Birth",
+					"key": "birthDate"
+				},
+				{
+					"type": "input",
+					"inputType": "time",
+					"label": "Preferred Call Time",
+					"key": "callTime"
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "Preferences & Configuration (Column Layout)",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "radio",
+					"label": "Gender",
+					"key": "gender",
+					"options": ["Male", "Female", "Non-binary", "Other"]
+				},
+				{
+					"type": "input",
+					"inputType": "select",
+					"label": "Preferred Contact Method",
+					"key": "contactMethod",
+					"options": ["Email", "Phone", "SMS", "Raven"]
+				},
+				{
+					"type": "input",
+					"inputType": "slider",
+					"label": "Satisfaction Level (1-10)",
+					"key": "satisfaction",
+					"min": 1,
+					"max": 10,
+					"step": 1,
+					"value": 5
+				},
+				{
+					"type": "input",
+					"inputType": "switch",
+					"label": "Enable Notifications",
+					"key": "notifications"
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "Upload & Feedback",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "file",
+					"label": "Profile Picture",
+					"key": "profilePic"
+				},
+				{
+					"type": "input",
+					"inputType": "textarea",
+					"label": "Bio / Comments",
+					"key": "bio",
+					"placeholder": "Tell us a bit about yourself..."
+				},
+				{
+					"type": "input",
+					"inputType": "checkbox",
+					"label": "I subscribe to the newsletter",
+					"key": "subscribe"
+				}
+			]
+		}
+	]
+}

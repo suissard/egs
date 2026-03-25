@@ -6,11 +6,17 @@ export type InputType =
 	| "date"
 	| "select"
 	| "checkbox"
-	| "textarea";
+	| "textarea"
+	| "radio"
+	| "switch"
+	| "slider"
+	| "file"
+	| "time";
 
 export interface FormElement {
 	type: "box" | "input";
 	id?: string;
+	minWidth?: string;
 }
 
 export interface BoxElement extends FormElement {
@@ -26,8 +32,12 @@ export interface InputElement extends FormElement {
 	label: string;
 	key: string;
 	required?: boolean;
-	options?: string[]; // For select
+	options?: string[]; // For select, radio
 	placeholder?: string;
+	multiple?: boolean; // For select (QCM)
+	min?: number;
+	max?: number;
+	step?: number;
 }
 
 export type FormConfig = BoxElement;

@@ -1,0 +1,275 @@
+{
+	"type": "box",
+	"direction": "column",
+	"title": "Évaluation Gériatrique Standardisée",
+	"children": [
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "1. Autonomie (ADL/IADL)",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Toilette",
+							"key": "adl_toilette",
+							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"required": true,
+							"minWidth": "30%"
+						},
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Habillage",
+							"key": "adl_habillage",
+							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"required": true,
+							"minWidth": "30%"
+						},
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Alimentation",
+							"key": "adl_alimentation",
+							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"required": true,
+							"minWidth": "30%"
+						}
+					]
+				},
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Continence",
+							"key": "adl_continence",
+							"options": [
+								"Autonome",
+								"Incontinence occasionnelle",
+								"Incontinence totale"
+							],
+							"required": true,
+							"minWidth": "30%"
+						},
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Déplacement",
+							"key": "adl_deplacement",
+							"options": ["Autonome", "Aide technique", "Aide humaine", "Lit/Fauteuil"],
+							"required": true,
+							"minWidth": "30%"
+						},
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Transferts",
+							"key": "adl_transferts",
+							"options": ["Autonome", "Aide humaine", "Lève-malade"],
+							"required": true,
+							"minWidth": "30%"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "2. Évaluation Cognitive",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "radio",
+							"label": "Orientation Temporaire (Date, Saison...)",
+							"key": "cognitif_temps",
+							"options": ["Correcte", "Partiellement désorienté", "Désorienté"],
+							"required": true
+						},
+						{
+							"type": "input",
+							"inputType": "radio",
+							"label": "Orientation Spatiale (Lieu, Etage...)",
+							"key": "cognitif_espace",
+							"options": ["Correcte", "Partiellement désorienté", "Désorienté"],
+							"required": true
+						}
+					]
+				},
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "number",
+							"label": "Score MMSE (si réalisé) / 30",
+							"key": "cognitif_mmse",
+							"min": 0,
+							"max": 30
+						},
+						{
+							"type": "input",
+							"inputType": "text",
+							"label": "Troubles du comportement observés",
+							"key": "cognitif_troubles",
+							"placeholder": "Agitation, Agressivité, Apathie..."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "3. Nutrition (MNA)",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "number",
+							"label": "Poids (kg)",
+							"key": "nutri_poids",
+							"min": 20,
+							"max": 200,
+							"step": 0.1,
+							"required": true
+						},
+						{
+							"type": "input",
+							"inputType": "number",
+							"label": "Taille (cm)",
+							"key": "nutri_taille",
+							"min": 100,
+							"max": 250,
+							"required": true
+						},
+						{
+							"type": "input",
+							"inputType": "number",
+							"label": "IMC",
+							"key": "nutri_imc",
+							"min": 10,
+							"max": 50,
+							"step": 0.1
+						}
+					]
+				},
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Perte d'appétit (3 derniers mois)",
+							"key": "nutri_appetit",
+							"options": ["Néant", "Modérée", "Sévère"],
+							"required": true
+						},
+						{
+							"type": "input",
+							"inputType": "select",
+							"label": "Perte de poids récente (< 3 mois)",
+							"key": "nutri_perte_poids",
+							"options": ["< 1kg", "Entre 1 et 3kg", "> 3kg", "Ne sait pas"],
+							"required": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "4. Humeur (Mini-GDS)",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "checkbox",
+					"label": "Signes de dépression observés",
+					"key": "gds_signes",
+					"options": [
+						"Tristesse apparente",
+						"Repli sur soi",
+						"Anxiété / Angoisse",
+						"Irritabilité",
+						"Plaintes somatiques répétées"
+					]
+				},
+				{
+					"type": "input",
+					"inputType": "textarea",
+					"label": "Commentaires sur l'humeur",
+					"key": "gds_commentaires",
+					"placeholder": "Notes libres..."
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "5. Mobilité & Chutes",
+			"children": [
+				{
+					"type": "box",
+					"direction": "row",
+					"children": [
+						{
+							"type": "input",
+							"inputType": "radio",
+							"label": "Antécédent de chute (6 derniers mois)",
+							"key": "chute_antecedent",
+							"options": ["Oui", "Non"],
+							"required": true
+						},
+						{
+							"type": "input",
+							"inputType": "number",
+							"label": "Timed Up & Go (secondes)",
+							"key": "chute_tug",
+							"min": 0
+						}
+					]
+				},
+				{
+					"type": "input",
+					"inputType": "select",
+					"label": "Aides à la marche habituelles",
+					"key": "chute_aides",
+					"options": ["Aucune", "Canne simple", "Déambulateur", "Fauteuil roulant"],
+					"multiple": true
+				}
+			]
+		},
+		{
+			"type": "box",
+			"direction": "column",
+			"title": "Conclusion / Synthèse",
+			"children": [
+				{
+					"type": "input",
+					"inputType": "textarea",
+					"label": "Synthèse de l'évaluation",
+					"key": "synthese_globale",
+					"required": true,
+					"minWidth": "100%"
+				}
+			]
+		}
+	]
+}
