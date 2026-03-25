@@ -12,6 +12,7 @@ export class InputNode extends FormNode {
 	min?: number;
 	max?: number;
 	step?: number;
+	hasActionReport: boolean;
 	value: any = null; // To hold the user input
 
 	constructor(config: InputElement) {
@@ -26,6 +27,7 @@ export class InputNode extends FormNode {
 		this.min = config.min;
 		this.max = config.max;
 		this.step = config.step;
+		this.hasActionReport = config.hasActionReport || false;
 	}
 
 	validate(): boolean {
