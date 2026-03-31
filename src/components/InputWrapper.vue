@@ -5,7 +5,7 @@
       <label class="input-label">
         {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
-      <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field" />
+      <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
 
     <!-- Select Input -->
@@ -13,7 +13,7 @@
       <label class="input-label">
         {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
-      <select v-model="node.value" :required="node.required" class="input-field" :multiple="node.multiple">
+      <select v-model="node.value" :required="node.required" class="input-field" :multiple="node.multiple" :disabled="readonly">
         <option v-for="opt in node.options" :key="opt" :value="opt">{{ opt }}</option>
       </select>
     </div>
@@ -25,7 +25,7 @@
       </label>
       <div class="d-flex flex-wrap gap-3">
         <label v-for="opt in node.options" :key="opt" class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
-          <input type="radio" v-model="node.value" :value="opt" name="radio-group">
+          <input type="radio" v-model="node.value" :value="opt" name="radio-group" :disabled="readonly">
           {{ opt }}
         </label>
       </div>
@@ -34,7 +34,7 @@
     <!-- Switch -->
     <div v-else-if="node.inputType === 'switch'" class="input-group d-flex align-center gap-3">
       <label class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" v-model="node.value">
+        <input type="checkbox" v-model="node.value" :disabled="readonly">
         <span class="font-weight-bold">{{ node.label }}</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
     </div>
@@ -48,7 +48,7 @@
       <!-- Multiple checkboxes -->
       <div v-if="node.options && node.options.length > 0" class="d-flex flex-wrap gap-3">
         <label v-for="opt in node.options" :key="opt" class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
-          <input type="checkbox" v-model="node.value" :value="opt">
+          <input type="checkbox" v-model="node.value" :value="opt" :disabled="readonly">
           {{ opt }}
         </label>
       </div>
@@ -56,7 +56,7 @@
       <!-- Single checkbox -->
       <div v-else class="d-flex align-center gap-3">
         <label class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
-          <input type="checkbox" v-model="node.value" :required="node.required">
+          <input type="checkbox" v-model="node.value" :required="node.required" :disabled="readonly">
           <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
         </label>
       </div>
@@ -67,7 +67,7 @@
       <label class="input-label">
         {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
-      <input v-model="node.value" type="date" :required="node.required" class="input-field" />
+      <input v-model="node.value" type="date" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
 
     <!-- Textarea -->
@@ -75,7 +75,7 @@
       <label class="input-label">
         {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
-      <textarea v-model="node.value" :required="node.required" class="input-field" rows="3"></textarea>
+      <textarea v-model="node.value" :required="node.required" class="input-field" rows="3" :disabled="readonly"></textarea>
     </div>
 
     <!-- Slider -->
@@ -83,7 +83,7 @@
       <label class="input-label">
         {{ node.label }}: {{ node.value }} <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
-      <input type="range" v-model="node.value" :min="node.min" :max="node.max" :step="node.step" class="w-100" />
+      <input type="range" v-model="node.value" :min="node.min" :max="node.max" :step="node.step" class="w-100" :disabled="readonly" />
     </div>
 
     <!-- File Input -->
@@ -91,8 +91,7 @@
       <label class="input-label">
         {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
-      <input type="file" @change="(e: any) => node.value = e.target.files[0]" :required="node.required"
-        class="input-field" />
+      <input type="file" @change="(e: any) => node.value = e.target.files[0]" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
 
     <!-- Time Input -->
@@ -100,7 +99,7 @@
       <label class="input-label">
         {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
-      <input v-model="node.value" type="time" :required="node.required" class="input-field" />
+      <input v-model="node.value" type="time" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
   </div>
 </template>
@@ -110,6 +109,7 @@ import { InputNode } from '../models/InputNode';
 
 defineProps<{
   node: InputNode;
+  readonly?: boolean;
 }>();
 
 </script>

@@ -168,7 +168,17 @@ function applyDataToNode(node: FormNode, data: Record<string, any>) {
     node.children.forEach(child => applyDataToNode(child, data));
   } else if (node instanceof InputNode) {
     if (data[node.key] !== undefined) {
-      node.value = data[node.key];
+      if (node.inputType === 'checkbox') {
+        if (node.options && node.options.length > 0) {
+          // Checkbox multiple: Vue v-model expects an array
+          node.value = Array.isArray(data[node.key]) ? data[node.key] : [data[node.key]];
+        } else {
+          // Checkbox single: Vue v-model expects a boolean
+          node.value = Boolean(data[node.key]);
+        }
+      } else {
+        node.value = data[node.key];
+      }
     }
   }
 }
