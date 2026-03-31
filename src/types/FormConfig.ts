@@ -13,10 +13,16 @@ export type InputType =
 	| "file"
 	| "time";
 
+export interface ShowIfCondition {
+	dependsOn: string;
+	value: any | any[]; // A single value or an array of values it can equal
+}
+
 export interface FormElement {
 	type: "box" | "input";
 	id?: string;
 	minWidth?: string;
+	showIf?: ShowIfCondition;
 }
 
 export interface BoxElement extends FormElement {

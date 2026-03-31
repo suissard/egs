@@ -18,7 +18,10 @@
 					"inputType": "radio",
 					"label": "Type d'évaluation",
 					"key": "type_eval",
-					"options": ["Admission", "Réévaluation"]
+					"options": [
+						"Admission",
+						"Réévaluation"
+					]
 				}
 			]
 		},
@@ -110,21 +113,30 @@
 							"inputType": "radio",
 							"label": "Psychotropes",
 							"key": "traitement_psychotropes",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Anticholinergiques",
 							"key": "traitement_anticholinergiques",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Hypotenseurs multiples",
 							"key": "traitement_hypotenseurs",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						}
 					]
 				},
@@ -137,21 +149,31 @@
 							"inputType": "radio",
 							"label": "Anticoagulants",
 							"key": "traitement_anticoagulants",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Vitamine D",
 							"key": "traitement_vitamine_d",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Insuffisance rénale",
 							"key": "traitement_insuf_renale",
-							"options": ["NON", "Modérée", "Sévère"]
+							"options": [
+								"NON",
+								"Modérée",
+								"Sévère"
+							]
 						}
 					]
 				},
@@ -160,7 +182,10 @@
 					"inputType": "radio",
 					"label": "Risque iatrogène",
 					"key": "traitement_risque_iatrogene",
-					"options": ["oui", "NON"]
+					"options": [
+						"oui",
+						"NON"
+					]
 				}
 			]
 		},
@@ -178,21 +203,33 @@
 							"inputType": "radio",
 							"label": "DTPC",
 							"key": "vaccin_dtpc",
-							"options": ["A jour", "A prévoir", "Refus"]
+							"options": [
+								"A jour",
+								"A prévoir",
+								"Refus"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Pneumocoque",
 							"key": "vaccin_pneumocoque",
-							"options": ["A jour", "A prévoir", "Refus"]
+							"options": [
+								"A jour",
+								"A prévoir",
+								"Refus"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Zona",
 							"key": "vaccin_zona",
-							"options": ["A jour", "A prévoir", "Refus"]
+							"options": [
+								"A jour",
+								"A prévoir",
+								"Refus"
+							]
 						}
 					]
 				}
@@ -213,35 +250,55 @@
 							"inputType": "radio",
 							"label": "Toilette",
 							"key": "adl_toilette",
-							"options": ["Autonome", "Aide partielle", "Aide totale"]
+							"options": [
+								"Autonome",
+								"Aide partielle",
+								"Aide totale"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Habillage",
 							"key": "adl_habillage",
-							"options": ["Autonome", "Aide partielle", "Aide totale"]
+							"options": [
+								"Autonome",
+								"Aide partielle",
+								"Aide totale"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Transferts",
 							"key": "adl_transferts",
-							"options": ["Autonome", "Aide partielle", "Aide totale"]
+							"options": [
+								"Autonome",
+								"Aide partielle",
+								"Aide totale"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Continence",
 							"key": "adl_continence",
-							"options": ["Autonome", "Aide partielle", "Aide totale"]
+							"options": [
+								"Autonome",
+								"Aide partielle",
+								"Aide totale"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Alimentation",
 							"key": "adl_alimentation",
-							"options": ["Autonome", "Aide partielle", "Aide totale"]
+							"options": [
+								"Autonome",
+								"Aide partielle",
+								"Aide totale"
+							]
 						}
 					]
 				},
@@ -250,7 +307,11 @@
 					"inputType": "radio",
 					"label": "Conclusion autonomie",
 					"key": "autonomie_concl",
-					"options": ["Autonome", "Dépendance partielle", "Dépendance sévère"]
+					"options": [
+						"Autonome",
+						"Dépendance partielle",
+						"Dépendance sévère"
+					]
 				}
 			]
 		},
@@ -264,14 +325,22 @@
 					"inputType": "radio",
 					"label": "Marche",
 					"key": "mobilite_marche",
-					"options": ["libre", "aides techniques", "fauteuil roulant"]
+					"options": [
+						"libre",
+						"aides techniques",
+						"fauteuil roulant"
+					]
 				},
 				{
 					"type": "input",
 					"inputType": "radio",
 					"label": "Lever de chaise",
 					"key": "mobilite_lever",
-					"options": ["facile", "difficile", "impossible"]
+					"options": [
+						"facile",
+						"difficile",
+						"impossible"
+					]
 				},
 				{
 					"type": "box",
@@ -282,14 +351,20 @@
 							"inputType": "radio",
 							"label": "Chute < 6 mois",
 							"key": "mobilite_chute",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Risque de chute",
 							"key": "mobilite_risque_chute",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						}
 					]
 				}
@@ -305,7 +380,11 @@
 					"inputType": "radio",
 					"label": "Trouble neuro-cognitif",
 					"key": "cognitif_tnc",
-					"options": ["NON", "léger", "Majeur"]
+					"options": [
+						"NON",
+						"léger",
+						"Majeur"
+					]
 				},
 				{
 					"type": "box",
@@ -323,7 +402,14 @@
 							"label": "le",
 							"key": "cognitif_mms_date"
 						}
-					]
+					],
+					"showIf": {
+						"dependsOn": "cognitif_tnc",
+						"value": [
+							"léger",
+							"Majeur"
+						]
+					}
 				},
 				{
 					"type": "input",
@@ -345,14 +431,21 @@
 					"inputType": "radio",
 					"label": "Désorientation temporo-spatiale",
 					"key": "cognitif_dts",
-					"options": ["NON", "Partielle", "Totale"]
+					"options": [
+						"NON",
+						"Partielle",
+						"Totale"
+					]
 				},
 				{
 					"type": "input",
 					"inputType": "radio",
 					"label": "Refus de soins",
 					"key": "cognitif_refus_soins",
-					"options": ["oui", "non"]
+					"options": [
+						"oui",
+						"non"
+					]
 				}
 			]
 		},
@@ -370,14 +463,20 @@
 							"inputType": "radio",
 							"label": "Dépression",
 							"key": "psy_depression",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Anxiété",
 							"key": "psy_anxiete",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						}
 					]
 				},
@@ -390,14 +489,20 @@
 							"inputType": "radio",
 							"label": "Troubles du sommeil",
 							"key": "psy_sommeil",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Risque suicidaire",
 							"key": "psy_suicide",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						}
 					]
 				}
@@ -467,14 +572,20 @@
 							"inputType": "radio",
 							"label": "Troubles de la déglutition",
 							"key": "nutri_deglutition",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Troubles de la mastication",
 							"key": "nutri_mastication",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						}
 					]
 				},
@@ -487,14 +598,21 @@
 							"inputType": "radio",
 							"label": "Aide aux repas",
 							"key": "nutri_aide_repas",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Hydratation",
 							"key": "nutri_hydratation",
-							"options": ["spontanée", "à stimuler", "aide totale"]
+							"options": [
+								"spontanée",
+								"à stimuler",
+								"aide totale"
+							]
 						}
 					]
 				}
@@ -510,7 +628,10 @@
 					"inputType": "radio",
 					"label": "Douleur chronique",
 					"key": "douleur_chronique",
-					"options": ["oui", "non"]
+					"options": [
+						"oui",
+						"non"
+					]
 				},
 				{
 					"type": "box",
@@ -528,7 +649,11 @@
 							"label": "Intensité",
 							"key": "douleur_intensite"
 						}
-					]
+					],
+					"showIf": {
+						"dependsOn": "douleur_chronique",
+						"value": "oui"
+					}
 				},
 				{
 					"type": "box",
@@ -545,7 +670,10 @@
 							"inputType": "radio",
 							"label": "Traitement efficace",
 							"key": "douleur_traitement_efficace",
-							"options": ["oui", "non"]
+							"options": [
+								"oui",
+								"non"
+							]
 						}
 					]
 				}
@@ -561,7 +689,10 @@
 					"inputType": "radio",
 					"label": "Risque d'escarres",
 					"key": "risque_escarres",
-					"options": ["oui", "non"]
+					"options": [
+						"oui",
+						"non"
+					]
 				}
 			]
 		},
@@ -579,14 +710,20 @@
 							"inputType": "checkbox",
 							"label": "Déficit visuel",
 							"key": "sensoriel_visuel",
-							"options": ["Présent"]
+							"options": [
+								"Présent"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Lunettes",
 							"key": "sensoriel_lunettes",
-							"options": ["oui", "non", "à réévaluer"]
+							"options": [
+								"oui",
+								"non",
+								"à réévaluer"
+							]
 						}
 					]
 				},
@@ -599,14 +736,20 @@
 							"inputType": "checkbox",
 							"label": "Déficit auditif",
 							"key": "sensoriel_auditif",
-							"options": ["Présent"]
+							"options": [
+								"Présent"
+							]
 						},
 						{
 							"type": "input",
 							"inputType": "radio",
 							"label": "Appareils auditifs",
 							"key": "sensoriel_appareils",
-							"options": ["oui", "non", "à réévaluer"]
+							"options": [
+								"oui",
+								"non",
+								"à réévaluer"
+							]
 						}
 					]
 				},

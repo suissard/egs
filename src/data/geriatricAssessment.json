@@ -17,7 +17,11 @@
 							"inputType": "select",
 							"label": "Toilette",
 							"key": "adl_toilette",
-							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"options": [
+								"Autonome",
+								"Aide partielle",
+								"Aide totale"
+							],
 							"required": true,
 							"minWidth": "30%"
 						},
@@ -26,7 +30,11 @@
 							"inputType": "select",
 							"label": "Habillage",
 							"key": "adl_habillage",
-							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"options": [
+								"Autonome",
+								"Aide partielle",
+								"Aide totale"
+							],
 							"required": true,
 							"minWidth": "30%"
 						},
@@ -35,7 +43,11 @@
 							"inputType": "select",
 							"label": "Alimentation",
 							"key": "adl_alimentation",
-							"options": ["Autonome", "Aide partielle", "Aide totale"],
+							"options": [
+								"Autonome",
+								"Aide partielle",
+								"Aide totale"
+							],
 							"required": true,
 							"minWidth": "30%"
 						}
@@ -63,7 +75,12 @@
 							"inputType": "select",
 							"label": "Déplacement",
 							"key": "adl_deplacement",
-							"options": ["Autonome", "Aide technique", "Aide humaine", "Lit/Fauteuil"],
+							"options": [
+								"Autonome",
+								"Aide technique",
+								"Aide humaine",
+								"Lit/Fauteuil"
+							],
 							"required": true,
 							"minWidth": "30%"
 						},
@@ -72,7 +89,11 @@
 							"inputType": "select",
 							"label": "Transferts",
 							"key": "adl_transferts",
-							"options": ["Autonome", "Aide humaine", "Lève-malade"],
+							"options": [
+								"Autonome",
+								"Aide humaine",
+								"Lève-malade"
+							],
 							"required": true,
 							"minWidth": "30%"
 						}
@@ -94,7 +115,11 @@
 							"inputType": "radio",
 							"label": "Orientation Temporaire (Date, Saison...)",
 							"key": "cognitif_temps",
-							"options": ["Correcte", "Partiellement désorienté", "Désorienté"],
+							"options": [
+								"Correcte",
+								"Partiellement désorienté",
+								"Désorienté"
+							],
 							"required": true
 						},
 						{
@@ -102,7 +127,11 @@
 							"inputType": "radio",
 							"label": "Orientation Spatiale (Lieu, Etage...)",
 							"key": "cognitif_espace",
-							"options": ["Correcte", "Partiellement désorienté", "Désorienté"],
+							"options": [
+								"Correcte",
+								"Partiellement désorienté",
+								"Désorienté"
+							],
 							"required": true
 						}
 					]
@@ -178,7 +207,11 @@
 							"inputType": "select",
 							"label": "Perte d'appétit (3 derniers mois)",
 							"key": "nutri_appetit",
-							"options": ["Néant", "Modérée", "Sévère"],
+							"options": [
+								"Néant",
+								"Modérée",
+								"Sévère"
+							],
 							"required": true
 						},
 						{
@@ -186,7 +219,12 @@
 							"inputType": "select",
 							"label": "Perte de poids récente (< 3 mois)",
 							"key": "nutri_perte_poids",
-							"options": ["< 1kg", "Entre 1 et 3kg", "> 3kg", "Ne sait pas"],
+							"options": [
+								"< 1kg",
+								"Entre 1 et 3kg",
+								"> 3kg",
+								"Ne sait pas"
+							],
 							"required": true
 						}
 					]
@@ -234,7 +272,10 @@
 							"inputType": "radio",
 							"label": "Antécédent de chute (6 derniers mois)",
 							"key": "chute_antecedent",
-							"options": ["Oui", "Non"],
+							"options": [
+								"Oui",
+								"Non"
+							],
 							"required": true
 						},
 						{
@@ -251,7 +292,12 @@
 					"inputType": "select",
 					"label": "Aides à la marche habituelles",
 					"key": "chute_aides",
-					"options": ["Aucune", "Canne simple", "Déambulateur", "Fauteuil roulant"],
+					"options": [
+						"Aucune",
+						"Canne simple",
+						"Déambulateur",
+						"Fauteuil roulant"
+					],
 					"multiple": true
 				}
 			]
