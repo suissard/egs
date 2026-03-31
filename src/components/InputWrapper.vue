@@ -5,8 +5,7 @@
       <label class="input-label">
         {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
       </label>
-      <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field"
-         />
+      <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field" />
     </div>
 
     <!-- Select Input -->
@@ -112,6 +111,7 @@ import { InputNode } from '../models/InputNode';
 defineProps<{
   node: InputNode;
 }>();
+
 </script>
 
 <style scoped>

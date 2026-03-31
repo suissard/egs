@@ -18,7 +18,7 @@
 
           <div v-if="formRoot" class="my-4" ref="formContainer">
             <form ref="form" @submit.prevent="submitForm">
-              <FormRenderer :node="formRoot" />
+              <FormRenderer :node="formRoot" :root-data="formData" />
 
               <div class="card mt-8 pa-4 bg-grey-lighten-5" style="border: none;">
                 <button type="submit" class="btn btn-primary btn-block btn-lg text-uppercase mb-4">
@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, provide } from 'vue';
 import { FormFactory } from './models/FormFactory';
 import { FormNode } from './models/FormNode';
 import { BoxNode } from './models/BoxNode';
@@ -88,6 +88,19 @@ const snackbarText = ref('');
 const snackbarColor = ref('info');
 const formContainer = ref<HTMLElement | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
+
+// Ref to store form data reactively so we can compute display conditions
+const formData = ref<Record<string, any>>({});
+
+function updateFormData() {
+  if (formRoot.value && formRoot.value instanceof BoxNode) {
+    formData.value = formRoot.value.getData();
+  } else {
+    formData.value = {};
+  }
+}
+
+provide('triggerDataUpdate', updateFormData);
 
 const STORAGE_KEY = 'egs-form-data';
 
@@ -128,6 +141,7 @@ function loadSelectedModel() {
   }
 
   formRoot.value = rootNode;
+  updateFormData();
   submittedData.value = null; // Reset submitted data on change
 }
 
@@ -140,6 +154,7 @@ onMounted(() => {
     (newVal) => {
       if (newVal && newVal instanceof BoxNode) {
         const data = newVal.getData();
+        updateFormData();
         localStorage.setItem(`${STORAGE_KEY}-${selectedModelKey.value}`, JSON.stringify(data));
       }
     },
