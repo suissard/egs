@@ -76,6 +76,7 @@ import personalCoordinates from './data/personalCoordinates.json';
 import fullFormExample from './data/fullFormExample.json';
 import egs from './data/egs.json';
 import geriatricAssessment from './data/geriatricAssessment.json';
+import psychologicalAnalysis from './data/psychologicalAnalysis.json';
 import type { FormConfig } from './types/FormConfig';
 
 import { copyToClipboard, generateVisualPdf, exportToJson, importFromJson } from './utils/exportUtils';
@@ -109,6 +110,7 @@ const availableModels = [
   { title: 'Coordonnées Personnelles', key: 'personal' },
   { title: 'Exemple Complet', key: 'full' },
   { title: 'Évaluation Gériatrique Standardisée', key: 'geriatric' }
+  , { title: 'Analyse Psychologique', key: 'psychological' }
 ];
 const selectedModelKey = ref('egs');
 
@@ -120,6 +122,8 @@ function loadSelectedModel() {
     config = fullFormExample;
   } else if (selectedModelKey.value === 'geriatric') {
     config = geriatricAssessment;
+  } else if (selectedModelKey.value === 'psychological') {
+    config = psychologicalAnalysis;
   } else {
     config = personalCoordinates;
   }
