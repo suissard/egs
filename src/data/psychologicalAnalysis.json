@@ -1,0 +1,175 @@
+{
+  "type": "box",
+  "direction": "column",
+  "title": "Analyse Psychologique Complète",
+  "children": [
+    {
+      "type": "box",
+      "direction": "row",
+      "title": "Informations Personnelles",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "text",
+          "label": "Prénom",
+          "key": "firstName",
+          "required": true,
+          "placeholder": "Entrez votre prénom",
+          "minWidth": "48%"
+        },
+        {
+          "type": "input",
+          "inputType": "text",
+          "label": "Nom",
+          "key": "lastName",
+          "required": true,
+          "placeholder": "Entrez votre nom",
+          "minWidth": "48%"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "row",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "email",
+          "label": "Adresse E-mail",
+          "key": "emailAddress",
+          "required": true,
+          "placeholder": "exemple@domaine.com",
+          "minWidth": "48%"
+        },
+        {
+          "type": "input",
+          "inputType": "tel",
+          "label": "Numéro de Téléphone",
+          "key": "phoneNumber",
+          "placeholder": "01 23 45 67 89",
+          "minWidth": "48%"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "row",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "date",
+          "label": "Date de Naissance",
+          "key": "birthDate",
+          "required": true,
+          "minWidth": "48%"
+        },
+        {
+          "type": "input",
+          "inputType": "number",
+          "label": "Âge (calculé ou saisi)",
+          "key": "age",
+          "required": true,
+          "min": 0,
+          "max": 120,
+          "minWidth": "48%"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Antécédents et Mode de Vie",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Avez-vous déjà consulté un professionnel de la santé mentale ?",
+          "key": "previousConsultation",
+          "options": ["Oui", "Non", "Je préfère ne pas répondre"],
+          "required": true
+        },
+        {
+          "type": "input",
+          "inputType": "textarea",
+          "label": "Veuillez préciser la nature des consultations précédentes",
+          "key": "consultationDetails",
+          "placeholder": "Décrivez brièvement...",
+          "showIf": {
+            "dependsOn": "previousConsultation",
+            "value": "Oui"
+          }
+        },
+        {
+          "type": "input",
+          "inputType": "select",
+          "label": "Comment décririez-vous votre niveau de stress général ?",
+          "key": "stressLevel",
+          "options": ["Très faible", "Faible", "Modéré", "Élevé", "Très élevé"],
+          "required": true
+        },
+        {
+          "type": "input",
+          "inputType": "slider",
+          "label": "Sur une échelle de 1 à 10, évaluez la qualité de votre sommeil",
+          "key": "sleepQuality",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "required": true
+        },
+        {
+          "type": "input",
+          "inputType": "switch",
+          "label": "Souffrez-vous d'insomnies régulières ?",
+          "key": "insomnia"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Évaluation Quotidienne",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "checkbox",
+          "label": "Quels sont les sentiments que vous avez éprouvés fréquemment cette semaine ?",
+          "key": "frequentFeelings",
+          "options": ["Anxiété", "Tristesse", "Joie", "Colère", "Apathie", "Irritabilité", "Autre"],
+          "multiple": true
+        },
+        {
+          "type": "input",
+          "inputType": "text",
+          "label": "Veuillez préciser l'autre sentiment",
+          "key": "otherFeeling",
+          "placeholder": "Décrivez ce sentiment...",
+          "showIf": {
+            "dependsOn": "frequentFeelings",
+            "value": "Autre"
+          }
+        },
+        {
+          "type": "input",
+          "inputType": "time",
+          "label": "À quelle heure vous réveillez-vous généralement ?",
+          "key": "wakeUpTime"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Documents Optionnels",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "file",
+          "label": "Joindre un document pertinent (ex: résultats d'analyses précédentes)",
+          "key": "relevantDocuments",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

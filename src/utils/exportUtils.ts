@@ -74,7 +74,7 @@ export function generatePdf(rootNode: FormNode) {
 }
 
 /**
- * Generates a Visual PDF by capturing individual blocks.
+ * Generates a Visual PDF by capturing the entire form and slicing it across pages.
  */
 export async function generateVisualPdf(
 	element: HTMLElement,
@@ -89,63 +89,38 @@ export async function generateVisualPdf(
 	const pdfWidth = pdf.internal.pageSize.getWidth();
 	const pdfHeight = pdf.internal.pageSize.getHeight();
 	const margin = 10;
-	let currentY = margin;
 
-	// Add title from h1 if exists
-	const titleElement = document.querySelector('h1.text-h3');
-	if (titleElement) {
-		const canvas = await html2canvas(titleElement as HTMLElement, {
-			scale: 2,
-			useCORS: true,
-			logging: false,
-		});
-		const imgData = canvas.toDataURL("image/png");
-		const imgWidth = canvas.width;
-		const imgHeight = canvas.height;
-		const finalWidth = pdfWidth - margin * 2;
-		const finalHeight = (imgHeight * finalWidth) / imgWidth;
+	// Create a single canvas of the entire element
+	const canvas = await html2canvas(element, {
+		scale: 2,
+		useCORS: true,
+		logging: false
+	});
 
-		pdf.addImage(imgData, "PNG", margin, currentY, finalWidth, finalHeight);
-		currentY += finalHeight + 10;
-	}
+	const imgWidth = canvas.width;
+	const imgHeight = canvas.height;
 
-	// Find all card elements or top level blocks.
-	// We'll target the immediate children of the form element which are the blocks
-	const blocks = Array.from(element.querySelectorAll('form > .form-renderer > .card'));
+	// Calculate the width and height of the image on the PDF
+	const finalWidth = pdfWidth - margin * 2;
+	const finalHeight = (imgHeight * finalWidth) / imgWidth;
 
-	if (blocks.length === 0) {
-	    // Fallback if no blocks found
-	    const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false });
-	    const imgData = canvas.toDataURL("image/png");
-	    const finalWidth = pdfWidth;
-	    const finalHeight = (canvas.height * pdfWidth) / canvas.width;
-	    pdf.addImage(imgData, "PNG", 0, 0, finalWidth, finalHeight);
-	    pdf.save(filename);
-	    return;
-	}
+	// Available height on a single PDF page
+	const pageHeight = pdfHeight - margin * 2;
 
-	for (let i = 0; i < blocks.length; i++) {
-		const block = blocks[i] as HTMLElement;
-		const canvas = await html2canvas(block, {
-			scale: 2,
-			useCORS: true,
-			logging: false,
-		});
+	let heightLeft = finalHeight;
+	let position = 0; // The Y coordinate on the image to start clipping
 
-		const imgData = canvas.toDataURL("image/png");
-		const imgWidth = canvas.width;
-		const imgHeight = canvas.height;
+	// First page
+	const imgData = canvas.toDataURL("image/png");
+	pdf.addImage(imgData, "PNG", margin, margin, finalWidth, finalHeight);
+	heightLeft -= pageHeight;
 
-		const finalWidth = pdfWidth - margin * 2;
-		const finalHeight = (imgHeight * finalWidth) / imgWidth;
-
-		if (currentY + finalHeight > pdfHeight - margin) {
-			pdf.addPage();
-			currentY = margin;
-		}
-
-		pdf.addImage(imgData, "PNG", margin, currentY, finalWidth, finalHeight);
-		currentY += finalHeight + 10; // add some spacing
+	// Subsequent pages
+	while (heightLeft > 0) {
+		position = heightLeft - finalHeight; // Move image up
+		pdf.addPage();
+		pdf.addImage(imgData, "PNG", margin, position + margin, finalWidth, finalHeight);
+		heightLeft -= pageHeight;
 	}
 
 	pdf.save(filename);
