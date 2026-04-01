@@ -6,17 +6,30 @@
           <h1 class="text-h3 mb-8 text-center font-weight-bold text-primary">Formulaire Dynamique</h1>
 
           <div class="card pa-6 mb-8">
-            <div class="input-group mb-0">
-              <label class="input-label font-weight-bold">Choisir un modèle</label>
+            <div class="d-flex justify-space-between align-center">
+                <div class="input-group mb-0 flex-grow-1 mr-4">
+                  <label class="input-label font-weight-bold">Choisir un modèle</label>
+
               <select v-model="selectedModelKey" class="input-field" @change="loadSelectedModel">
                 <option v-for="item in availableModels" :key="item.key" :value="item.key">
                   {{ item.title }}
                 </option>
               </select>
-            </div>
+                </div>
+                <div class="d-flex align-center gap-2">
+                  <label class="font-weight-bold">Mode Édition</label>
+                  <label class="switch">
+                    <input type="checkbox" v-model="isEditMode">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
           </div>
 
-          <div v-if="formRoot" class="my-4" ref="formContainer">
+          <div v-if="isEditMode && currentConfigData">
+            <FormEditor :initial-data="currentConfigData" @save="handleSaveEditor" />
+          </div>
+          <div v-else-if="formRoot"  class="my-4" ref="formContainer">
             <form ref="form" @submit.prevent="submitForm">
               <FormRenderer :node="formRoot" :root-data="formData" />
 
@@ -72,6 +85,7 @@ import { FormNode } from './models/FormNode';
 import { BoxNode } from './models/BoxNode';
 import { InputNode } from './models/InputNode';
 import FormRenderer from './components/FormRenderer.vue';
+import FormEditor from './components/editor/FormEditor.vue';
 import personalCoordinates from './data/personalCoordinates.json';
 import fullFormExample from './data/fullFormExample.json';
 import egs from './data/egs.json';
@@ -93,6 +107,15 @@ const fileInput = ref<HTMLInputElement | null>(null);
 // Ref to store form data reactively so we can compute display conditions
 const formData = ref<Record<string, any>>({});
 
+function handleSaveEditor(newConfig: any) {
+  currentConfigData.value = newConfig;
+  const rootNode = FormFactory.create(newConfig as unknown as FormConfig);
+  formRoot.value = rootNode;
+  updateFormData();
+  isEditMode.value = false;
+  showSnackbar('Structure mise à jour avec succès !', 'success');
+}
+
 function updateFormData() {
   if (formRoot.value && formRoot.value instanceof BoxNode) {
     formData.value = formRoot.value.getData();
@@ -113,6 +136,8 @@ const availableModels = [
   , { title: 'Analyse Psychologique', key: 'psychological' }
 ];
 const selectedModelKey = ref('egs');
+const isEditMode = ref(false);
+const currentConfigData = ref<any>(null);
 
 function loadSelectedModel() {
   let config: any;
@@ -130,6 +155,7 @@ function loadSelectedModel() {
 
   // 1. Create structure from config
   const rootParams = config as unknown as FormConfig;
+  currentConfigData.value = JSON.parse(JSON.stringify(config));
   const rootNode = FormFactory.create(rootParams);
 
   // 2. Check local storage for the specific model
@@ -317,5 +343,68 @@ function showSnackbar(text: string, color: string = 'info') {
   font-weight: bold;
   cursor: pointer;
   text-transform: uppercase;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--primary);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--primary);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(22px);
+  -ms-transform: translateX(22px);
+  transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 28px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 </style>
