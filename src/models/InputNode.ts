@@ -13,6 +13,7 @@ export class InputNode extends FormNode {
 	max?: number;
 	step?: number;
 	hasActionReport: boolean;
+	aiPrompt?: string;
 	value: any = null; // To hold the user input
 
 	constructor(config: InputElement) {
@@ -28,6 +29,7 @@ export class InputNode extends FormNode {
 		this.max = config.max;
 		this.step = config.step;
 		this.hasActionReport = config.hasActionReport || false;
+		this.aiPrompt = config.aiPrompt;
 
 		if (this.inputType === "checkbox" && this.options.length > 0) {
 			this.value = [];

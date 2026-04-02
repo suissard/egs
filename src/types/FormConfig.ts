@@ -45,6 +45,7 @@ export interface InputElement extends FormElement {
 	max?: number;
 	step?: number;
 	hasActionReport?: boolean;
+	aiPrompt?: string;
 }
 
 export type FormConfig = BoxElement;
