@@ -61,6 +61,8 @@
 
           <input type="file" ref="fileInput" style="display: none" accept=".json" @change="handleImportJson" />
 
+          <AISettingsDrawer />
+
           <div v-if="submittedData" class="alert alert-info mt-6">
             <h3 class="font-weight-bold mb-2">Données soumises</h3>
             <pre style="overflow-x: auto;">{{ submittedData }}</pre>
@@ -85,6 +87,7 @@ import { FormNode } from './models/FormNode';
 import { BoxNode } from './models/BoxNode';
 import { InputNode } from './models/InputNode';
 import FormRenderer from './components/FormRenderer.vue';
+import AISettingsDrawer from './components/AISettingsDrawer.vue';
 import FormEditor from './components/editor/FormEditor.vue';
 import personalCoordinates from './data/personalCoordinates.json';
 import fullFormExample from './data/fullFormExample.json';

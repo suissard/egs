@@ -44,7 +44,7 @@
         </template>
 
         <template v-else-if="isInput(node)">
-          <InputWrapper :node="node"  />
+          <InputWrapper :node="node" :root-data="rootData" />
         </template>
       </div>
     </transition>

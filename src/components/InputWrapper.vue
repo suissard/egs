@@ -2,10 +2,14 @@
   <div class="input-wrapper">
     <!-- Text Input -->
     <div v-if="['text', 'email', 'tel', 'number', 'password'].includes(node.inputType)" class="input-group">
-      <label class="input-label">
-        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+      <label class="input-label d-flex justify-space-between align-center">
+        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" class="btn btn-secondary btn-sm" :disabled="isLoadingAI || readonly" type="button">
+          <span v-if="isLoadingAI" class="spinner"></span>
+          <span v-else>✨ Générer par IA</span>
+        </button>
       </label>
-      <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field" :disabled="readonly" />
+      <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field" :disabled="readonly || isLoadingAI" />
     </div>
 
     <!-- Select Input -->
@@ -72,10 +76,14 @@
 
     <!-- Textarea -->
     <div v-else-if="node.inputType === 'textarea'" class="input-group">
-      <label class="input-label">
-        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+      <label class="input-label d-flex justify-space-between align-center">
+        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" class="btn btn-secondary btn-sm" :disabled="isLoadingAI || readonly" type="button">
+          <span v-if="isLoadingAI" class="spinner"></span>
+          <span v-else>✨ Générer par IA</span>
+        </button>
       </label>
-      <textarea v-model="node.value" :required="node.required" class="input-field" rows="3" :disabled="readonly"></textarea>
+      <textarea v-model="node.value" :required="node.required" class="input-field" rows="3" :disabled="readonly || isLoadingAI"></textarea>
     </div>
 
     <!-- Slider -->
@@ -106,12 +114,66 @@
 
 <script setup lang="ts">
 import { InputNode } from '../models/InputNode';
+import { ref } from 'vue';
+import { openRouterApiKey, openRouterModel } from '../utils/aiSettings';
 
-defineProps<{
+
+const isLoadingAI = ref(false);
+
+const props = defineProps<{
   node: InputNode;
   readonly?: boolean;
+  rootData?: Record<string, any>;
 }>();
 
+async function generateAI() {
+  if (!openRouterApiKey.value) {
+    alert("Veuillez configurer une clé API OpenRouter dans les paramètres.");
+    return;
+  }
+  if (!props.node.aiPrompt) return;
+
+  isLoadingAI.value = true;
+
+  try {
+    let finalPrompt = props.node.aiPrompt;
+
+    // Replace {{ key }} with actual values from rootData
+    if (props.rootData) {
+      finalPrompt = finalPrompt.replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (match, key) => {
+        return props.rootData?.[key] !== undefined ? props.rootData[key] : match;
+      });
+    }
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${openRouterApiKey.value}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: openRouterModel.value || "openrouter/free",
+        messages: [
+          { role: "user", content: finalPrompt }
+        ]
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erreur API: ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (data.choices && data.choices.length > 0) {
+      props.node.value = data.choices[0].message.content;
+    }
+  } catch (error) {
+    console.error("Erreur lors de la génération IA:", error);
+    alert("Erreur lors de la génération IA. Vérifiez votre clé API et la console.");
+  } finally {
+    isLoadingAI.value = false;
+  }
+}
 </script>
 
 <style scoped>
@@ -128,5 +190,27 @@ defineProps<{
   margin-left: 8px;
   vertical-align: middle;
   cursor: help;
+}
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border-left-color: var(--primary);
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
