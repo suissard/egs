@@ -73,10 +73,9 @@
               <input type="checkbox" v-model="node.required" />
               <span class="text-caption">Obligatoire</span>
             </label>
-            <label class="d-flex align-center gap-1 cursor-pointer">
-              <input type="checkbox" v-model="node.hasActionReport" />
-              <span class="text-caption d-flex align-center gap-1">Report d'action <span class="badge-help rounded-circle bg-info text-white d-inline-flex align-center justify-center" style="width: 14px; height: 14px; font-size: 10px;" title="Cocher cette case permet de reporter l'information saisie vers un autre élément du formulaire.">?</span></span>
-            </label>
+            <div class="d-flex align-center gap-1">
+              <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report px-2 py-1 rounded bg-warning text-white text-caption">⚡ Report actif (éditer en JSON)</span>
+            </div>
             <div class="d-flex align-center gap-1">
               <button class="btn btn-sm btn-secondary d-flex align-center gap-1 py-1" @click="editAiPrompt">
                 <span class="text-caption">Prompt IA</span>
