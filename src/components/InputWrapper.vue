@@ -4,10 +4,15 @@
     <div v-if="['text', 'email', 'tel', 'number', 'password'].includes(node.inputType)" class="input-group">
       <label class="input-label d-flex justify-space-between align-center">
         <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
-        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" class="btn btn-secondary btn-sm" :disabled="isLoadingAI || readonly" type="button">
-          <span v-if="isLoadingAI" class="spinner"></span>
-          <span v-else>✨ Générer par IA</span>
-        </button>
+        <div v-if="node.aiPrompt !== undefined && openRouterApiKey" class="d-flex align-center gap-1">
+          <button @click.prevent="generateAI" class="btn btn-secondary btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+            <span v-if="isLoadingAI" class="spinner"></span>
+            <span v-else>✨ Générer par IA</span>
+          </button>
+          <button @click.prevent="openPromptEditor(node)" class="btn btn-secondary btn-sm px-2" :disabled="readonly" type="button" title="Configurer le prompt">
+            ⚙️
+          </button>
+        </div>
       </label>
       <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field" :disabled="readonly || isLoadingAI" />
     </div>
@@ -78,10 +83,15 @@
     <div v-else-if="node.inputType === 'textarea'" class="input-group">
       <label class="input-label d-flex justify-space-between align-center">
         <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.hasActionReport" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
-        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" class="btn btn-secondary btn-sm" :disabled="isLoadingAI || readonly" type="button">
-          <span v-if="isLoadingAI" class="spinner"></span>
-          <span v-else>✨ Générer par IA</span>
-        </button>
+        <div v-if="node.aiPrompt !== undefined && openRouterApiKey" class="d-flex align-center gap-1">
+          <button @click.prevent="generateAI" class="btn btn-secondary btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+            <span v-if="isLoadingAI" class="spinner"></span>
+            <span v-else>✨ Générer par IA</span>
+          </button>
+          <button @click.prevent="openPromptEditor(node)" class="btn btn-secondary btn-sm px-2" :disabled="readonly" type="button" title="Configurer le prompt">
+            ⚙️
+          </button>
+        </div>
       </label>
       <textarea v-model="node.value" :required="node.required" class="input-field" rows="3" :disabled="readonly || isLoadingAI"></textarea>
     </div>
@@ -116,6 +126,7 @@
 import { InputNode } from '../models/InputNode';
 import { ref } from 'vue';
 import { openRouterApiKey, openRouterModel } from '../utils/aiSettings';
+import { openPromptEditor } from '../utils/promptEditorState';
 
 
 const isLoadingAI = ref(false);
