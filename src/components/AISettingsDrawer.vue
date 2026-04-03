@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Floating Action Button -->
-    <button class="fab-btn" @click="toggleDrawer" title="Paramètres IA">
+    <button class="fab-btn" @click="toggleDrawer" title="Préférences">
       <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
     </button>
 
@@ -11,11 +11,20 @@
     <!-- Drawer Panel -->
     <div class="drawer" :class="{ 'drawer-open': isOpen }">
       <div class="drawer-header">
-        <h2 class="text-h6 mb-0">Paramètres OpenRouter</h2>
+        <h2 class="text-h6 mb-0">Préférences</h2>
         <button class="btn-close" @click="toggleDrawer" title="Fermer">×</button>
       </div>
 
       <div class="drawer-content">
+
+        <div class="doc-links mt-6 mb-4">
+          <h3 class="text-h6 mb-3 border-bottom pb-2">Documentation</h3>
+          <button class="btn btn-secondary btn-block mb-2" @click="openDoc('usage')">Tutoriel : Usage de base</button>
+          <button class="btn btn-warning btn-block mb-4" @click="openDoc('editor')" style="color: black;">Tutoriel : Mode Édition</button>
+        </div>
+
+        <h3 class="text-h6 mb-3 border-bottom pb-2">Intelligence Artificielle</h3>
+
         <div class="input-group">
           <label class="input-label font-weight-bold">Clé API OpenRouter</label>
           <input
@@ -44,6 +53,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { openRouterApiKey, openRouterModel } from '../utils/aiSettings';
+
+
+const emit = defineEmits(['open-doc']);
+
+function openDoc(mode: 'usage' | 'editor') {
+  emit('open-doc', mode);
+  toggleDrawer();
+}
 
 const isOpen = ref(false);
 
