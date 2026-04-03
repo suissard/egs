@@ -26,7 +26,18 @@
               </div>
           </div>
 
-          <div v-if="isEditMode && currentConfigData">
+
+          <div v-if="showDocumentation">
+            <div class="mb-4 d-flex justify-start">
+               <button class="btn btn-secondary" @click="showDocumentation = false">
+                  &larr; Retour au formulaire
+               </button>
+            </div>
+            <UsageDoc v-if="!isEditMode" />
+            <EditorDoc v-else />
+          </div>
+          <div v-else-if="isEditMode && currentConfigData">
+
             <FormEditor :initial-data="currentConfigData" @save="handleSaveEditor" />
           </div>
           <div v-else-if="formRoot"  class="my-4" ref="formContainer">
@@ -61,7 +72,7 @@
 
           <input type="file" ref="fileInput" style="display: none" accept=".json" @change="handleImportJson" />
 
-          <AISettingsDrawer />
+          <AISettingsDrawer @open-doc="handleOpenDoc" />
 
           <div v-if="submittedData" class="alert alert-info mt-6">
             <h3 class="font-weight-bold mb-2">Données soumises</h3>
@@ -89,6 +100,8 @@ import { InputNode } from './models/InputNode';
 import FormRenderer from './components/FormRenderer.vue';
 import AISettingsDrawer from './components/AISettingsDrawer.vue';
 import FormEditor from './components/editor/FormEditor.vue';
+import UsageDoc from './components/docs/UsageDoc.vue';
+import EditorDoc from './components/docs/EditorDoc.vue';
 import personalCoordinates from './data/personalCoordinates.json';
 import fullFormExample from './data/fullFormExample.json';
 import egs from './data/egs.json';
@@ -139,8 +152,15 @@ const availableModels = [
   , { title: 'Analyse Psychologique', key: 'psychological' }
 ];
 const selectedModelKey = ref('egs');
+const showDocumentation = ref(false);
 const isEditMode = ref(false);
 const currentConfigData = ref<any>(null);
+
+
+function handleOpenDoc(mode: 'usage' | 'editor') {
+  showDocumentation.value = true;
+  isEditMode.value = mode === 'editor';
+}
 
 function loadSelectedModel() {
   let config: any;
