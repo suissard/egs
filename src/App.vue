@@ -73,6 +73,7 @@
           <input type="file" ref="fileInput" style="display: none" accept=".json" @change="handleImportJson" />
 
           <AISettingsDrawer @open-doc="handleOpenDoc" />
+          <AIPromptEditorDrawer />
 
           <div v-if="submittedData" class="alert alert-info mt-6">
             <h3 class="font-weight-bold mb-2">Données soumises</h3>
@@ -99,6 +100,7 @@ import { BoxNode } from './models/BoxNode';
 import { InputNode } from './models/InputNode';
 import FormRenderer from './components/FormRenderer.vue';
 import AISettingsDrawer from './components/AISettingsDrawer.vue';
+import AIPromptEditorDrawer from './components/AIPromptEditorDrawer.vue';
 import FormEditor from './components/editor/FormEditor.vue';
 import UsageDoc from './components/docs/UsageDoc.vue';
 import EditorDoc from './components/docs/EditorDoc.vue';
@@ -110,6 +112,7 @@ import psychologicalAnalysis from './data/psychologicalAnalysis.json';
 import type { FormConfig } from './types/FormConfig';
 
 import { copyToClipboard, generateVisualPdf, exportToJson, importFromJson } from './utils/exportUtils';
+import { formAvailableKeys, currentFormData } from './utils/promptEditorState';
 
 const formRoot = ref<FormNode | null>(null);
 // const valid = ref(false); // No longer needed as we use native browser validation mostly, or simple check
@@ -132,9 +135,25 @@ function handleSaveEditor(newConfig: any) {
   showSnackbar('Structure mise à jour avec succès !', 'success');
 }
 
+
+function extractKeysFromNode(node: FormNode): string[] {
+  let keys: string[] = [];
+  if (node instanceof BoxNode) {
+    node.children.forEach(child => {
+      keys = keys.concat(extractKeysFromNode(child));
+    });
+  } else if (node instanceof InputNode) {
+    if (node.key) keys.push(node.key);
+  }
+  return keys;
+}
+
+
 function updateFormData() {
   if (formRoot.value && formRoot.value instanceof BoxNode) {
     formData.value = formRoot.value.getData();
+    currentFormData.value = formData.value;
+    formAvailableKeys.value = extractKeysFromNode(formRoot.value);
   } else {
     formData.value = {};
   }
