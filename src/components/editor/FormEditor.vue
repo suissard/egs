@@ -40,11 +40,6 @@
       </div>
     </div>
 
-    <!-- Right Sidebar: Properties -->
-    <EditorProperties
-      :selected-node="selectedNode"
-      @delete-node="deleteNodeGlobally"
-    />
   </div>
 </template>
 
@@ -52,7 +47,7 @@
 import { ref, onMounted, watch } from 'vue';
 import draggable from 'vuedraggable';
 import EditorSidebar from './EditorSidebar.vue';
-import EditorProperties from './EditorProperties.vue';
+// EditorProperties removed
 import EditorNode from './EditorNode.vue';
 import { exportToJson } from '../../utils/exportUtils';
 
