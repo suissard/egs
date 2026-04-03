@@ -8,8 +8,8 @@
       <div class="d-flex justify-space-between align-center mb-6">
         <h2 class="text-h4 font-weight-bold text-primary">Constructeur de Formulaire</h2>
         <div class="actions">
-          <button class="btn btn-secondary mr-2" @click="clearForm">Vider</button>
-          <button class="btn btn-primary" @click="saveForm">Enregistrer JSON</button>
+          <button class="btn btn-error mr-2" @click="clearForm">Vider</button>
+          <button class="btn btn-success" @click="saveForm">Enregistrer JSON</button>
         </div>
       </div>
 
