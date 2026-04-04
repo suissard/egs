@@ -364,6 +364,13 @@
 							"options": [
 								"oui",
 								"non"
+							],
+							"actionReports": [
+								{
+									"targetKey": "risques_liste",
+									"triggerValue": "oui",
+									"valueToReport": "Chutes"
+								}
 							]
 						}
 					]
@@ -424,6 +431,23 @@
 						"Agitation / agressivité",
 						"Apathie / indifférence",
 						"Comportements moteurs aberrants"
+					],
+					"actionReports": [
+						{
+							"targetKey": "risques_liste",
+							"triggerValue": "Sorties inopinées / fugues",
+							"valueToReport": "Sortie inopinée / fugue"
+						},
+						{
+							"targetKey": "risques_liste",
+							"triggerValue": "Agitation / agressivité",
+							"valueToReport": "Agitation / agressivité"
+						},
+						{
+							"targetKey": "risques_liste",
+							"triggerValue": "Comportements moteurs aberrants",
+							"valueToReport": "Déambulation / comportements moteurs aberrants"
+						}
 					]
 				},
 				{
@@ -435,6 +459,16 @@
 						"NON",
 						"Partielle",
 						"Totale"
+					],
+					"actionReports": [
+						{
+							"targetKey": "risques_liste",
+							"triggerValue": [
+								"Partielle",
+								"Totale"
+							],
+							"valueToReport": "DTS"
+						}
 					]
 				},
 				{
@@ -445,6 +479,13 @@
 					"options": [
 						"oui",
 						"non"
+					],
+					"actionReports": [
+						{
+							"targetKey": "risques_liste",
+							"triggerValue": "oui",
+							"valueToReport": "Refus de soins"
+						}
 					]
 				}
 			]
@@ -466,6 +507,13 @@
 							"options": [
 								"oui",
 								"non"
+							],
+							"actionReports": [
+								{
+									"targetKey": "risques_liste",
+									"triggerValue": "oui",
+									"valueToReport": "Dépression / Anxiété"
+								}
 							]
 						},
 						{
@@ -476,6 +524,13 @@
 							"options": [
 								"oui",
 								"non"
+							],
+							"actionReports": [
+								{
+									"targetKey": "risques_liste",
+									"triggerValue": "oui",
+									"valueToReport": "Dépression / Anxiété"
+								}
 							]
 						}
 					]
@@ -502,6 +557,13 @@
 							"options": [
 								"oui",
 								"non"
+							],
+							"actionReports": [
+								{
+									"targetKey": "risques_liste",
+									"triggerValue": "oui",
+									"valueToReport": "Risque suicidaire"
+								}
 							]
 						}
 					]
@@ -561,6 +623,16 @@
 						"Bon état nutritionnel",
 						"Dénutrition modérée",
 						"Dénutrition sévère"
+					],
+					"actionReports": [
+						{
+							"targetKey": "risques_liste",
+							"triggerValue": [
+								"Dénutrition modérée",
+								"Dénutrition sévère"
+							],
+							"valueToReport": "Dénutrition"
+						}
 					]
 				},
 				{
@@ -575,6 +647,13 @@
 							"options": [
 								"oui",
 								"non"
+							],
+							"actionReports": [
+								{
+									"targetKey": "risques_liste",
+									"triggerValue": "oui",
+									"valueToReport": "Fausse route"
+								}
 							]
 						},
 						{
@@ -612,6 +691,16 @@
 								"spontanée",
 								"à stimuler",
 								"aide totale"
+							],
+							"actionReports": [
+								{
+									"targetKey": "risques_liste",
+									"triggerValue": [
+										"à stimuler",
+										"aide totale"
+									],
+									"valueToReport": "Déshydratation"
+								}
 							]
 						}
 					]
@@ -631,6 +720,13 @@
 					"options": [
 						"oui",
 						"non"
+					],
+					"actionReports": [
+						{
+							"targetKey": "risques_liste",
+							"triggerValue": "oui",
+							"valueToReport": "Douleur"
+						}
 					]
 				},
 				{
@@ -692,6 +788,13 @@
 					"options": [
 						"oui",
 						"non"
+					],
+					"actionReports": [
+						{
+							"targetKey": "risques_liste",
+							"triggerValue": "oui",
+							"valueToReport": "Escarres"
+						}
 					]
 				}
 			]
@@ -712,6 +815,13 @@
 							"key": "sensoriel_visuel",
 							"options": [
 								"Présent"
+							],
+							"actionReports": [
+								{
+									"targetKey": "risques_liste",
+									"triggerValue": "Présent",
+									"valueToReport": "Déficit sensoriel"
+								}
 							]
 						},
 						{
@@ -738,6 +848,13 @@
 							"key": "sensoriel_auditif",
 							"options": [
 								"Présent"
+							],
+							"actionReports": [
+								{
+									"targetKey": "risques_liste",
+									"triggerValue": "Présent",
+									"valueToReport": "Déficit sensoriel"
+								}
 							]
 						},
 						{
