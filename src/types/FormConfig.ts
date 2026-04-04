@@ -13,6 +13,13 @@ export type InputType =
 	| "file"
 	| "time";
 
+
+export interface ActionReport {
+	targetKey: string;
+	valueToReport: any;
+	triggerValue: any | any[]; // A single value or an array of values it can equal to trigger
+}
+
 export interface ShowIfCondition {
 	dependsOn: string;
 	value: any | any[]; // A single value or an array of values it can equal
@@ -44,7 +51,7 @@ export interface InputElement extends FormElement {
 	min?: number;
 	max?: number;
 	step?: number;
-	hasActionReport?: boolean;
+	actionReports?: ActionReport[];
 	aiPrompt?: string;
 }
 

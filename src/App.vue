@@ -149,9 +149,125 @@ function extractKeysFromNode(node: FormNode): string[] {
 }
 
 
+// Helper pour trouver un noeud par sa clé (id ou key)
+function findNodeByKey(node: FormNode, key: string): FormNode | null {
+  if (node instanceof InputNode && node.key === key) {
+    return node;
+  }
+  if (node instanceof BoxNode) {
+    for (const child of node.children) {
+      const found = findNodeByKey(child, key);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+// Fonction de process des actionReports
+function processActionReports(node: FormNode, oldData: Record<string, any>, newData: Record<string, any>, root: FormNode) {
+  if (node instanceof InputNode && node.actionReports && node.actionReports.length > 0) {
+    const oldValue = oldData[node.key];
+    const newValue = newData[node.key];
+
+    // Si la valeur a changé
+    if (JSON.stringify(oldValue) !== JSON.stringify(newValue)) {
+      for (const report of node.actionReports) {
+        let isTriggeredOld = false;
+        let isTriggeredNew = false;
+
+        // Check old trigger
+        if (Array.isArray(report.triggerValue)) {
+          isTriggeredOld = Array.isArray(oldValue)
+              ? report.triggerValue.some(t => oldValue.includes(t))
+              : report.triggerValue.includes(oldValue);
+        } else {
+          isTriggeredOld = Array.isArray(oldValue)
+              ? oldValue.includes(report.triggerValue)
+              : oldValue === report.triggerValue;
+        }
+
+        // Check new trigger
+        if (Array.isArray(report.triggerValue)) {
+          isTriggeredNew = Array.isArray(newValue)
+              ? report.triggerValue.some(t => newValue.includes(t))
+              : report.triggerValue.includes(newValue);
+        } else {
+          isTriggeredNew = Array.isArray(newValue)
+              ? newValue.includes(report.triggerValue)
+              : newValue === report.triggerValue;
+        }
+
+        const targetNode = findNodeByKey(root, report.targetKey);
+
+        if (targetNode && targetNode instanceof InputNode) {
+          // Trigger devenu VRAI
+          if (!isTriggeredOld && isTriggeredNew) {
+            if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
+              if (!targetNode.value.includes(report.valueToReport)) {
+                targetNode.value.push(report.valueToReport);
+              }
+            } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
+               const currentText = targetNode.value || '';
+               if (!currentText.includes(report.valueToReport)) {
+                 targetNode.value = currentText ? currentText + '\n- ' + report.valueToReport : '- ' + report.valueToReport;
+               }
+            } else {
+               targetNode.value = report.valueToReport;
+            }
+          }
+          // Trigger devenu FAUX
+          else if (isTriggeredOld && !isTriggeredNew) {
+            if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
+              const index = targetNode.value.indexOf(report.valueToReport);
+              if (index > -1) {
+                targetNode.value.splice(index, 1);
+              }
+            } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
+              let currentText = targetNode.value || '';
+              const strToRemove1 = "\n- " + report.valueToReport;
+              const strToRemove2 = "- " + report.valueToReport + "\n";
+              const strToRemove3 = "- " + report.valueToReport;
+
+              if (currentText.includes(strToRemove1)) {
+                 currentText = currentText.replace(strToRemove1, "");
+              } else if (currentText.includes(strToRemove2)) {
+                 currentText = currentText.replace(strToRemove2, "");
+              } else if (currentText.includes(strToRemove3)) {
+                 currentText = currentText.replace(strToRemove3, "");
+              }
+              targetNode.value = currentText;
+            } else {
+               if (targetNode.value === report.valueToReport) {
+                  targetNode.value = null;
+               }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (node instanceof BoxNode) {
+    for (const child of node.children) {
+      processActionReports(child, oldData, newData, root);
+    }
+  }
+}
+
 function updateFormData() {
   if (formRoot.value && formRoot.value instanceof BoxNode) {
-    formData.value = formRoot.value.getData();
+    const oldData = { ...formData.value };
+    const newData = formRoot.value.getData();
+
+    // Process action reports if there are changes
+    if (Object.keys(oldData).length > 0) {
+      processActionReports(formRoot.value, oldData, newData, formRoot.value);
+      // Re-fetch data as processActionReports might have mutated other nodes
+      formData.value = formRoot.value.getData();
+    } else {
+      formData.value = newData;
+    }
+
     currentFormData.value = formData.value;
     formAvailableKeys.value = extractKeysFromNode(formRoot.value);
   } else {

@@ -1,5 +1,5 @@
 import { FormNode } from "./FormNode";
-import type { InputElement, InputType } from "../types/FormConfig";
+import type { InputElement, InputType, ActionReport } from "../types/FormConfig";
 
 export class InputNode extends FormNode {
 	inputType: InputType;
@@ -12,7 +12,7 @@ export class InputNode extends FormNode {
 	min?: number;
 	max?: number;
 	step?: number;
-	hasActionReport: boolean;
+	actionReports: ActionReport[];
 	aiPrompt?: string;
 	value: any = null; // To hold the user input
 
@@ -28,7 +28,7 @@ export class InputNode extends FormNode {
 		this.min = config.min;
 		this.max = config.max;
 		this.step = config.step;
-		this.hasActionReport = config.hasActionReport || false;
+		this.actionReports = config.actionReports || [];
 		this.aiPrompt = config.aiPrompt;
 
 		if (this.inputType === "checkbox" && this.options.length > 0) {
