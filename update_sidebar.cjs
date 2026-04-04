@@ -1,4 +1,8 @@
-<template>
+const fs = require('fs');
+
+let content = fs.readFileSync('src/components/editor/EditorSidebar.vue', 'utf8');
+
+const replacementTemplate = `<template>
   <div class="editor-sidebar pa-4 bg-grey-lighten-4">
     <h3 class="text-subtitle-1 font-weight-bold mb-4">Composants</h3>
     <draggable
@@ -15,26 +19,11 @@
       </template>
     </draggable>
   </div>
-</template>
+</template>`;
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import draggable from 'vuedraggable';
+content = content.replace(/<template>[\s\S]*?<\/template>/, replacementTemplate);
 
-const availableComponents = ref([
-  { type: 'box', label: 'Box (Conteneur)' },
-  { type: 'input', inputType: 'text', label: 'Texte Court' },
-  { type: 'input', inputType: 'textarea', label: 'Texte Long' },
-  { type: 'input', inputType: 'number', label: 'Nombre' },
-  { type: 'input', inputType: 'checkbox', label: 'Case à cocher' },
-  { type: 'input', inputType: 'radio', label: 'Boutons Radio' },
-  { type: 'input', inputType: 'select', label: 'Liste Déroulante' },
-  { type: 'input', inputType: 'date', label: 'Date' }
-]);
-
-const generateId = () => Math.random().toString(36).substring(2, 9);
-
-
+const getComponentClassCode = `
 const getComponentClass = (element: any) => {
   if (element.type === 'box') return 'bg-primary-lighten';
   switch (element.inputType) {
@@ -70,33 +59,11 @@ const getTextClass = (element: any) => {
       return 'text-main';
   }
 };
+`;
 
-const cloneComponent = (original: any) => {
-  const clone = { ...original, id: generateId() };
-  if (clone.type === 'box') {
-    clone.direction = 'column';
-    clone.children = [];
-    clone.title = 'Nouvelle Box';
-  } else if (clone.type === 'input') {
-    clone.key = `field_${generateId()}`;
-    clone.label = `Nouveau Champ`;
-    clone.required = false;
+content = content.replace(/const cloneComponent = \(original: any\) => \{/, getComponentClassCode + '\nconst cloneComponent = (original: any) => {');
 
-    if (['select', 'radio', 'checkbox'].includes(clone.inputType)) {
-      clone.options = ['Option 1', 'Option 2'];
-    }
-  }
-  return clone;
-};
-</script>
-
-<style scoped>
-.editor-sidebar {
-  width: 250px;
-  min-height: 100%;
-  border-right: 1px solid #e0e0e0;
-}
-
+const stylesCode = `
 .bg-primary-lighten { background-color: #e0e7ff; border-color: #a5b4fc; }
 .text-primary-dark { color: #3730a3; }
 .bg-info-lighten { background-color: #e0f2fe; border-color: #7dd3fc; }
@@ -116,11 +83,8 @@ const cloneComponent = (original: any) => {
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   filter: brightness(0.95);
 }
+`;
 
-.cursor-pointer {
-  cursor: grab;
-}
-.cursor-pointer:active {
-  cursor: grabbing;
-}
-</style>
+content = content.replace(/\.component-item \{[\s\S]*?\}\s*\.component-item:hover \{[\s\S]*?\}/, stylesCode);
+
+fs.writeFileSync('src/components/editor/EditorSidebar.vue', content);

@@ -189,6 +189,10 @@ h6 {
 	background-color: var(--success);
 	color: white;
 }
+.btn-info {
+	background-color: #38bdf8;
+	color: white;
+}
 .btn-warning {
 	background-color: var(--warning);
 	color: white;

@@ -77,7 +77,7 @@
               <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report px-2 py-1 rounded bg-warning text-white text-caption">⚡ Report actif (éditer en JSON)</span>
             </div>
             <div class="d-flex align-center gap-1">
-              <button class="btn btn-sm btn-secondary d-flex align-center gap-1 py-1" @click="editAiPrompt">
+              <button class="btn btn-sm btn-info d-flex align-center gap-1 py-1" @click="editAiPrompt">
                 <span class="text-caption">Prompt IA</span>
                 <span class="badge-help rounded-circle bg-info text-white d-inline-flex align-center justify-center" style="width: 14px; height: 14px; font-size: 10px;" title="Configurer un prompt d'Intelligence Artificielle pour pré-remplir ce champ.">?</span>
               </button>
@@ -243,4 +243,7 @@ const deleteNode = () => {
   opacity: 0.5;
   background: #c8ebfb;
 }
+
+.btn-info { background-color: #38bdf8; color: white; }
+.btn-info:hover { background-color: #0284c7; }
 </style>
