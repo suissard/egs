@@ -3,7 +3,7 @@
     <!-- Text Input -->
     <div v-if="['text', 'email', 'tel', 'number', 'password'].includes(node.inputType)" class="input-group">
       <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
+        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span></span>
         <div v-if="node.aiPrompt !== undefined && openRouterApiKey" class="d-flex align-center gap-1">
           <button @click.prevent="generateAI" class="btn btn-secondary btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
             <span v-if="isLoadingAI" class="spinner"></span>
@@ -20,7 +20,7 @@
     <!-- Select Input -->
     <div v-else-if="node.inputType === 'select'" class="input-group">
       <label class="input-label">
-        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span>
       </label>
       <select v-model="node.value" :required="node.required" class="input-field" :multiple="node.multiple" :disabled="readonly">
         <option v-for="opt in node.options" :key="opt" :value="opt">{{ opt }}</option>
@@ -30,11 +30,11 @@
     <!-- Radio Group -->
     <div v-else-if="node.inputType === 'radio'" class="input-group">
       <label class="input-label">
-        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span>
       </label>
       <div class="d-flex flex-wrap gap-3">
         <label v-for="opt in node.options" :key="opt" class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
-          <input type="radio" v-model="node.value" :value="opt" name="radio-group" :disabled="readonly">
+          <input type="radio" v-model="node.value" :value="opt" :name="'radio-group-' + node.id" :disabled="readonly">
           {{ opt }}
         </label>
       </div>
@@ -44,14 +44,14 @@
     <div v-else-if="node.inputType === 'switch'" class="input-group d-flex align-center gap-3">
       <label class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
         <input type="checkbox" v-model="node.value" :disabled="readonly">
-        <span class="font-weight-bold">{{ node.label }}</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+        <span class="font-weight-bold">{{ node.label }}</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span>
       </label>
     </div>
 
     <!-- Checkbox (Single or Multiple) -->
     <div v-else-if="node.inputType === 'checkbox'" class="input-group">
       <label class="input-label" v-if="node.options && node.options.length > 0">
-        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span>
       </label>
 
       <!-- Multiple checkboxes -->
@@ -66,7 +66,7 @@
       <div v-else class="d-flex align-center gap-3">
         <label class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
           <input type="checkbox" v-model="node.value" :required="node.required" :disabled="readonly">
-          <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
+          <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span></span>
         </label>
       </div>
     </div>
@@ -74,7 +74,7 @@
     <!-- Date Input -->
     <div v-else-if="node.inputType === 'date'" class="input-group">
       <label class="input-label">
-        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span>
       </label>
       <input v-model="node.value" type="date" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
@@ -82,7 +82,7 @@
     <!-- Textarea -->
     <div v-else-if="node.inputType === 'textarea'" class="input-group">
       <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span></span>
+        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span></span>
         <div v-if="node.aiPrompt !== undefined && openRouterApiKey" class="d-flex align-center gap-1">
           <button @click.prevent="generateAI" class="btn btn-secondary btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
             <span v-if="isLoadingAI" class="spinner"></span>
@@ -99,7 +99,7 @@
     <!-- Slider -->
     <div v-else-if="node.inputType === 'slider'" class="input-group">
       <label class="input-label">
-        {{ node.label }}: {{ node.value }} <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+        {{ node.label }}: {{ node.value }} <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span>
       </label>
       <input type="range" v-model="node.value" :min="node.min" :max="node.max" :step="node.step" class="w-100" :disabled="readonly" />
     </div>
@@ -107,7 +107,7 @@
     <!-- File Input -->
     <div v-else-if="node.inputType === 'file'" class="input-group">
       <label class="input-label">
-        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span>
       </label>
       <input type="file" @change="(e: any) => node.value = e.target.files[0]" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
@@ -115,7 +115,7 @@
     <!-- Time Input -->
     <div v-else-if="node.inputType === 'time'" class="input-group">
       <label class="input-label">
-        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Rapport</span>
+        {{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span>
       </label>
       <input v-model="node.value" type="time" :required="node.required" class="input-field" :disabled="readonly" />
     </div>

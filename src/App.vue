@@ -5,9 +5,9 @@
         <div class="col" style="max-width: 900px; width: 100%;">
           <h1 class="text-h3 mb-8 text-center font-weight-bold text-primary">Formulaire Dynamique</h1>
 
-          <div class="card pa-6 mb-8">
-            <div class="d-flex justify-space-between align-center">
-                <div class="input-group mb-0 flex-grow-1 mr-4">
+          <div class="card pa-4 mb-8 sticky-header shadow-sm">
+            <div class="d-flex justify-space-between align-center flex-wrap gap-4">
+                <div class="input-group mb-0 flex-grow-1 mr-4" style="min-width: 250px;">
                   <label class="input-label font-weight-bold">Choisir un modèle</label>
 
               <select v-model="selectedModelKey" class="input-field" @change="loadSelectedModel">
@@ -16,8 +16,8 @@
                 </option>
               </select>
                 </div>
-                <div class="d-flex align-center gap-2">
-                  <label class="font-weight-bold">Mode Édition</label>
+                <div class="d-flex align-center gap-3 bg-grey-lighten-4 pa-2 rounded-pill px-4 border">
+                  <label class="font-weight-bold mb-0">Mode Édition</label>
                   <label class="switch">
                     <input type="checkbox" v-model="isEditMode">
                     <span class="slider round"></span>
@@ -74,6 +74,7 @@
 
           <AISettingsDrawer @open-doc="handleOpenDoc" />
           <AIPromptEditorDrawer />
+          <ActionReportEditorDrawer />
 
           <div v-if="submittedData" class="alert alert-info mt-6">
             <h3 class="font-weight-bold mb-2">Données soumises</h3>
@@ -101,6 +102,7 @@ import { InputNode } from './models/InputNode';
 import FormRenderer from './components/FormRenderer.vue';
 import AISettingsDrawer from './components/AISettingsDrawer.vue';
 import AIPromptEditorDrawer from './components/AIPromptEditorDrawer.vue';
+import ActionReportEditorDrawer from './components/ActionReportEditorDrawer.vue';
 import FormEditor from './components/editor/FormEditor.vue';
 import UsageDoc from './components/docs/UsageDoc.vue';
 import EditorDoc from './components/docs/EditorDoc.vue';
@@ -453,6 +455,16 @@ function showSnackbar(text: string, color: string = 'info') {
   }, 3000);
 }
 </script>
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  margin-top: -10px; /* Offset some padding */
+  border-bottom: 2px solid var(--primary-light, #e0e0e0);
+}
 
 <style>
 .min-h-screen {

@@ -9,18 +9,18 @@
     }"
     @click.stop="selectNode"
   >
-    <div class="d-flex justify-space-between align-center mb-2">
+    <div class="header-container d-flex justify-space-between align-center mb-2 pe-16">
       <div class="font-weight-bold d-flex align-center gap-2">
         <span class="mdi mdi-drag cursor-grab drag-handle text-grey-darken-1"></span>
         <span v-if="isBox" class="text-primary">{{ node.title || 'Box' }} ({{ node.direction || 'column' }})</span>
         <span v-else class="text-secondary">{{ node.label || 'Champ' }} ({{ node.inputType }})</span>
       </div>
-      <div class="actions d-flex gap-2">
-        <button class="btn-icon bg-warning text-white rounded-circle d-flex align-center justify-center" style="width: 28px; height: 28px; border: none; cursor: pointer;" @click.stop="toggleEdit" title="Éditer">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+      <div class="actions d-flex gap-2 position-absolute" style="top: 12px; right: 12px;">
+        <button class="btn-icon bg-emerald text-white rounded-circle d-flex align-center justify-center p-0" style="width: 32px; height: 32px; border: none; cursor: pointer; background-color: #10b981; flex: 0 0 32px;" @click.stop="toggleEdit" title="Éditer">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
         </button>
-        <button class="btn-icon bg-error text-white rounded-circle d-flex align-center justify-center" style="width: 28px; height: 28px; border: none; cursor: pointer;" @click.stop="deleteNode" title="Supprimer">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+        <button class="btn-icon bg-rose text-white rounded-circle d-flex align-center justify-center p-0" style="width: 32px; height: 32px; border: none; cursor: pointer; background-color: #f43f5e; flex: 0 0 32px;" @click.stop="deleteNode" title="Supprimer">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
         </button>
       </div>
     </div>
@@ -82,6 +82,12 @@
                 <span class="badge-help rounded-circle bg-info text-white d-inline-flex align-center justify-center" style="width: 14px; height: 14px; font-size: 10px;" title="Configurer un prompt d'Intelligence Artificielle pour pré-remplir ce champ.">?</span>
               </button>
             </div>
+            <div class="d-flex align-center gap-1">
+              <button class="btn btn-sm btn-warning d-flex align-center gap-1 py-1 text-white" style="background-color: #ff9800;" @click="editReport">
+                <span class="text-caption">⚡ Report</span>
+                <span class="badge-help rounded-circle bg-white text-warning d-inline-flex align-center justify-center" style="width: 14px; height: 14px; font-size: 10px; color: #ff9800;" title="Configurer des rapports d'action pour ce champ.">?</span>
+              </button>
+            </div>
           </div>
 
           <div class="input-group w-100 mt-2" v-if="['select', 'radio', 'checkbox'].includes(node.inputType)">
@@ -102,7 +108,7 @@
       </div>
 
       <div class="d-flex justify-end mt-3">
-        <button class="btn btn-sm btn-primary" @click="toggleEdit">Terminer l'édition</button>
+        <button class="btn btn-sm btn-emerald text-white" style="background-color: #10b981;" @click="toggleEdit">Terminer l'édition</button>
       </div>
     </div>
 
@@ -193,6 +199,7 @@ const updateOptions = (event: Event) => {
 
 // Assuming openPromptEditor is available globally or we import it
 import { openPromptEditor } from '../../utils/promptEditorState';
+import { openReportEditor } from '../../utils/reportEditorState';
 
 const editAiPrompt = () => {
     // If it's undefined, initialize it to empty string so it's reactive
@@ -200,6 +207,10 @@ const editAiPrompt = () => {
         props.node.aiPrompt = '';
     }
     openPromptEditor(props.node);
+};
+
+const editReport = () => {
+    openReportEditor(props.node);
 };
 
 const selectNode = () => {
@@ -222,6 +233,33 @@ const deleteNode = () => {
 .editor-node {
   position: relative;
 }
+.header-container {
+  min-height: 40px;
+}
+.pe-16 {
+  padding-right: 80px !important;
+}
+
+/* Explicit positioning and shape rules */
+.actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+.btn-icon {
+  transition: transform 0.2s, background-color 0.2s;
+}
+.btn-icon:hover {
+  transform: scale(1.1);
+}
+
+
 .border-2 {
   border-width: 2px !important;
 }
