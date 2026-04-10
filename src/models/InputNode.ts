@@ -12,6 +12,7 @@ export class InputNode extends FormNode {
 	min?: number;
 	max?: number;
 	step?: number;
+	columns: string[];
 	actionReports: ActionReport[];
 	aiPrompt?: string;
 	value: any = null; // To hold the user input
@@ -28,10 +29,15 @@ export class InputNode extends FormNode {
 		this.min = config.min;
 		this.max = config.max;
 		this.step = config.step;
+		this.columns = config.columns || [];
 		this.actionReports = config.actionReports || [];
 		this.aiPrompt = config.aiPrompt;
 
 		if (this.inputType === "checkbox" && this.options.length > 0) {
+			this.value = [];
+		}
+
+		if (this.inputType === "table") {
 			this.value = [];
 		}
 	}

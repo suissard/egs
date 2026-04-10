@@ -11,7 +11,8 @@ export type InputType =
 	| "switch"
 	| "slider"
 	| "file"
-	| "time";
+	| "time"
+	| "table";
 
 
 export interface ActionReport {
@@ -51,6 +52,7 @@ export interface InputElement extends FormElement {
 	min?: number;
 	max?: number;
 	step?: number;
+	columns?: string[]; // For table
 	actionReports?: ActionReport[];
 	aiPrompt?: string;
 }

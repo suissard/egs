@@ -61,6 +61,7 @@
               <option value="radio">Boutons Radio</option>
               <option value="select">Liste Déroulante</option>
               <option value="date">Date</option>
+              <option value="table">Tableau</option>
             </select>
           </div>
           <div class="input-group flex-1 min-w-200">
@@ -88,6 +89,16 @@
                 <span class="badge-help rounded-circle bg-white text-warning d-inline-flex align-center justify-center" style="width: 14px; height: 14px; font-size: 10px; color: #ff9800;" title="Configurer des rapports d'action pour ce champ.">?</span>
               </button>
             </div>
+          </div>
+
+          <div class="input-group w-100 mt-2" v-if="node.inputType === 'table'">
+            <label class="input-label text-caption font-weight-bold">Colonnes (Une par ligne)</label>
+            <textarea
+              :value="node.columns ? node.columns.join('\n') : ''"
+              @input="updateColumns($event)"
+              class="input-field py-1 px-2 text-body-2"
+              rows="3"
+            ></textarea>
           </div>
 
           <div class="input-group w-100 mt-2" v-if="['select', 'radio', 'checkbox'].includes(node.inputType)">
@@ -153,6 +164,20 @@
           <label class="text-caption mb-0">{{ opt }}</label>
         </div>
       </div>
+      <div v-if="node.inputType === 'table'" class="mt-2">
+        <table class="w-100 border-collapse text-caption disabled-input" style="border: 1px solid #ccc;">
+          <thead>
+            <tr>
+              <th v-for="col in node.columns" :key="col" style="border: 1px solid #ccc; padding: 2px;">{{ col }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td v-for="col in node.columns" :key="'td-'+col" style="border: 1px solid #ccc; padding: 2px;">...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -190,6 +215,11 @@ const isEditing = ref(false);
 
 const toggleEdit = () => {
   isEditing.value = !isEditing.value;
+};
+
+const updateColumns = (event: Event) => {
+  const target = event.target as HTMLTextAreaElement;
+  props.node.columns = target.value.split('\n').filter(c => c.trim() !== '');
 };
 
 const updateOptions = (event: Event) => {

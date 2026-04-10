@@ -203,6 +203,19 @@
           "aiPrompt": "En tant qu'assistant en psychologie, rédigez une brève synthèse d'évaluation pour le patient {{ firstName }} {{ lastName }}, âgé de {{ age }} ans. Le patient a déclaré un niveau de stress {{ stressLevel }} et a évalué la qualité de son sommeil à {{ sleepQuality }}/10. Il a mentionné ces sentiments récents : {{ frequentFeelings }}. Rédigez un court paragraphe professionnel de 3 à 4 phrases résumant sa situation."
         }
       ]
+    },
+    {
+      "type": "input",
+      "inputType": "table",
+      "label": "Suivi de l'humeur (Exemple de tableau)",
+      "key": "suivi_humeur_table",
+      "columns": [
+        "Date",
+        "Humeur (1-10)",
+        "Notes",
+        "Action suggérée"
+      ],
+      "minWidth": "100%"
     }
   ]
 }

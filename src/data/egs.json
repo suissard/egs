@@ -1,932 +1,936 @@
 {
-	"type": "box",
-	"direction": "column",
-	"title": "EGS PROTOTYPE",
-	"children": [
-		{
-			"type": "box",
-			"direction": "row",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "date",
-					"label": "Date de l'évaluation",
-					"key": "date_eval"
-				},
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Type d'évaluation",
-					"key": "type_eval",
-					"options": [
-						"Admission",
-						"Réévaluation"
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "row",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "text",
-					"label": "NOM",
-					"key": "patient_nom"
-				},
-				{
-					"type": "input",
-					"inputType": "text",
-					"label": "PRENOM",
-					"key": "patient_prenom"
-				},
-				{
-					"type": "input",
-					"inputType": "date",
-					"label": "Date de naissance",
-					"key": "patient_ddn"
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Antécédents",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "textarea",
-					"label": "Médicaux",
-					"key": "atcd_medicaux"
-				},
-				{
-					"type": "input",
-					"inputType": "textarea",
-					"label": "Chirurgicaux",
-					"key": "atcd_chirurgicaux"
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Anamnèse récente",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "textarea",
-					"label": "Anamnèse récente",
-					"key": "anamnese_recente"
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Analyse du traitement",
-			"children": [
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "number",
-							"label": "Nombre total de médicaments",
-							"key": "traitement_nb_total"
-						},
-						{
-							"type": "input",
-							"inputType": "text",
-							"label": "Autre ttt non recommandé",
-							"key": "traitement_autre_non_recommande"
-						}
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Psychotropes",
-							"key": "traitement_psychotropes",
-							"options": [
-								"oui",
-								"non"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Anticholinergiques",
-							"key": "traitement_anticholinergiques",
-							"options": [
-								"oui",
-								"non"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Hypotenseurs multiples",
-							"key": "traitement_hypotenseurs",
-							"options": [
-								"oui",
-								"non"
-							]
-						}
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Anticoagulants",
-							"key": "traitement_anticoagulants",
-							"options": [
-								"oui",
-								"non"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Vitamine D",
-							"key": "traitement_vitamine_d",
-							"options": [
-								"oui",
-								"non"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Insuffisance rénale",
-							"key": "traitement_insuf_renale",
-							"options": [
-								"NON",
-								"Modérée",
-								"Sévère"
-							]
-						}
-					]
-				},
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Risque iatrogène",
-					"key": "traitement_risque_iatrogene",
-					"options": [
-						"oui",
-						"NON"
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Vaccins",
-			"children": [
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "DTPC",
-							"key": "vaccin_dtpc",
-							"options": [
-								"A jour",
-								"A prévoir",
-								"Refus"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Pneumocoque",
-							"key": "vaccin_pneumocoque",
-							"options": [
-								"A jour",
-								"A prévoir",
-								"Refus"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Zona",
-							"key": "vaccin_zona",
-							"options": [
-								"A jour",
-								"A prévoir",
-								"Refus"
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Autonomie fonctionnelle",
-			"children": [
-				{
-					"type": "box",
-					"direction": "column",
-					"title": "ADL (Acte)",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Toilette",
-							"key": "adl_toilette",
-							"options": [
-								"Autonome",
-								"Aide partielle",
-								"Aide totale"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Habillage",
-							"key": "adl_habillage",
-							"options": [
-								"Autonome",
-								"Aide partielle",
-								"Aide totale"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Transferts",
-							"key": "adl_transferts",
-							"options": [
-								"Autonome",
-								"Aide partielle",
-								"Aide totale"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Continence",
-							"key": "adl_continence",
-							"options": [
-								"Autonome",
-								"Aide partielle",
-								"Aide totale"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Alimentation",
-							"key": "adl_alimentation",
-							"options": [
-								"Autonome",
-								"Aide partielle",
-								"Aide totale"
-							]
-						}
-					]
-				},
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Conclusion autonomie",
-					"key": "autonomie_concl",
-					"options": [
-						"Autonome",
-						"Dépendance partielle",
-						"Dépendance sévère"
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Mobilité",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Marche",
-					"key": "mobilite_marche",
-					"options": [
-						"libre",
-						"aides techniques",
-						"fauteuil roulant"
-					]
-				},
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Lever de chaise",
-					"key": "mobilite_lever",
-					"options": [
-						"facile",
-						"difficile",
-						"impossible"
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Chute < 6 mois",
-							"key": "mobilite_chute",
-							"options": [
-								"oui",
-								"non"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Risque de chute",
-							"key": "mobilite_risque_chute",
-							"options": [
-								"oui",
-								"non"
-							],
-							"actionReports": [
-								{
-									"targetKey": "risques_liste",
-									"triggerValue": "oui",
-									"valueToReport": "Chutes"
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Evaluation cognitive et psychologique",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Trouble neuro-cognitif",
-					"key": "cognitif_tnc",
-					"options": [
-						"NON",
-						"léger",
-						"Majeur"
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "number",
-							"label": "MMS / 30",
-							"key": "cognitif_mms"
-						},
-						{
-							"type": "input",
-							"inputType": "date",
-							"label": "le",
-							"key": "cognitif_mms_date"
-						}
-					],
-					"showIf": {
-						"dependsOn": "cognitif_tnc",
-						"value": [
-							"léger",
-							"Majeur"
-						]
-					}
-				},
-				{
-					"type": "input",
-					"inputType": "checkbox",
-					"label": "Troubles du comportement",
-					"key": "comportement_list",
-					"options": [
-						"NON",
-						"Sorties inopinées / fugues",
-						"Idées délirantes",
-						"Hallucinations",
-						"Agitation / agressivité",
-						"Apathie / indifférence",
-						"Comportements moteurs aberrants"
-					],
-					"actionReports": [
-						{
-							"targetKey": "risques_liste",
-							"triggerValue": "Sorties inopinées / fugues",
-							"valueToReport": "Sortie inopinée / fugue"
-						},
-						{
-							"targetKey": "risques_liste",
-							"triggerValue": "Agitation / agressivité",
-							"valueToReport": "Agitation / agressivité"
-						},
-						{
-							"targetKey": "risques_liste",
-							"triggerValue": "Comportements moteurs aberrants",
-							"valueToReport": "Déambulation / comportements moteurs aberrants"
-						}
-					]
-				},
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Désorientation temporo-spatiale",
-					"key": "cognitif_dts",
-					"options": [
-						"NON",
-						"Partielle",
-						"Totale"
-					],
-					"actionReports": [
-						{
-							"targetKey": "risques_liste",
-							"triggerValue": [
-								"Partielle",
-								"Totale"
-							],
-							"valueToReport": "DTS"
-						}
-					]
-				},
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Refus de soins",
-					"key": "cognitif_refus_soins",
-					"options": [
-						"oui",
-						"non"
-					],
-					"actionReports": [
-						{
-							"targetKey": "risques_liste",
-							"triggerValue": "oui",
-							"valueToReport": "Refus de soins"
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Évaluation psychologique (suite)",
-			"children": [
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Dépression",
-							"key": "psy_depression",
-							"options": [
-								"oui",
-								"non"
-							],
-							"actionReports": [
-								{
-									"targetKey": "risques_liste",
-									"triggerValue": "oui",
-									"valueToReport": "Dépression / Anxiété"
-								}
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Anxiété",
-							"key": "psy_anxiete",
-							"options": [
-								"oui",
-								"non"
-							],
-							"actionReports": [
-								{
-									"targetKey": "risques_liste",
-									"triggerValue": "oui",
-									"valueToReport": "Dépression / Anxiété"
-								}
-							]
-						}
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Troubles du sommeil",
-							"key": "psy_sommeil",
-							"options": [
-								"oui",
-								"non"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Risque suicidaire",
-							"key": "psy_suicide",
-							"options": [
-								"oui",
-								"non"
-							],
-							"actionReports": [
-								{
-									"targetKey": "risques_liste",
-									"triggerValue": "oui",
-									"valueToReport": "Risque suicidaire"
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Évaluation nutritionnelle",
-			"children": [
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "checkbox",
-							"label": "Critères étiologiques",
-							"key": "nutri_etiologiques",
-							"options": [
-								"Ingestas diminués",
-								"Absorption réduite",
-								"Situation d'agression (pathologie aiguë ou chronique évolutive)"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "checkbox",
-							"label": "Critères phénotypiques",
-							"key": "nutri_phenotypiques",
-							"options": [
-								"PDP ≥ 5% en 1 mois ou ≥ 10% en 6 mois",
-								"IMC < 22 kg/m²",
-								"Sarcopénie"
-							]
-						}
-					]
-				},
-				{
-					"type": "input",
-					"inputType": "checkbox",
-					"label": "Critères de gravité",
-					"key": "nutri_gravite",
-					"options": [
-						"IMC < 20 kg/m²",
-						"PDP ≥ 10% en 1 mois ou ≥ 15% en 6 mois",
-						"Albuminémie ≤ 30 g/L"
-					]
-				},
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "CONCLUSION",
-					"key": "nutri_conclusion",
-					"options": [
-						"Bon état nutritionnel",
-						"Dénutrition modérée",
-						"Dénutrition sévère"
-					],
-					"actionReports": [
-						{
-							"targetKey": "risques_liste",
-							"triggerValue": [
-								"Dénutrition modérée",
-								"Dénutrition sévère"
-							],
-							"valueToReport": "Dénutrition"
-						}
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Troubles de la déglutition",
-							"key": "nutri_deglutition",
-							"options": [
-								"oui",
-								"non"
-							],
-							"actionReports": [
-								{
-									"targetKey": "risques_liste",
-									"triggerValue": "oui",
-									"valueToReport": "Fausse route"
-								}
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Troubles de la mastication",
-							"key": "nutri_mastication",
-							"options": [
-								"oui",
-								"non"
-							]
-						}
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Aide aux repas",
-							"key": "nutri_aide_repas",
-							"options": [
-								"oui",
-								"non"
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Hydratation",
-							"key": "nutri_hydratation",
-							"options": [
-								"spontanée",
-								"à stimuler",
-								"aide totale"
-							],
-							"actionReports": [
-								{
-									"targetKey": "risques_liste",
-									"triggerValue": [
-										"à stimuler",
-										"aide totale"
-									],
-									"valueToReport": "Déshydratation"
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Évaluation de la douleur",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Douleur chronique",
-					"key": "douleur_chronique",
-					"options": [
-						"oui",
-						"non"
-					],
-					"actionReports": [
-						{
-							"targetKey": "risques_liste",
-							"triggerValue": "oui",
-							"valueToReport": "Douleur"
-						}
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "text",
-							"label": "Localisation",
-							"key": "douleur_localisation"
-						},
-						{
-							"type": "input",
-							"inputType": "text",
-							"label": "Intensité",
-							"key": "douleur_intensite"
-						}
-					],
-					"showIf": {
-						"dependsOn": "douleur_chronique",
-						"value": "oui"
-					}
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "text",
-							"label": "Rythme",
-							"key": "douleur_rythme"
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Traitement efficace",
-							"key": "douleur_traitement_efficace",
-							"options": [
-								"oui",
-								"non"
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Risque d'escarres",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "radio",
-					"label": "Risque d'escarres",
-					"key": "risque_escarres",
-					"options": [
-						"oui",
-						"non"
-					],
-					"actionReports": [
-						{
-							"targetKey": "risques_liste",
-							"triggerValue": "oui",
-							"valueToReport": "Escarres"
-						}
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Évaluation sensorielle",
-			"children": [
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "checkbox",
-							"label": "Déficit visuel",
-							"key": "sensoriel_visuel",
-							"options": [
-								"Présent"
-							],
-							"actionReports": [
-								{
-									"targetKey": "risques_liste",
-									"triggerValue": "Présent",
-									"valueToReport": "Déficit sensoriel"
-								}
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Lunettes",
-							"key": "sensoriel_lunettes",
-							"options": [
-								"oui",
-								"non",
-								"à réévaluer"
-							]
-						}
-					]
-				},
-				{
-					"type": "box",
-					"direction": "row",
-					"children": [
-						{
-							"type": "input",
-							"inputType": "checkbox",
-							"label": "Déficit auditif",
-							"key": "sensoriel_auditif",
-							"options": [
-								"Présent"
-							],
-							"actionReports": [
-								{
-									"targetKey": "risques_liste",
-									"triggerValue": "Présent",
-									"valueToReport": "Déficit sensoriel"
-								}
-							]
-						},
-						{
-							"type": "input",
-							"inputType": "radio",
-							"label": "Appareils auditifs",
-							"key": "sensoriel_appareils",
-							"options": [
-								"oui",
-								"non",
-								"à réévaluer"
-							]
-						}
-					]
-				},
-				{
-					"type": "input",
-					"inputType": "text",
-					"label": "Autres déficits sensoriels",
-					"key": "sensoriel_autres"
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "Évaluation des risques",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "checkbox",
-					"label": "Risques identifiés",
-					"key": "risques_liste",
-					"options": [
-						"Chutes",
-						"Altération de l'état cutané",
-						"Escarres",
-						"Dénutrition",
-						"Fausse route",
-						"Iatrogénie",
-						"Dépression / Anxiété",
-						"Risque suicidaire",
-						"Douleur",
-						"Infectieux",
-						"DTS",
-						"Déambulation / comportements moteurs aberrants",
-						"Refus de soins",
-						"Sortie inopinée / fugue",
-						"Agitation / agressivité",
-						"Déshydratation",
-						"Hypo / hyperglycémie",
-						"Hémorragie",
-						"Insuffisance cardiaque",
-						"Déficit sensoriel"
-					]
-				}
-			]
-		},
-		{
-			"type": "box",
-			"direction": "column",
-			"title": "PLAN ACTION",
-			"children": [
-				{
-					"type": "input",
-					"inputType": "textarea",
-					"label": "Tableau des actions (Risque, Actions, Échéances)",
-					"key": "plan_action_tableau",
-					"placeholder": "Chaque risque coché déclenche une ligne du tableau...",
-					"minWidth": "100%"
-				}
-			]
-		}
-	]
+  "type": "box",
+  "direction": "column",
+  "title": "EGS PROTOTYPE",
+  "children": [
+    {
+      "type": "box",
+      "direction": "row",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "date",
+          "label": "Date de l'évaluation",
+          "key": "date_eval"
+        },
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Type d'évaluation",
+          "key": "type_eval",
+          "options": [
+            "Admission",
+            "Réévaluation"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "row",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "text",
+          "label": "NOM",
+          "key": "patient_nom"
+        },
+        {
+          "type": "input",
+          "inputType": "text",
+          "label": "PRENOM",
+          "key": "patient_prenom"
+        },
+        {
+          "type": "input",
+          "inputType": "date",
+          "label": "Date de naissance",
+          "key": "patient_ddn"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Antécédents",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "textarea",
+          "label": "Médicaux",
+          "key": "atcd_medicaux"
+        },
+        {
+          "type": "input",
+          "inputType": "textarea",
+          "label": "Chirurgicaux",
+          "key": "atcd_chirurgicaux"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Anamnèse récente",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "textarea",
+          "label": "Anamnèse récente",
+          "key": "anamnese_recente"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Analyse du traitement",
+      "children": [
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "number",
+              "label": "Nombre total de médicaments",
+              "key": "traitement_nb_total"
+            },
+            {
+              "type": "input",
+              "inputType": "text",
+              "label": "Autre ttt non recommandé",
+              "key": "traitement_autre_non_recommande"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Psychotropes",
+              "key": "traitement_psychotropes",
+              "options": [
+                "oui",
+                "non"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Anticholinergiques",
+              "key": "traitement_anticholinergiques",
+              "options": [
+                "oui",
+                "non"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Hypotenseurs multiples",
+              "key": "traitement_hypotenseurs",
+              "options": [
+                "oui",
+                "non"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Anticoagulants",
+              "key": "traitement_anticoagulants",
+              "options": [
+                "oui",
+                "non"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Vitamine D",
+              "key": "traitement_vitamine_d",
+              "options": [
+                "oui",
+                "non"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Insuffisance rénale",
+              "key": "traitement_insuf_renale",
+              "options": [
+                "NON",
+                "Modérée",
+                "Sévère"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Risque iatrogène",
+          "key": "traitement_risque_iatrogene",
+          "options": [
+            "oui",
+            "NON"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Vaccins",
+      "children": [
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "DTPC",
+              "key": "vaccin_dtpc",
+              "options": [
+                "A jour",
+                "A prévoir",
+                "Refus"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Pneumocoque",
+              "key": "vaccin_pneumocoque",
+              "options": [
+                "A jour",
+                "A prévoir",
+                "Refus"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Zona",
+              "key": "vaccin_zona",
+              "options": [
+                "A jour",
+                "A prévoir",
+                "Refus"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Autonomie fonctionnelle",
+      "children": [
+        {
+          "type": "box",
+          "direction": "column",
+          "title": "ADL (Acte)",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Toilette",
+              "key": "adl_toilette",
+              "options": [
+                "Autonome",
+                "Aide partielle",
+                "Aide totale"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Habillage",
+              "key": "adl_habillage",
+              "options": [
+                "Autonome",
+                "Aide partielle",
+                "Aide totale"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Transferts",
+              "key": "adl_transferts",
+              "options": [
+                "Autonome",
+                "Aide partielle",
+                "Aide totale"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Continence",
+              "key": "adl_continence",
+              "options": [
+                "Autonome",
+                "Aide partielle",
+                "Aide totale"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Alimentation",
+              "key": "adl_alimentation",
+              "options": [
+                "Autonome",
+                "Aide partielle",
+                "Aide totale"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Conclusion autonomie",
+          "key": "autonomie_concl",
+          "options": [
+            "Autonome",
+            "Dépendance partielle",
+            "Dépendance sévère"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Mobilité",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Marche",
+          "key": "mobilite_marche",
+          "options": [
+            "libre",
+            "aides techniques",
+            "fauteuil roulant"
+          ]
+        },
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Lever de chaise",
+          "key": "mobilite_lever",
+          "options": [
+            "facile",
+            "difficile",
+            "impossible"
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Chute < 6 mois",
+              "key": "mobilite_chute",
+              "options": [
+                "oui",
+                "non"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Risque de chute",
+              "key": "mobilite_risque_chute",
+              "options": [
+                "oui",
+                "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Chutes"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Evaluation cognitive et psychologique",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Trouble neuro-cognitif",
+          "key": "cognitif_tnc",
+          "options": [
+            "NON",
+            "léger",
+            "Majeur"
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "number",
+              "label": "MMS / 30",
+              "key": "cognitif_mms"
+            },
+            {
+              "type": "input",
+              "inputType": "date",
+              "label": "le",
+              "key": "cognitif_mms_date"
+            }
+          ],
+          "showIf": {
+            "dependsOn": "cognitif_tnc",
+            "value": [
+              "léger",
+              "Majeur"
+            ]
+          }
+        },
+        {
+          "type": "input",
+          "inputType": "checkbox",
+          "label": "Troubles du comportement",
+          "key": "comportement_list",
+          "options": [
+            "NON",
+            "Sorties inopinées / fugues",
+            "Idées délirantes",
+            "Hallucinations",
+            "Agitation / agressivité",
+            "Apathie / indifférence",
+            "Comportements moteurs aberrants"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": "Sorties inopinées / fugues",
+              "valueToReport": "Sortie inopinée / fugue"
+            },
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": "Agitation / agressivité",
+              "valueToReport": "Agitation / agressivité"
+            },
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": "Comportements moteurs aberrants",
+              "valueToReport": "Déambulation / comportements moteurs aberrants"
+            }
+          ]
+        },
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Désorientation temporo-spatiale",
+          "key": "cognitif_dts",
+          "options": [
+            "NON",
+            "Partielle",
+            "Totale"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": [
+                "Partielle",
+                "Totale"
+              ],
+              "valueToReport": "DTS"
+            }
+          ]
+        },
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Refus de soins",
+          "key": "cognitif_refus_soins",
+          "options": [
+            "oui",
+            "non"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": "oui",
+              "valueToReport": "Refus de soins"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Évaluation psychologique (suite)",
+      "children": [
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Dépression",
+              "key": "psy_depression",
+              "options": [
+                "oui",
+                "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Dépression / Anxiété"
+                }
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Anxiété",
+              "key": "psy_anxiete",
+              "options": [
+                "oui",
+                "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Dépression / Anxiété"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Troubles du sommeil",
+              "key": "psy_sommeil",
+              "options": [
+                "oui",
+                "non"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Risque suicidaire",
+              "key": "psy_suicide",
+              "options": [
+                "oui",
+                "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Risque suicidaire"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Évaluation nutritionnelle",
+      "children": [
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "checkbox",
+              "label": "Critères étiologiques",
+              "key": "nutri_etiologiques",
+              "options": [
+                "Ingestas diminués",
+                "Absorption réduite",
+                "Situation d'agression (pathologie aiguë ou chronique évolutive)"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "checkbox",
+              "label": "Critères phénotypiques",
+              "key": "nutri_phenotypiques",
+              "options": [
+                "PDP ≥ 5% en 1 mois ou ≥ 10% en 6 mois",
+                "IMC < 22 kg/m²",
+                "Sarcopénie"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "input",
+          "inputType": "checkbox",
+          "label": "Critères de gravité",
+          "key": "nutri_gravite",
+          "options": [
+            "IMC < 20 kg/m²",
+            "PDP ≥ 10% en 1 mois ou ≥ 15% en 6 mois",
+            "Albuminémie ≤ 30 g/L"
+          ]
+        },
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "CONCLUSION",
+          "key": "nutri_conclusion",
+          "options": [
+            "Bon état nutritionnel",
+            "Dénutrition modérée",
+            "Dénutrition sévère"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": [
+                "Dénutrition modérée",
+                "Dénutrition sévère"
+              ],
+              "valueToReport": "Dénutrition"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Troubles de la déglutition",
+              "key": "nutri_deglutition",
+              "options": [
+                "oui",
+                "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Fausse route"
+                }
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Troubles de la mastication",
+              "key": "nutri_mastication",
+              "options": [
+                "oui",
+                "non"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Aide aux repas",
+              "key": "nutri_aide_repas",
+              "options": [
+                "oui",
+                "non"
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Hydratation",
+              "key": "nutri_hydratation",
+              "options": [
+                "spontanée",
+                "à stimuler",
+                "aide totale"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": [
+                    "à stimuler",
+                    "aide totale"
+                  ],
+                  "valueToReport": "Déshydratation"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Évaluation de la douleur",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Douleur chronique",
+          "key": "douleur_chronique",
+          "options": [
+            "oui",
+            "non"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": "oui",
+              "valueToReport": "Douleur"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "text",
+              "label": "Localisation",
+              "key": "douleur_localisation"
+            },
+            {
+              "type": "input",
+              "inputType": "text",
+              "label": "Intensité",
+              "key": "douleur_intensite"
+            }
+          ],
+          "showIf": {
+            "dependsOn": "douleur_chronique",
+            "value": "oui"
+          }
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "text",
+              "label": "Rythme",
+              "key": "douleur_rythme"
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Traitement efficace",
+              "key": "douleur_traitement_efficace",
+              "options": [
+                "oui",
+                "non"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Risque d'escarres",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "radio",
+          "label": "Risque d'escarres",
+          "key": "risque_escarres",
+          "options": [
+            "oui",
+            "non"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": "oui",
+              "valueToReport": "Escarres"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Évaluation sensorielle",
+      "children": [
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "checkbox",
+              "label": "Déficit visuel",
+              "key": "sensoriel_visuel",
+              "options": [
+                "Présent"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "Présent",
+                  "valueToReport": "Déficit sensoriel"
+                }
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Lunettes",
+              "key": "sensoriel_lunettes",
+              "options": [
+                "oui",
+                "non",
+                "à réévaluer"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "checkbox",
+              "label": "Déficit auditif",
+              "key": "sensoriel_auditif",
+              "options": [
+                "Présent"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "Présent",
+                  "valueToReport": "Déficit sensoriel"
+                }
+              ]
+            },
+            {
+              "type": "input",
+              "inputType": "radio",
+              "label": "Appareils auditifs",
+              "key": "sensoriel_appareils",
+              "options": [
+                "oui",
+                "non",
+                "à réévaluer"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "input",
+          "inputType": "text",
+          "label": "Autres déficits sensoriels",
+          "key": "sensoriel_autres"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "Évaluation des risques",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "checkbox",
+          "label": "Risques identifiés",
+          "key": "risques_liste",
+          "options": [
+            "Chutes",
+            "Altération de l'état cutané",
+            "Escarres",
+            "Dénutrition",
+            "Fausse route",
+            "Iatrogénie",
+            "Dépression / Anxiété",
+            "Risque suicidaire",
+            "Douleur",
+            "Infectieux",
+            "DTS",
+            "Déambulation / comportements moteurs aberrants",
+            "Refus de soins",
+            "Sortie inopinée / fugue",
+            "Agitation / agressivité",
+            "Déshydratation",
+            "Hypo / hyperglycémie",
+            "Hémorragie",
+            "Insuffisance cardiaque",
+            "Déficit sensoriel"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
+      "title": "PLAN ACTION",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "table",
+          "label": "Tableau des actions (Risque, Actions, Échéances)",
+          "key": "plan_action_tableau",
+          "minWidth": "100%",
+          "columns": [
+            "Risque",
+            "Actions",
+            "Échéances"
+          ]
+        }
+      ]
+    }
+  ]
 }
