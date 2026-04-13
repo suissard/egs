@@ -177,8 +177,14 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
         let isTriggeredOld = false;
         let isTriggeredNew = false;
 
+        // Handle empty triggerValue: triggers on ANY change
+        const isEmptyTrigger = report.triggerValue === "" || report.triggerValue === null || report.triggerValue === undefined;
+
         // Check old trigger
-        if (Array.isArray(report.triggerValue)) {
+        if (isEmptyTrigger) {
+           // If it's an empty trigger, it was 'triggered' if the old value was not empty
+           isTriggeredOld = oldValue !== "" && oldValue !== null && oldValue !== undefined;
+        } else if (Array.isArray(report.triggerValue)) {
           isTriggeredOld = Array.isArray(oldValue)
               ? report.triggerValue.some(t => oldValue.includes(t))
               : report.triggerValue.includes(oldValue);
@@ -189,7 +195,10 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
         }
 
         // Check new trigger
-        if (Array.isArray(report.triggerValue)) {
+        if (isEmptyTrigger) {
+           // If it's an empty trigger, it is 'triggered' if the new value is not empty
+           isTriggeredNew = newValue !== "" && newValue !== null && newValue !== undefined;
+        } else if (Array.isArray(report.triggerValue)) {
           isTriggeredNew = Array.isArray(newValue)
               ? report.triggerValue.some(t => newValue.includes(t))
               : report.triggerValue.includes(newValue);
@@ -202,47 +211,26 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
         const targetNode = findNodeByKey(root, report.targetKey);
 
         if (targetNode && targetNode instanceof InputNode) {
-          // Trigger devenu VRAI
-          if (!isTriggeredOld && isTriggeredNew) {
-            if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
-              if (!targetNode.value.includes(report.valueToReport)) {
-                targetNode.value.push(report.valueToReport);
-              }
-            } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
-               const currentText = targetNode.value || '';
-               if (!currentText.includes(report.valueToReport)) {
-                 targetNode.value = currentText ? currentText + '\n- ' + report.valueToReport : '- ' + report.valueToReport;
-               }
-            } else {
-               targetNode.value = report.valueToReport;
-            }
-          }
-          // Trigger devenu FAUX
-          else if (isTriggeredOld && !isTriggeredNew) {
-            if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
-              const index = targetNode.value.indexOf(report.valueToReport);
-              if (index > -1) {
-                targetNode.value.splice(index, 1);
-              }
-            } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
-              let currentText = targetNode.value || '';
-              const strToRemove1 = "\n- " + report.valueToReport;
-              const strToRemove2 = "- " + report.valueToReport + "\n";
-              const strToRemove3 = "- " + report.valueToReport;
 
-              if (currentText.includes(strToRemove1)) {
-                 currentText = currentText.replace(strToRemove1, "");
-              } else if (currentText.includes(strToRemove2)) {
-                 currentText = currentText.replace(strToRemove2, "");
-              } else if (currentText.includes(strToRemove3)) {
-                 currentText = currentText.replace(strToRemove3, "");
-              }
-              targetNode.value = currentText;
-            } else {
-               if (targetNode.value === report.valueToReport) {
-                  targetNode.value = null;
-               }
-            }
+          // Determine the actual value to report
+          const valueToReport = (report.valueToReport !== "" && report.valueToReport !== null && report.valueToReport !== undefined)
+            ? report.valueToReport
+            : (isEmptyTrigger ? newValue : report.triggerValue);
+
+          const oldValueToReport = (report.valueToReport !== "" && report.valueToReport !== null && report.valueToReport !== undefined)
+            ? report.valueToReport
+            : (isEmptyTrigger ? oldValue : report.triggerValue);
+
+          // Handle trigger value changed while being always true (e.g. empty trigger, value changes from A to B)
+          if (isTriggeredOld && isTriggeredNew && JSON.stringify(oldValueToReport) !== JSON.stringify(valueToReport)) {
+             removeValueFromNode(targetNode, oldValueToReport);
+             addValueToNode(targetNode, valueToReport);
+          } else if (!isTriggeredOld && isTriggeredNew) {
+             // Trigger devenu VRAI
+             addValueToNode(targetNode, valueToReport);
+          } else if (isTriggeredOld && !isTriggeredNew) {
+             // Trigger devenu FAUX
+             removeValueFromNode(targetNode, oldValueToReport);
           }
         }
       }
@@ -253,6 +241,50 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
     for (const child of node.children) {
       processActionReports(child, oldData, newData, root);
     }
+  }
+}
+
+function addValueToNode(targetNode: InputNode, value: any) {
+  if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
+    if (!targetNode.value.includes(value)) {
+      targetNode.value.push(value);
+    }
+  } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
+     const currentText = targetNode.value || '';
+     if (!currentText.includes(value)) {
+       targetNode.value = currentText ? currentText + '\n- ' + value : '- ' + value;
+     }
+  } else {
+     targetNode.value = value;
+  }
+}
+
+function removeValueFromNode(targetNode: InputNode, value: any) {
+  if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
+    const idx = targetNode.value.indexOf(value);
+    if (idx > -1) {
+      targetNode.value.splice(idx, 1);
+    }
+  } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
+    let currentText = targetNode.value || '';
+    if (currentText.includes(value)) {
+      const strToRemove1 = '\n- ' + value;
+      const strToRemove2 = '- ' + value + '\n';
+      const strToRemove3 = '- ' + value;
+
+      if (currentText.includes(strToRemove1)) {
+         currentText = currentText.replace(strToRemove1, "");
+      } else if (currentText.includes(strToRemove2)) {
+         currentText = currentText.replace(strToRemove2, "");
+      } else if (currentText.includes(strToRemove3)) {
+         currentText = currentText.replace(strToRemove3, "");
+      }
+      targetNode.value = currentText;
+    }
+  } else {
+     if (targetNode.value === value) {
+        targetNode.value = null;
+     }
   }
 }
 
