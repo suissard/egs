@@ -112,6 +112,35 @@
       <input type="file" @change="(e: any) => node.value = e.target.files[0]" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
 
+
+    <!-- Table Input -->
+    <div v-else-if="node.inputType === 'table'" class="input-group">
+      <label class="input-label d-flex justify-space-between align-center">
+        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span> <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report" title="Ce champ peut déclencher un plan d'action">⚡ Report</span></span>
+      </label>
+      <div class="table-responsive">
+        <table class="w-100 border-collapse">
+          <thead>
+            <tr>
+              <th v-for="col in node.columns" :key="col" class="text-left pa-2 border-bottom">{{ col }}</th>
+              <th class="pa-2 border-bottom w-50px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(_, rowIndex) in node.value" :key="rowIndex">
+              <td v-for="(_, colIndex) in node.columns" :key="colIndex" class="pa-1 border-bottom">
+                <input v-model="node.value[rowIndex][colIndex]" type="text" class="input-field py-1 px-2" :disabled="readonly" />
+              </td>
+              <td class="pa-1 border-bottom text-center">
+                <button type="button" @click="node.value.splice(rowIndex, 1)" class="btn btn-sm btn-error" :disabled="readonly" title="Supprimer la ligne">X</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button type="button" @click="addTableRow" class="btn btn-sm btn-secondary mt-2" :disabled="readonly">+ Ajouter une ligne</button>
+    </div>
+
     <!-- Time Input -->
     <div v-else-if="node.inputType === 'time'" class="input-group">
       <label class="input-label">
@@ -131,6 +160,11 @@ import { openPromptEditor } from '../utils/promptEditorState';
 
 const isLoadingAI = ref(false);
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
+
+function addTableRow() {
+  if (!props.node.value) props.node.value = [];
+  props.node.value.push(new Array(props.node.columns?.length || 0).fill(''));
+}
 
 function autoResize(event: Event) {
   const target = event.target as HTMLTextAreaElement;

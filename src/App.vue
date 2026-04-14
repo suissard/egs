@@ -212,6 +212,56 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
 
         if (targetNode && targetNode instanceof InputNode) {
 
+          // Trigger devenu VRAI
+          if (!isTriggeredOld && isTriggeredNew) {
+            if (targetNode.inputType === 'checkbox') {
+              if (targetNode.options && targetNode.options.length > 0) {
+                 if (!targetNode.value) targetNode.value = [];
+                 if (!targetNode.value.includes(report.valueToReport)) {
+                    targetNode.value.push(report.valueToReport);
+                 }
+              } else {
+                 targetNode.value = report.valueToReport;
+              }
+            } else if (targetNode.inputType === 'table') {
+              if (!targetNode.value) targetNode.value = [];
+              const rowToAdd = Array.isArray(report.valueToReport) ? report.valueToReport : [report.valueToReport];
+              // Check if row already exists
+              const exists = targetNode.value.some((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToAdd));
+              if (!exists) {
+                targetNode.value.push(rowToAdd);
+              }
+            } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
+               const currentText = targetNode.value || '';
+               if (!currentText.includes(report.valueToReport)) {
+                 targetNode.value = currentText ? currentText + '\n- ' + report.valueToReport : '- ' + report.valueToReport;
+               }
+            } else {
+               targetNode.value = report.valueToReport;
+            }
+          }
+          // Trigger devenu FAUX
+          else if (isTriggeredOld && !isTriggeredNew) {
+            if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
+              const index = targetNode.value.indexOf(report.valueToReport);
+              if (index > -1) {
+                targetNode.value.splice(index, 1);
+              }
+            } else if (targetNode.inputType === 'table') {
+              if (targetNode.value && Array.isArray(targetNode.value)) {
+                const rowToRemove = Array.isArray(report.valueToReport) ? report.valueToReport : [report.valueToReport];
+                const index = targetNode.value.findIndex((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToRemove));
+                if (index > -1) {
+                  targetNode.value.splice(index, 1);
+                }
+              }
+            } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
+
+              let currentText = targetNode.value || '';
+              const strToRemove1 = "\n- " + report.valueToReport;
+              const strToRemove2 = "- " + report.valueToReport + "\n";
+              const strToRemove3 = "- " + report.valueToReport;
+
           // Determine the actual value to report
           const valueToReport = (report.valueToReport !== "" && report.valueToReport !== null && report.valueToReport !== undefined)
             ? report.valueToReport
