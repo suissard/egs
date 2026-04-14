@@ -33,7 +33,10 @@
 
             <div class="input-group mb-2">
               <label class="text-caption font-weight-bold">Clé cible (targetKey)</label>
-              <input v-model="report.targetKey" type="text" class="input-field py-1 px-2 text-body-2" placeholder="Ex: montant_total" />
+              <select v-model="report.targetKey" class="input-field py-1 px-2 text-body-2">
+                <option value="" disabled>Sélectionnez une clé cible...</option>
+                <option v-for="key in formAvailableKeys" :key="key" :value="key">{{ key }}</option>
+              </select>
               <small class="text-grey text-caption">...alors on met à jour ce champ JSON.</small>
             </div>
 
@@ -60,6 +63,7 @@
 
 <script setup lang="ts">
 import { isReportEditorOpen, activeReportNode, closeReportEditor } from '../utils/reportEditorState';
+import { formAvailableKeys } from '../utils/promptEditorState';
 
 const addReport = () => {
     if (activeReportNode.value) {
