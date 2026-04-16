@@ -38,7 +38,7 @@
           </div>
           <div v-else-if="isEditMode && currentConfigData">
 
-            <FormEditor :initial-data="currentConfigData" @save="handleSaveEditor" />
+            <FormEditor :initial-data="currentConfigData" @save="handleSaveEditor" @save-model="handleSaveModel" />
           </div>
           <div v-else-if="formRoot"  class="my-4" ref="formContainer">
             <form ref="form" @submit.prevent="submitForm">
@@ -128,6 +128,15 @@ const fileInput = ref<HTMLInputElement | null>(null);
 // Ref to store form data reactively so we can compute display conditions
 const formData = ref<Record<string, any>>({});
 
+const CUSTOM_MODELS_STORAGE_KEY = 'egs-custom-models';
+const availableModels = ref([
+  { key: 'egs', title: 'Évaluation Gériatrique Standardisée (EGS)', data: egs },
+  { title: 'Coordonnées Personnelles', key: 'personal', data: personalCoordinates },
+  { title: 'Exemple Complet', key: 'full', data: fullFormExample },
+  { title: 'Évaluation Gériatrique Standardisée', key: 'geriatric', data: geriatricAssessment },
+  { title: 'Analyse Psychologique', key: 'psychological', data: psychologicalAnalysis }
+]);
+
 function handleSaveEditor(newConfig: any) {
   currentConfigData.value = newConfig;
   const rootNode = FormFactory.create(newConfig as unknown as FormConfig);
@@ -211,7 +220,6 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
         const targetNode = findNodeByKey(root, report.targetKey);
 
         if (targetNode && targetNode instanceof InputNode) {
-
           // Trigger devenu VRAI
           if (!isTriggeredOld && isTriggeredNew) {
             if (targetNode.inputType === 'checkbox') {
@@ -226,7 +234,6 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
             } else if (targetNode.inputType === 'table') {
               if (!targetNode.value) targetNode.value = [];
               const rowToAdd = Array.isArray(report.valueToReport) ? report.valueToReport : [report.valueToReport];
-              // Check if row already exists
               const exists = targetNode.value.some((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToAdd));
               if (!exists) {
                 targetNode.value.push(rowToAdd);
@@ -256,31 +263,24 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
                 }
               }
             } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
-
               let currentText = targetNode.value || '';
               const strToRemove1 = "\n- " + report.valueToReport;
               const strToRemove2 = "- " + report.valueToReport + "\n";
               const strToRemove3 = "- " + report.valueToReport;
 
-          // Determine the actual value to report
-          const valueToReport = (report.valueToReport !== "" && report.valueToReport !== null && report.valueToReport !== undefined)
-            ? report.valueToReport
-            : (isEmptyTrigger ? newValue : report.triggerValue);
-
-          const oldValueToReport = (report.valueToReport !== "" && report.valueToReport !== null && report.valueToReport !== undefined)
-            ? report.valueToReport
-            : (isEmptyTrigger ? oldValue : report.triggerValue);
-
-          // Handle trigger value changed while being always true (e.g. empty trigger, value changes from A to B)
-          if (isTriggeredOld && isTriggeredNew && JSON.stringify(oldValueToReport) !== JSON.stringify(valueToReport)) {
-             removeValueFromNode(targetNode, oldValueToReport);
-             addValueToNode(targetNode, valueToReport);
-          } else if (!isTriggeredOld && isTriggeredNew) {
-             // Trigger devenu VRAI
-             addValueToNode(targetNode, valueToReport);
-          } else if (isTriggeredOld && !isTriggeredNew) {
-             // Trigger devenu FAUX
-             removeValueFromNode(targetNode, oldValueToReport);
+              if (currentText.includes(strToRemove1)) {
+                 currentText = currentText.replace(strToRemove1, "");
+              } else if (currentText.includes(strToRemove2)) {
+                 currentText = currentText.replace(strToRemove2, "");
+              } else if (currentText.includes(strToRemove3)) {
+                 currentText = currentText.replace(strToRemove3, "");
+              }
+              targetNode.value = currentText;
+            } else {
+               if (targetNode.value === report.valueToReport) {
+                  targetNode.value = null;
+               }
+            }
           }
         }
       }
@@ -294,49 +294,9 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
   }
 }
 
-function addValueToNode(targetNode: InputNode, value: any) {
-  if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
-    if (!targetNode.value.includes(value)) {
-      targetNode.value.push(value);
-    }
-  } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
-     const currentText = targetNode.value || '';
-     if (!currentText.includes(value)) {
-       targetNode.value = currentText ? currentText + '\n- ' + value : '- ' + value;
-     }
-  } else {
-     targetNode.value = value;
-  }
-}
 
-function removeValueFromNode(targetNode: InputNode, value: any) {
-  if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
-    const idx = targetNode.value.indexOf(value);
-    if (idx > -1) {
-      targetNode.value.splice(idx, 1);
-    }
-  } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
-    let currentText = targetNode.value || '';
-    if (currentText.includes(value)) {
-      const strToRemove1 = '\n- ' + value;
-      const strToRemove2 = '- ' + value + '\n';
-      const strToRemove3 = '- ' + value;
 
-      if (currentText.includes(strToRemove1)) {
-         currentText = currentText.replace(strToRemove1, "");
-      } else if (currentText.includes(strToRemove2)) {
-         currentText = currentText.replace(strToRemove2, "");
-      } else if (currentText.includes(strToRemove3)) {
-         currentText = currentText.replace(strToRemove3, "");
-      }
-      targetNode.value = currentText;
-    }
-  } else {
-     if (targetNode.value === value) {
-        targetNode.value = null;
-     }
-  }
-}
+
 
 function updateFormData() {
   if (formRoot.value && formRoot.value instanceof BoxNode) {
@@ -363,13 +323,7 @@ provide('triggerDataUpdate', updateFormData);
 
 const STORAGE_KEY = 'egs-form-data';
 
-const availableModels = [
-  { key: 'egs', title: 'Évaluation Gériatrique Standardisée (EGS)', data: egs },
-  { title: 'Coordonnées Personnelles', key: 'personal' },
-  { title: 'Exemple Complet', key: 'full' },
-  { title: 'Évaluation Gériatrique Standardisée', key: 'geriatric' }
-  , { title: 'Analyse Psychologique', key: 'psychological' }
-];
+
 const selectedModelKey = ref('egs');
 const showDocumentation = ref(false);
 const isEditMode = ref(false);
@@ -382,18 +336,8 @@ function handleOpenDoc(mode: 'usage' | 'editor') {
 }
 
 function loadSelectedModel() {
-  let config: any;
-  if (selectedModelKey.value === 'egs') {
-    config = egs;
-  } else if (selectedModelKey.value === 'full') {
-    config = fullFormExample;
-  } else if (selectedModelKey.value === 'geriatric') {
-    config = geriatricAssessment;
-  } else if (selectedModelKey.value === 'psychological') {
-    config = psychologicalAnalysis;
-  } else {
-    config = personalCoordinates;
-  }
+  const selectedModel = availableModels.value.find(m => m.key === selectedModelKey.value);
+  const config = selectedModel ? selectedModel.data : egs;
 
   // 1. Create structure from config
   const rootParams = config as unknown as FormConfig;
@@ -418,6 +362,15 @@ function loadSelectedModel() {
 }
 
 onMounted(() => {
+  const savedCustomModels = localStorage.getItem(CUSTOM_MODELS_STORAGE_KEY);
+  if (savedCustomModels) {
+    try {
+      const parsedModels = JSON.parse(savedCustomModels);
+      availableModels.value.push(...parsedModels);
+    } catch (e) {
+      console.error('Error parsing custom models', e);
+    }
+  }
   loadSelectedModel();
 
   // 3. Watch for changes
@@ -536,6 +489,32 @@ function showSnackbar(text: string, color: string = 'info') {
     snackbar.value = false;
   }, 3000);
 }
+
+function handleSaveModel(model: { name: string, data: any }) {
+  const existingModel = availableModels.value.find(m => m.title === model.name || m.key === model.name);
+  if (existingModel) {
+    alert("Un modèle avec ce nom existe déjà. Veuillez choisir un autre nom.");
+    return;
+  }
+
+  const newModel = {
+    key: `custom-${Date.now()}`,
+    title: model.name,
+    data: model.data
+  };
+
+  availableModels.value.push(newModel);
+
+  const customModels = availableModels.value.filter(m => m.key.startsWith('custom-'));
+  localStorage.setItem(CUSTOM_MODELS_STORAGE_KEY, JSON.stringify(customModels));
+
+  selectedModelKey.value = newModel.key;
+  loadSelectedModel();
+
+  isEditMode.value = false;
+  showSnackbar(`Modèle "${model.name}" sauvegardé avec succès !`, 'success');
+}
+
 </script>
 
 .sticky-header {

@@ -9,7 +9,10 @@
         <h2 class="text-h4 font-weight-bold text-primary">Constructeur de Formulaire</h2>
         <div class="actions">
           <button class="btn btn-error mr-2" @click="clearForm">Vider</button>
-          <button class="btn btn-success" @click="saveForm">Enregistrer JSON</button>
+          <button class="btn btn-secondary mr-2" @click="triggerImport">Importer</button>
+          <button class="btn btn-secondary mr-2" @click="saveForm">Exporter</button>
+          <button class="btn btn-primary" @click="saveAsModel">Sauvegarder comme modèle</button>
+          <input type="file" ref="fileInput" accept=".json" style="display: none" @change="handleImportStructure" />
         </div>
       </div>
 
@@ -49,7 +52,7 @@ import draggable from 'vuedraggable';
 import EditorSidebar from './EditorSidebar.vue';
 // EditorProperties removed
 import EditorNode from './EditorNode.vue';
-import { exportToJson } from '../../utils/exportUtils';
+import { exportToJson, importFromJson } from '../../utils/exportUtils';
 
 const props = defineProps({
   initialData: {
@@ -58,10 +61,11 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:modelValue', 'save']);
+const emit = defineEmits(['update:modelValue', 'save', 'save-model']);
 
 const formData = ref<any>(null);
 const selectedNode = ref<any>(null);
+const fileInput = ref<HTMLInputElement | null>(null);
 
 onMounted(() => {
   // Deep clone to avoid mutating the original directly until saved
@@ -120,7 +124,33 @@ const saveForm = () => {
     // Export JSON file
     exportToJson(formData.value, 'form_structure.json');
     emit('save', formData.value);
-    alert('Structure du formulaire exportée et sauvegardée en local !');
+};
+
+const saveAsModel = () => {
+  const modelName = window.prompt("Entrez le nom du nouveau modèle :");
+  if (modelName && modelName.trim() !== "") {
+    emit('save-model', { name: modelName.trim(), data: formData.value });
+  }
+};
+
+const triggerImport = () => {
+  fileInput.value?.click();
+};
+
+const handleImportStructure = async (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    const file = target.files[0];
+    try {
+      const data = await importFromJson(file!);
+      formData.value = data;
+    } catch (e) {
+      console.error('Erreur lors de l\'import de la structure', e);
+      alert('Erreur lors de l\'import de la structure');
+    } finally {
+      target.value = '';
+    }
+  }
 };
 </script>
 
