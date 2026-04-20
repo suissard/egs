@@ -86,25 +86,17 @@ Cette fonctionnalité permet de pré-remplir ou de générer du contenu pour un 
 #### 2. Mécanique de Report (Action Reports)
 **Identifiant visuel :** Icône orange (éclair) `⚡` à côté du nom du champ.
 
-Les Action Reports permettent de déclencher des alertes visuelles (ex: "Attention, risque de chute élevé") basées sur les valeurs saisies par l'utilisateur. C'est particulièrement utile pour les scores d'évaluation clinique.
+Les Action Reports permettent de reporter automatiquement des valeurs ou des données dans un autre champ du formulaire, en fonction des saisies de l'utilisateur.
 
 **Comment l'utiliser :**
 1. Cliquez sur l'icône d'édition d'un champ.
 2. Cliquez sur le bouton "⚡ Report".
 3. L'éditeur de rapport JSON s'ouvrira. Vous devez y définir un tableau de règles.
 4. **Structure d'une règle JSON :**
-   ```json
-   [
-     {
-       "condition": "value < 24",
-       "message": "Suspicion de troubles cognitifs",
-       "type": "warning"
-     }
-   ]
-   ```
-   * `condition` : Une expression JavaScript simple évaluée contre la variable `value` (qui représente la valeur courante du champ).
-   * `message` : Le texte à afficher à l'utilisateur si la condition est vraie.
-   * `type` : Le style visuel de l'alerte (ex: `info`, `warning`, `error`, `success`).
+La configuration se fait via l'interface d'édition, où vous définissez :
+   *   **Trigger Value (Valeur déclenchante) :** La valeur qui, si elle est sélectionnée ou saisie, va déclencher le report.
+   *   **Target Key (Clé cible) :** L'identifiant (clé JSON) du champ où la valeur doit être reportée.
+   *   **Value to Report (Valeur à reporter) :** La donnée spécifique qui sera injectée dans le champ cible.
 
 **Note sur les icônes :**
 Dans le mode Édition, dès que vous avez configuré l'une de ces mécaniques sur un champ, la petite icône correspondante (bleue pour l'IA, orange pour le Report) apparaîtra à droite du nom du composant dans la vue principale du constructeur, vous permettant d'identifier rapidement les champs disposant de comportements avancés.
