@@ -5,7 +5,7 @@
         <div class="col" style="max-width: 900px; width: 100%;">
           <h1 class="text-h3 mb-8 text-center font-weight-bold text-primary">Formulaire Dynamique</h1>
 
-          <div class="card pa-4 mb-8 sticky-header shadow-sm">
+          <div class="card pa-4 mb-8 sticky-header shadow-sm no-print">
             <div class="d-flex justify-space-between align-center flex-wrap gap-4">
                 <div class="input-group mb-0 flex-grow-1 mr-4" style="min-width: 250px;">
                   <label class="input-label font-weight-bold">Choisir un modèle</label>
@@ -44,7 +44,7 @@
             <form ref="form" @submit.prevent="submitForm">
               <FormRenderer :node="formRoot" :root-data="formData" />
 
-              <div class="card mt-8 pa-4 bg-grey-lighten-5" style="border: none;">
+              <div class="card mt-8 pa-4 bg-grey-lighten-5 no-print" style="border: none;">
                 <button type="submit" class="btn btn-primary btn-block btn-lg text-uppercase mb-4">
                   Valider le formulaire
                 </button>

@@ -31,6 +31,7 @@ export interface FormElement {
 	id?: string;
 	minWidth?: string;
 	showIf?: ShowIfCondition;
+	pageBreakBefore?: boolean;
 }
 
 export interface BoxElement extends FormElement {
