@@ -122,6 +122,13 @@
              <div class="text-caption bg-grey-lighten-4 pa-2 rounded text-truncate" :title="node.aiPrompt">{{ node.aiPrompt }}</div>
           </div>
         </template>
+
+        <div class="input-group w-100 mt-2">
+          <label class="d-flex align-center gap-2 cursor-pointer">
+            <input v-model="node.pageBreakBefore" type="checkbox" />
+            <span class="text-caption font-weight-bold">Saut de page (avant impression)</span>
+          </label>
+        </div>
       </div>
 
       <div class="d-flex justify-end mt-3">

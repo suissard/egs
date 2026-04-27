@@ -150,4 +150,10 @@ function toggleDrawer() {
   overflow-y: auto;
   flex: 1;
 }
+
+@media print {
+  .fab-btn {
+    display: none !important;
+  }
+}
 </style>

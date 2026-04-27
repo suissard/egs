@@ -1,4 +1,13 @@
 <template>
+
+  <div v-if="node.pageBreakBefore" class="page-break">
+    <div v-if="props.previewPrintMode" class="text-center text-grey text-caption my-4 position-relative d-flex align-center justify-center no-print">
+        <div style="flex-grow: 1; height: 1px; border-top: 2px dashed #ccc;"></div>
+        <span class="px-3 bg-grey-lighten-5 rounded-pill border border-grey-lighten-1">--- Saut de page ---</span>
+        <div style="flex-grow: 1; height: 1px; border-top: 2px dashed #ccc;"></div>
+    </div>
+  </div>
+
   <div class="form-renderer-wrapper">
     <transition name="fade-slide" mode="out-in">
       <div v-if="!isVisible && !forceShow" class="hidden-indicator" key="hidden">
@@ -29,14 +38,16 @@
             <div :class="[node.title ? 'pa-4' : 'pa-0', 'd-flex', 'flex-column']">
               <!-- Row Layout: Flexbox with gap -->
               <div v-if="node.direction === 'row'" class="d-flex flex-wrap" style="gap: 16px">
-                <FormRenderer v-for="child in node.children" :key="child.id" :node="child" :root-data="rootData" class="flex-grow-1"
+                <FormRenderer v-for="child in node.children" :key="child.id" :node="child" :root-data="rootData"
+                    :preview-print-mode="props.previewPrintMode" class="flex-grow-1"
                   :style="{ minWidth: child.minWidth || '200px' }" />
               </div>
 
               <!-- Column Layout: Flexbox with gap -->
               <div v-else class="d-flex flex-column" style="gap: 16px">
                 <div v-for="child in node.children" :key="child.id">
-                  <FormRenderer :node="child" :root-data="rootData" />
+                  <FormRenderer :node="child" :root-data="rootData"
+                    :preview-print-mode="props.previewPrintMode" />
                 </div>
               </div>
             </div>
@@ -44,7 +55,8 @@
         </template>
 
         <template v-else-if="isInput(node)">
-          <InputWrapper :node="node" :root-data="rootData" />
+          <InputWrapper :node="node" :root-data="rootData"
+                    :preview-print-mode="props.previewPrintMode" />
         </template>
       </div>
     </transition>
@@ -60,6 +72,7 @@ import InputWrapper from './InputWrapper.vue';
 
 // Define props
 const props = defineProps<{
+  previewPrintMode?: boolean;
   node: FormNode;
   rootData: Record<string, any>;
 }>();
