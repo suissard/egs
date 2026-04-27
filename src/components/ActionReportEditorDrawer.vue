@@ -43,7 +43,7 @@
             <div class="input-group mb-0">
               <label class="text-caption font-weight-bold">Valeur à reporter (valueToReport)</label>
               <input v-model="report.valueToReport" type="text" class="input-field py-1 px-2 text-body-2" placeholder="Ex: 50, Non, ..." />
-              <small class="text-grey text-caption">Valeur envoyée au champ cible.</small>
+              <small class="text-grey text-caption">Valeur envoyée au champ cible. (Si la cible est un tableau, séparez les colonnes par des virgules)</small>
             </div>
           </div>
 
