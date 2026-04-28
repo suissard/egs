@@ -12,8 +12,14 @@
     <div class="header-container d-flex justify-space-between align-center mb-2 pe-16">
       <div class="font-weight-bold d-flex align-center gap-2">
         <span class="mdi mdi-drag cursor-grab drag-handle text-grey-darken-1"></span>
-        <span v-if="isBox" class="text-primary">{{ node.title || 'Box' }} ({{ node.direction || 'column' }})</span>
+                <span v-if="isBox" class="text-primary">{{ node.title || 'Box' }} ({{ node.direction || 'column' }})</span>
         <span v-else class="text-secondary">{{ node.label || 'Champ' }} ({{ node.inputType }})</span>
+        <div v-if="!isBox && node.aiPrompt" title="Remplissage par IA configuré" class="d-flex align-center justify-center text-white rounded-circle" style="background-color: #38bdf8; width: 20px; height: 20px; font-size: 12px; flex-shrink: 0;">
+          <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        </div>
+        <div v-if="!isBox && node.actionReports && node.actionReports.length > 0" title="Mécanique de report configurée" class="d-flex align-center justify-center text-white rounded-circle" style="background-color: #ff9800; width: 20px; height: 20px; font-size: 12px; flex-shrink: 0;">
+          <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        </div>
       </div>
       <div class="actions d-flex gap-2 position-absolute" style="top: 12px; right: 12px;">
         <button class="btn-icon bg-emerald text-white rounded-circle d-flex align-center justify-center p-0" style="width: 32px; height: 32px; border: none; cursor: pointer; background-color: #10b981; flex: 0 0 32px;" @click.stop="toggleEdit" title="Éditer">

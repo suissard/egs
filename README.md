@@ -67,6 +67,40 @@ Le mode édition (`FormEditor.vue`) est le cœur du constructeur. Il permet de c
 
 ### Côté Fonctionnel (Pour l'utilisateur)
 
+### Mécaniques de Formulaire (Mode Édition)
+
+Le constructeur de formulaires inclut des mécaniques avancées pour rendre vos questionnaires plus intelligents et réactifs. Dans le mode Édition, ces mécaniques sont indiquées par des petites icônes colorées à côté du nom de l'élément lorsqu'elles sont configurées.
+
+#### 1. Remplissage par IA (AI Prompts)
+**Identifiant visuel :** Icône bleue (étincelles) `✨` à côté du nom du champ.
+
+Cette fonctionnalité permet de pré-remplir ou de générer du contenu pour un champ spécifique en utilisant l'Intelligence Artificielle.
+
+**Comment l'utiliser :**
+1. Cliquez sur l'icône d'édition (crayon vert) d'un champ d'entrée (texte, textarea, etc.).
+2. Dans les propriétés du champ, cliquez sur le bouton "Prompt IA".
+3. Saisissez votre instruction (prompt) pour l'IA.
+4. **Système de Template :** Vous pouvez utiliser des variables dynamiques en utilisant la syntaxe moustache `{{ cle_du_champ }}`. L'IA remplacera cette variable par la valeur saisie par l'utilisateur dans le champ correspondant avant de générer sa réponse.
+   * *Exemple :* "Résume les symptômes suivants en une phrase : {{ symptomes_patient }}"
+
+#### 2. Mécanique de Report (Action Reports)
+**Identifiant visuel :** Icône orange (éclair) `⚡` à côté du nom du champ.
+
+Les Action Reports permettent de reporter automatiquement des valeurs ou des données dans un autre champ du formulaire, en fonction des saisies de l'utilisateur.
+
+**Comment l'utiliser :**
+1. Cliquez sur l'icône d'édition d'un champ.
+2. Cliquez sur le bouton "⚡ Report".
+3. L'éditeur de rapport JSON s'ouvrira. Vous devez y définir un tableau de règles.
+4. **Structure d'une règle JSON :**
+La configuration se fait via l'interface d'édition, où vous définissez :
+   *   **Trigger Value (Valeur déclenchante) :** La valeur qui, si elle est sélectionnée ou saisie, va déclencher le report.
+   *   **Target Key (Clé cible) :** L'identifiant (clé JSON) du champ où la valeur doit être reportée.
+   *   **Value to Report (Valeur à reporter) :** La donnée spécifique qui sera injectée dans le champ cible.
+
+**Note sur les icônes :**
+Dans le mode Édition, dès que vous avez configuré l'une de ces mécaniques sur un champ, la petite icône correspondante (bleue pour l'IA, orange pour le Report) apparaîtra à droite du nom du composant dans la vue principale du constructeur, vous permettant d'identifier rapidement les champs disposant de comportements avancés.
+
 *   **Interface divisée en deux parties :**
     *   À gauche : Une barre d'outils (**Composants**) contenant les éléments disponibles (Conteneurs Box, Texte, Nombre, Cases à cocher, etc.).
     *   Au centre : Le **Canvas**, la zone de travail où l'on construit le formulaire.
