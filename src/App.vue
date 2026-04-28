@@ -106,10 +106,9 @@ import ActionReportEditorDrawer from './components/ActionReportEditorDrawer.vue'
 import FormEditor from './components/editor/FormEditor.vue';
 import UsageDoc from './components/docs/UsageDoc.vue';
 import EditorDoc from './components/docs/EditorDoc.vue';
-import personalCoordinates from './data/personalCoordinates.json';
+// import personalCoordinates from './data/personalCoordinates.json';
 import fullFormExample from './data/fullFormExample.json';
-import egs from './data/egs.json';
-import geriatricAssessment from './data/geriatricAssessment.json';
+import geriatricAssessment from './data/EGS.json';
 import psychologicalAnalysis from './data/psychologicalAnalysis.json';
 import type { FormConfig } from './types/FormConfig';
 
@@ -130,10 +129,10 @@ const formData = ref<Record<string, any>>({});
 
 const CUSTOM_MODELS_STORAGE_KEY = 'egs-custom-models';
 const availableModels = ref([
-  { key: 'egs', title: 'Évaluation Gériatrique Standardisée (EGS)', data: egs },
-  { title: 'Coordonnées Personnelles', key: 'personal', data: personalCoordinates },
-  { title: 'Exemple Complet', key: 'full', data: fullFormExample },
+  // { key: 'egs', title: 'Évaluation Gériatrique Standardisée (EGS)', data: egs },
   { title: 'Évaluation Gériatrique Standardisée', key: 'geriatric', data: geriatricAssessment },
+  // { title: 'Coordonnées Personnelles', key: 'personal', data: personalCoordinates },
+  { title: 'Exemple Complet', key: 'full', data: fullFormExample },
   { title: 'Analyse Psychologique', key: 'psychological', data: psychologicalAnalysis }
 ]);
 
@@ -233,7 +232,16 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
               }
             } else if (targetNode.inputType === 'table') {
               if (!targetNode.value) targetNode.value = [];
-              const rowToAdd = Array.isArray(report.valueToReport) ? report.valueToReport : [report.valueToReport];
+
+              let rowToAdd: any[];
+              if (Array.isArray(report.valueToReport)) {
+                rowToAdd = report.valueToReport;
+              } else if (typeof report.valueToReport === 'string' && report.valueToReport.includes(',')) {
+                rowToAdd = report.valueToReport.split(',').map(item => item.trim());
+              } else {
+                rowToAdd = [report.valueToReport];
+              }
+
               const exists = targetNode.value.some((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToAdd));
               if (!exists) {
                 targetNode.value.push(rowToAdd);
@@ -256,7 +264,16 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
               }
             } else if (targetNode.inputType === 'table') {
               if (targetNode.value && Array.isArray(targetNode.value)) {
-                const rowToRemove = Array.isArray(report.valueToReport) ? report.valueToReport : [report.valueToReport];
+
+                let rowToRemove: any[];
+                if (Array.isArray(report.valueToReport)) {
+                  rowToRemove = report.valueToReport;
+                } else if (typeof report.valueToReport === 'string' && report.valueToReport.includes(',')) {
+                  rowToRemove = report.valueToReport.split(',').map(item => item.trim());
+                } else {
+                  rowToRemove = [report.valueToReport];
+                }
+
                 const index = targetNode.value.findIndex((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToRemove));
                 if (index > -1) {
                   targetNode.value.splice(index, 1);
@@ -337,7 +354,8 @@ function handleOpenDoc(mode: 'usage' | 'editor') {
 
 function loadSelectedModel() {
   const selectedModel = availableModels.value.find(m => m.key === selectedModelKey.value);
-  const config = selectedModel ? selectedModel.data : egs;
+  const config = selectedModel ? selectedModel.data : geriatricAssessment;
+  
 
   // 1. Create structure from config
   const rootParams = config as unknown as FormConfig;

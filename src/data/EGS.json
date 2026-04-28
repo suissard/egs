@@ -1,7 +1,7 @@
 {
   "type": "box",
   "direction": "column",
-  "title": "OLD EGS PROTOTYPE",
+  "title": "EGS",
   "children": [
     {
       "type": "box",
@@ -152,6 +152,13 @@
               "options": [
                 "oui",
                 "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Hémorragie"
+                }
               ]
             },
             {
@@ -185,6 +192,13 @@
           "options": [
             "oui",
             "NON"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": "oui",
+              "valueToReport": "Iatrogénie"
+            }
           ]
         }
       ]
@@ -354,6 +368,13 @@
               "options": [
                 "oui",
                 "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Chutes"
+                }
               ]
             },
             {
@@ -895,7 +916,8 @@
             "Dénutrition",
             "Fausse route",
             "Iatrogénie",
-            "Dépression / Anxiété",
+            "Dépression",
+            "Anxiété",
             "Risque suicidaire",
             "Douleur",
             "Infectieux",
