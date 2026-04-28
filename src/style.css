@@ -263,3 +263,48 @@ h6 {
 	padding: 0.75rem;
 	flex: 1;
 }
+
+/* --- PRINT MEDIA QUERIES --- */
+@media print {
+  body {
+    background-color: white !important;
+  }
+
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .no-print,
+  .badge,
+  .btn,
+  .badge-action-report {
+    display: none !important;
+  }
+
+  /* Avoid breaking inside important elements */
+  .card, .form-group, .input-wrapper {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Hide specific UI elements that shouldn't be printed */
+  .badge,
+  .badge-action-report,
+  .btn,
+  .drawer-overlay,
+  .drawer-container {
+    display: none !important;
+  }
+
+  /* Ensure proper margins and layout for A4 */
+  .app-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .shadow-sm, .shadow-md {
+    box-shadow: none !important;
+  }
+}
