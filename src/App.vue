@@ -232,7 +232,16 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
               }
             } else if (targetNode.inputType === 'table') {
               if (!targetNode.value) targetNode.value = [];
-              const rowToAdd = Array.isArray(report.valueToReport) ? report.valueToReport : [report.valueToReport];
+
+              let rowToAdd: any[];
+              if (Array.isArray(report.valueToReport)) {
+                rowToAdd = report.valueToReport;
+              } else if (typeof report.valueToReport === 'string' && report.valueToReport.includes(',')) {
+                rowToAdd = report.valueToReport.split(',').map(item => item.trim());
+              } else {
+                rowToAdd = [report.valueToReport];
+              }
+
               const exists = targetNode.value.some((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToAdd));
               if (!exists) {
                 targetNode.value.push(rowToAdd);
@@ -255,7 +264,16 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
               }
             } else if (targetNode.inputType === 'table') {
               if (targetNode.value && Array.isArray(targetNode.value)) {
-                const rowToRemove = Array.isArray(report.valueToReport) ? report.valueToReport : [report.valueToReport];
+
+                let rowToRemove: any[];
+                if (Array.isArray(report.valueToReport)) {
+                  rowToRemove = report.valueToReport;
+                } else if (typeof report.valueToReport === 'string' && report.valueToReport.includes(',')) {
+                  rowToRemove = report.valueToReport.split(',').map(item => item.trim());
+                } else {
+                  rowToRemove = [report.valueToReport];
+                }
+
                 const index = targetNode.value.findIndex((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToRemove));
                 if (index > -1) {
                   targetNode.value.splice(index, 1);
