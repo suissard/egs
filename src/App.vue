@@ -16,6 +16,11 @@
                 </option>
               </select>
                 </div>
+                <div v-if="!isFormVierge && !isEditMode && !showDocumentation" class="d-flex align-center">
+                  <button type="button" class="btn btn-error btn-sm rounded-pill px-4" style="padding: 0.5rem 1rem; font-size: 0.85rem;" @click="triggerResetForm">
+                    🗑️ Effacer les données
+                  </button>
+                </div>
                 <div class="d-flex align-center gap-3 bg-grey-lighten-4 pa-2 rounded-pill px-4 border">
                   <label class="font-weight-bold mb-0">Mode Édition</label>
                   <label class="switch">
@@ -76,6 +81,7 @@
           <AIPromptEditorDrawer />
           <ActionReportEditorDrawer />
           <AIErrorDrawer />
+          <OrphanDataDrawer />
 
           <div v-if="submittedData" class="alert alert-info mt-6">
             <h3 class="font-weight-bold mb-2">Données soumises</h3>
@@ -95,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, provide } from 'vue';
+import { ref, onMounted, watch, provide, computed } from 'vue';
 import { FormFactory } from './models/FormFactory';
 import { FormNode } from './models/FormNode';
 import { BoxNode } from './models/BoxNode';
@@ -105,6 +111,7 @@ import AISettingsDrawer from './components/AISettingsDrawer.vue';
 import AIPromptEditorDrawer from './components/AIPromptEditorDrawer.vue';
 import ActionReportEditorDrawer from './components/ActionReportEditorDrawer.vue';
 import AIErrorDrawer from './components/AIErrorDrawer.vue';
+import OrphanDataDrawer from './components/OrphanDataDrawer.vue';
 import FormEditor from './components/editor/FormEditor.vue';
 import UsageDoc from './components/docs/UsageDoc.vue';
 import EditorDoc from './components/docs/EditorDoc.vue';
@@ -116,6 +123,7 @@ import type { FormConfig } from './types/FormConfig';
 
 import { copyToClipboard, generateVisualPdf, exportToJson, importFromJson } from './utils/exportUtils';
 import { formAvailableKeys, currentFormData } from './utils/promptEditorState';
+import { isOrphanDrawerOpen, orphanedData } from './utils/orphanImportState';
 
 const formRoot = ref<FormNode | null>(null);
 // const valid = ref(false); // No longer needed as we use native browser validation mostly, or simple check
@@ -128,6 +136,54 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 // Ref to store form data reactively so we can compute display conditions
 const formData = ref<Record<string, any>>({});
+
+const isFormVierge = computed(() => {
+  return Object.values(formData.value).every(val => {
+    if (val === null || val === undefined || val === "") return true;
+    if (Array.isArray(val) && val.length === 0) return true;
+    if (typeof val === 'boolean' && !val) return true;
+    return false;
+  });
+});
+
+function resetFormValues(node: FormNode, askConfirm: boolean = true) {
+  const resetNode = (n: FormNode) => {
+    if (n instanceof BoxNode) {
+      n.children.forEach(child => resetNode(child));
+    } else if (n instanceof InputNode) {
+      if (n.inputType === 'checkbox') {
+        if (n.options && n.options.length > 0) {
+          n.value = [];
+        } else {
+          n.value = false;
+        }
+      } else if (n.inputType === 'table') {
+        n.value = [];
+      } else {
+        n.value = null;
+      }
+    }
+  };
+
+  if (askConfirm) {
+    if (!confirm('Êtes-vous sûr de vouloir réinitialiser toutes les données saisies ?')) {
+      return;
+    }
+  }
+
+  resetNode(node);
+  updateFormData();
+
+  if (askConfirm) {
+    showSnackbar('Formulaire réinitialisé !', 'info');
+  }
+}
+
+function triggerResetForm() {
+  if (formRoot.value) {
+    resetFormValues(formRoot.value, true);
+  }
+}
 
 const CUSTOM_MODELS_STORAGE_KEY = 'egs-custom-models';
 const availableModels = ref([
@@ -351,7 +407,7 @@ provide('triggerDataUpdate', updateFormData);
 const STORAGE_KEY = 'egs-form-data';
 
 
-const selectedModelKey = ref('egs');
+const selectedModelKey = ref('geriatric');
 const showDocumentation = ref(false);
 const isEditMode = ref(false);
 const currentConfigData = ref<any>(null);
@@ -401,14 +457,23 @@ onMounted(() => {
   }
   loadSelectedModel();
 
-  // 3. Watch for changes
+  // 3. Watch for changes in form structure to update form data
   watch(
     formRoot,
     (newVal) => {
       if (newVal && newVal instanceof BoxNode) {
-        const data = newVal.getData();
         updateFormData();
-        localStorage.setItem(`${STORAGE_KEY}-${selectedModelKey.value}`, JSON.stringify(data));
+      }
+    },
+    { deep: true }
+  );
+
+  // Watch for any changes in the form data values to persist to local storage
+  watch(
+    formData,
+    (newVal) => {
+      if (newVal) {
+        localStorage.setItem(`${STORAGE_KEY}-${selectedModelKey.value}`, JSON.stringify(newVal));
       }
     },
     { deep: true }
@@ -497,8 +562,38 @@ async function handleImportJson(event: Event) {
     try {
       const data = await importFromJson(file);
       if (formRoot.value) {
+        // Detect structure differences (orphaned keys)
+        const currentKeys = extractKeysFromNode(formRoot.value);
+        const importedKeys = Object.keys(data);
+        const orphans: Record<string, any> = {};
+        let hasOrphans = false;
+
+        for (const key of importedKeys) {
+          if (!currentKeys.includes(key)) {
+            const val = data[key];
+            // Only consider meaningful non-empty orphaned values
+            const isEmpty = val === null || val === undefined || val === "" || (Array.isArray(val) && val.length === 0);
+            if (!isEmpty) {
+              orphans[key] = val;
+              hasOrphans = true;
+            }
+          }
+        }
+
+        // Reset form values to have a clean slate before importing
+        resetFormValues(formRoot.value, false);
+
+        // Apply data to the existing fields
         applyDataToNode(formRoot.value, data);
-        showSnackbar('Données importées avec succès !', 'success');
+
+        if (hasOrphans) {
+          orphanedData.value = orphans;
+          isOrphanDrawerOpen.value = true;
+          showSnackbar('Données importées, mais certains champs de l\'ancienne version n\'existent plus.', 'warning');
+        } else {
+          orphanedData.value = {};
+          showSnackbar('Données importées avec succès !', 'success');
+        }
       }
     } catch (e) {
       showSnackbar('Erreur lors de l\'import.', 'error');

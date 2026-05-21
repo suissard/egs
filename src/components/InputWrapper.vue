@@ -214,7 +214,7 @@
 
 <script setup lang="ts">
 import { InputNode } from '../models/InputNode';
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, inject, watch } from 'vue';
 import { openRouterApiKey, openRouterModel, triggerAIError, isErrorDrawerOpen } from '../utils/aiSettings';
 import { openPromptEditor } from '../utils/promptEditorState';
 
@@ -264,6 +264,18 @@ const props = defineProps<{
   readonly?: boolean;
   rootData?: Record<string, any>;
 }>();
+
+const triggerDataUpdate = inject<() => void>('triggerDataUpdate');
+
+watch(
+  () => props.node.value,
+  () => {
+    if (triggerDataUpdate) {
+      triggerDataUpdate();
+    }
+  },
+  { deep: true }
+);
 
 function getAnonymousDataSummary(rootData: Record<string, any>): string {
   if (!rootData) return '';
