@@ -1,7 +1,7 @@
 {
   "type": "box",
   "direction": "column",
-  "title": "OLD EGS PROTOTYPE",
+  "title": "EGS",
   "children": [
     {
       "type": "box",
@@ -152,6 +152,13 @@
               "options": [
                 "oui",
                 "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Hémorragie"
+                }
               ]
             },
             {
@@ -185,6 +192,13 @@
           "options": [
             "oui",
             "NON"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "risques_liste",
+              "triggerValue": "oui",
+              "valueToReport": "Iatrogénie"
+            }
           ]
         }
       ]
@@ -354,6 +368,13 @@
               "options": [
                 "oui",
                 "non"
+              ],
+              "actionReports": [
+                {
+                  "targetKey": "risques_liste",
+                  "triggerValue": "oui",
+                  "valueToReport": "Chutes"
+                }
               ]
             },
             {
@@ -380,7 +401,7 @@
     {
       "type": "box",
       "direction": "column",
-      "title": "Evaluation cognitive et psychologique",
+      "title": "Évaluation cognitive et psychologique",
       "children": [
         {
           "type": "input",
@@ -458,7 +479,8 @@
           "options": [
             "NON",
             "Partielle",
-            "Totale"
+            "Totale",
+            "Non objectivable"
           ],
           "actionReports": [
             {
@@ -487,14 +509,7 @@
               "valueToReport": "Refus de soins"
             }
           ]
-        }
-      ]
-    },
-    {
-      "type": "box",
-      "direction": "column",
-      "title": "Évaluation psychologique (suite)",
-      "children": [
+        },
         {
           "type": "box",
           "direction": "row",
@@ -506,7 +521,8 @@
               "key": "psy_depression",
               "options": [
                 "oui",
-                "non"
+                "non",
+                "non objectivable"
               ],
               "actionReports": [
                 {
@@ -541,6 +557,28 @@
           "children": [
             {
               "type": "input",
+              "inputType": "number",
+              "label": "GDS / 15",
+              "key": "psy_gds"
+            },
+            {
+              "type": "input",
+              "inputType": "date",
+              "label": "le",
+              "key": "psy_gds_date"
+            }
+          ],
+          "showIf": {
+            "dependsOn": "psy_depression",
+            "value": "oui"
+          }
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
               "inputType": "radio",
               "label": "Troubles du sommeil",
               "key": "psy_sommeil",
@@ -556,7 +594,8 @@
               "key": "psy_suicide",
               "options": [
                 "oui",
-                "non"
+                "non",
+                "non objectivable"
               ],
               "actionReports": [
                 {
@@ -567,6 +606,28 @@
               ]
             }
           ]
+        },
+        {
+          "type": "box",
+          "direction": "row",
+          "children": [
+            {
+              "type": "input",
+              "inputType": "number",
+              "label": "RUD",
+              "key": "psy_rud"
+            },
+            {
+              "type": "input",
+              "inputType": "date",
+              "label": "le",
+              "key": "psy_rud_date"
+            }
+          ],
+          "showIf": {
+            "dependsOn": "psy_suicide",
+            "value": "oui"
+          }
         }
       ]
     },
@@ -895,7 +956,8 @@
             "Dénutrition",
             "Fausse route",
             "Iatrogénie",
-            "Dépression / Anxiété",
+            "Dépression",
+            "Anxiété",
             "Risque suicidaire",
             "Douleur",
             "Infectieux",

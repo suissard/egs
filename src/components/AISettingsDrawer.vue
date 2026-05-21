@@ -42,7 +42,7 @@
             type="text"
             v-model="openRouterModel"
             class="input-field"
-            placeholder="Ex: openrouter/free"
+            placeholder="Ex: nvidia/nemotron-3-super-120b-a12b:free"
           />
         </div>
       </div>

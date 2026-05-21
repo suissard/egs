@@ -10,7 +10,7 @@
 
   <div class="form-renderer-wrapper">
     <transition name="fade-slide" mode="out-in">
-      <div v-if="!isVisible && !forceShow" class="hidden-indicator" key="hidden">
+      <div v-if="!isVisible && !forceShow" class="hidden-indicator no-print" key="hidden">
         <div class="hidden-line"></div>
         <button type="button" class="btn-eye" @click="forceShow = true" title="Afficher ce champ masqué ">
           <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -129,6 +129,12 @@ export default {
   padding: 0.5rem 0;
   opacity: 0.5;
   transition: opacity 0.3s ease;
+}
+
+@media print {
+  .hidden-indicator {
+    display: none !important;
+  }
 }
 
 .hidden-indicator:hover {

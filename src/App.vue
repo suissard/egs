@@ -75,6 +75,7 @@
           <AISettingsDrawer @open-doc="handleOpenDoc" />
           <AIPromptEditorDrawer />
           <ActionReportEditorDrawer />
+          <AIErrorDrawer />
 
           <div v-if="submittedData" class="alert alert-info mt-6">
             <h3 class="font-weight-bold mb-2">Données soumises</h3>
@@ -103,6 +104,7 @@ import FormRenderer from './components/FormRenderer.vue';
 import AISettingsDrawer from './components/AISettingsDrawer.vue';
 import AIPromptEditorDrawer from './components/AIPromptEditorDrawer.vue';
 import ActionReportEditorDrawer from './components/ActionReportEditorDrawer.vue';
+import AIErrorDrawer from './components/AIErrorDrawer.vue';
 import FormEditor from './components/editor/FormEditor.vue';
 import UsageDoc from './components/docs/UsageDoc.vue';
 import EditorDoc from './components/docs/EditorDoc.vue';
@@ -242,7 +244,11 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
                 rowToAdd = [report.valueToReport];
               }
 
-              const exists = targetNode.value.some((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToAdd));
+              const exists = targetNode.value.some((row: any[]) => {
+                if (!Array.isArray(row) || row.length === 0) return false;
+                const targetVal = String(rowToAdd[0] || '').trim();
+                return String(row[0] || '').trim() === targetVal;
+              });
               if (!exists) {
                 targetNode.value.push(rowToAdd);
               }
@@ -274,7 +280,11 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
                   rowToRemove = [report.valueToReport];
                 }
 
-                const index = targetNode.value.findIndex((row: any[]) => JSON.stringify(row) === JSON.stringify(rowToRemove));
+                const index = targetNode.value.findIndex((row: any[]) => {
+                  if (!Array.isArray(row) || row.length === 0) return false;
+                  const targetVal = String(rowToRemove[0] || '').trim();
+                  return String(row[0] || '').trim() === targetVal;
+                });
                 if (index > -1) {
                   targetNode.value.splice(index, 1);
                 }
