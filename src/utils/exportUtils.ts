@@ -193,8 +193,8 @@ export async function generateVisualPdf(
 			const children = Array.from(row.children);
 			if (children.length > 0) {
 				const lastChild = children[children.length - 1];
-				if (lastChild.tagName === "TH" || lastChild.querySelector("button") || lastChild.textContent?.trim() === "X") {
-					lastChild.parentNode?.removeChild(lastChild);
+				if (lastChild && (lastChild.tagName === "TH" || lastChild.querySelector("button") || lastChild.textContent?.trim() === "X")) {
+					lastChild.parentNode?.removeChild(lastChild as Node);
 				}
 			}
 		});
