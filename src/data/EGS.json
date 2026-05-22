@@ -993,6 +993,14 @@
           ]
         }
       ]
+    },
+    {
+      "type": "input",
+      "inputType": "textarea",
+      "label": "Commentaire libre",
+      "id": "9ldap1l",
+      "key": "commentaire_libre",
+      "required": false
     }
   ]
 }
