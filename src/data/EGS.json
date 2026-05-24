@@ -58,13 +58,15 @@
           "type": "input",
           "inputType": "textarea",
           "label": "Médicaux",
-          "key": "atcd_medicaux"
+          "key": "atcd_medicaux",
+          "aiPrompt": "Tu es un assistant médical. Reformule et structure proprement la liste des antécédents médicaux suivants en utilisant une terminologie médicale claire et standard :\n\n{{ atcd_medicaux }}"
         },
         {
           "type": "input",
           "inputType": "textarea",
           "label": "Chirurgicaux",
-          "key": "atcd_chirurgicaux"
+          "key": "atcd_chirurgicaux",
+          "aiPrompt": "Tu es un assistant médical. Reformule et structure proprement la liste des antécédents chirurgicaux suivants en utilisant une terminologie médicale claire et standard :\n\n{{ atcd_chirurgicaux }}"
         }
       ]
     },
@@ -77,7 +79,8 @@
           "type": "input",
           "inputType": "textarea",
           "label": "Anamnèse récente",
-          "key": "anamnese_recente"
+          "key": "anamnese_recente",
+          "aiPrompt": "Tu es un assistant médical. Reformule et structure l'anamnèse suivante de façon professionnelle, claire, chronologique et concise :\n\n{{ anamnese_recente }}"
         }
       ]
     },
@@ -411,7 +414,8 @@
           "options": [
             "NON",
             "léger",
-            "Majeur"
+            "Majeur",
+            "non objectivable"
           ]
         },
         {
@@ -990,7 +994,8 @@
             "Risque",
             "Actions",
             "Échéances"
-          ]
+          ],
+          "aiPrompt": "Tu es un expert médical gériatrique. Remplis le plan d'action sous forme d'un tableau de tableaux JSON (ex: [[\"Chutes\", \"Mise en place d'un kinésithérapeute\", \"Sous 15 jours\"]]) basé sur les risques identifiés dans les données suivantes :\\n{{ ALL_ANONYMOUS }}"
         }
       ]
     },

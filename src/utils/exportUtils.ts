@@ -236,11 +236,15 @@ export async function generateVisualPdf(
 		clonedTextarea.parentNode?.replaceChild(replacementDiv, clonedTextarea);
 	});
 
-	// Temporarily append clone to active DOM body so html2canvas can measure and capture it properly
+	// Set a fixed standard width for A4 printing (900px matches the desktop layout design)
+	const printWidthPx = 900;
 	clone.style.position = "absolute";
 	clone.style.left = "-99999px";
 	clone.style.top = "0";
-	clone.style.width = `${element.offsetWidth}px`;
+	clone.style.width = `${printWidthPx}px`;
+	clone.style.padding = "20px";
+	clone.style.backgroundColor = "#ffffff";
+	clone.style.boxSizing = "border-box";
 	document.body.appendChild(clone);
 
 	try {
@@ -248,7 +252,8 @@ export async function generateVisualPdf(
 		const canvas = await html2canvas(clone, {
 			scale: 2,
 			useCORS: true,
-			logging: false
+			logging: false,
+			backgroundColor: "#ffffff"
 		});
 
 		// Now we calculate safe split boundaries using the layout in the DOM
@@ -272,12 +277,12 @@ export async function generateVisualPdf(
 		});
 
 		const finalWidth = pdfWidth - margin * 2;
-		const pxToMm = finalWidth / element.offsetWidth; // Conversion ratio from CSS pixels to mm on A4
+		const pxToMm = finalWidth / printWidthPx; // Conversion ratio from CSS pixels to mm on A4
 		const pageContentHeightPx = (pdfHeight - margin * 2) / pxToMm; // Max height of a page in CSS pixels
 
 		let currentSliceStart = 0;
-		const totalHeightPx = element.offsetHeight;
-		const canvasScale = canvas.width / element.offsetWidth;
+		const totalHeightPx = clone.offsetHeight;
+		const canvasScale = canvas.width / printWidthPx;
 
 		while (currentSliceStart < totalHeightPx) {
 			let targetSliceEnd = currentSliceStart + pageContentHeightPx;

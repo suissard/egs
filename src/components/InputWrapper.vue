@@ -6,7 +6,7 @@
         <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
         <div class="d-flex align-center gap-2">
           <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt !== undefined" class="d-flex align-center gap-1 no-print">
+          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
             <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
               <span v-if="isLoadingAI" class="spinner"></span>
               <span v-else>✨ Générer par IA</span>
@@ -26,7 +26,7 @@
         <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
         <div class="d-flex align-center gap-2">
           <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt !== undefined" class="d-flex align-center gap-1 no-print">
+          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
             <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
               <span v-if="isLoadingAI" class="spinner"></span>
               <span v-else>✨ Générer par IA</span>
@@ -48,7 +48,7 @@
         <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
         <div class="d-flex align-center gap-2">
           <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt !== undefined" class="d-flex align-center gap-1 no-print">
+          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
             <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
               <span v-if="isLoadingAI" class="spinner"></span>
               <span v-else>✨ Générer par IA</span>
@@ -109,7 +109,7 @@
         <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
         <div class="d-flex align-center gap-2">
           <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt !== undefined" class="d-flex align-center gap-1 no-print">
+          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
             <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
               <span v-if="isLoadingAI" class="spinner"></span>
               <span v-else>✨ Générer par IA</span>
@@ -129,7 +129,7 @@
         <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
         <div class="d-flex align-center gap-2">
           <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt !== undefined" class="d-flex align-center gap-1 no-print">
+          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
             <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
               <span v-if="isLoadingAI" class="spinner"></span>
               <span v-else>✨ Générer par IA</span>
@@ -167,7 +167,7 @@
         <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
         <div class="d-flex align-center gap-2">
           <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt !== undefined" class="d-flex align-center gap-1 no-print">
+          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
             <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
               <span v-if="isLoadingAI" class="spinner"></span>
               <span v-else>✨ Générer par IA</span>
@@ -334,10 +334,20 @@ async function generateAI() {
     alert("Veuillez configurer une clé API OpenRouter dans les préférences (icône d'engrenage ⚙️ en bas à droite).");
     return;
   }
-  if (!props.node.aiPrompt) return;
 
   isLoadingAI.value = true;
-  let finalPrompt = props.node.aiPrompt;
+  
+  // Use custom prompt if set, otherwise a smart default based on the field
+  let finalPrompt = props.node.aiPrompt || "";
+  if (!finalPrompt.trim()) {
+    if (props.node.inputType === 'table') {
+      finalPrompt = `Tu es un assistant médical. Remplis le tableau "${props.node.label}" (colonnes : ${props.node.columns.join(', ')}) sous forme d'un tableau JSON (un tableau de tableaux de chaînes de caractères, ex: [["ligne1_col1", "ligne1_col2"], ["ligne2_col1", "ligne2_col2"]]). Rédige uniquement le JSON, sans explications, sans bloc de code markdown, en te basant sur les informations suivantes :\n{{ ALL_ANONYMOUS }}`;
+    } else if (props.node.inputType === 'radio' || props.node.inputType === 'select') {
+      finalPrompt = `Tu es un assistant médical. Sélectionne une seule option pour le champ "${props.node.label}" parmi les options suivantes : [${props.node.options.join(', ')}]. Rédige uniquement l'option choisie, sans aucune autre explication, en te basant sur les informations suivantes :\n{{ ALL_ANONYMOUS }}`;
+    } else {
+      finalPrompt = `Tu es un assistant médical. Rédige une synthèse professionnelle et concise pour le champ "${props.node.label}" en te basant sur les informations suivantes :\n{{ ALL_ANONYMOUS }}`;
+    }
+  }
 
   try {
     // Replace {{ now }} with today's date in French format
