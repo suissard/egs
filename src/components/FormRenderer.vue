@@ -144,7 +144,7 @@ export default {
 .hidden-line {
   flex-grow: 1;
   height: 1px;
-  background-color: var(--border-color, #ccc);
+  background-color: var(--border);
   border-radius: 1px;
 }
 
@@ -152,30 +152,30 @@ export default {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  color: var(--text-muted);
   border-radius: 50%;
   transition: background-color 0.2s, color 0.2s;
 }
 
 .btn-eye:hover, .btn-eye-close:hover {
-  background-color: #eee;
-  color: #333;
+  background-color: #f1f5f9;
+  color: var(--primary);
 }
 
 .force-show-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 8px;
-  background-color: #fff3cd;
-  border: 1px solid #ffe69c;
-  border-radius: 4px;
+  padding: 6px 12px;
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: var(--radius-sm);
   margin-bottom: 8px;
-  color: #664d03;
+  color: #b45309;
   font-size: 0.8em;
 }
 

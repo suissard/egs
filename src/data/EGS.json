@@ -32,13 +32,13 @@
         {
           "type": "input",
           "inputType": "text",
-          "label": "NOM",
+          "label": "Nom",
           "key": "patient_nom"
         },
         {
           "type": "input",
           "inputType": "text",
-          "label": "PRENOM",
+          "label": "Prénom",
           "key": "patient_prenom"
         },
         {
@@ -102,7 +102,7 @@
             {
               "type": "input",
               "inputType": "text",
-              "label": "Autre ttt non recommandé",
+              "label": "Autre traitement non recommandé",
               "key": "traitement_autre_non_recommande"
             }
           ]
@@ -117,8 +117,8 @@
               "label": "Psychotropes",
               "key": "traitement_psychotropes",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ]
             },
             {
@@ -127,8 +127,8 @@
               "label": "Anticholinergiques",
               "key": "traitement_anticholinergiques",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ]
             },
             {
@@ -137,8 +137,8 @@
               "label": "Hypotenseurs multiples",
               "key": "traitement_hypotenseurs",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ]
             }
           ]
@@ -153,13 +153,13 @@
               "label": "Anticoagulants",
               "key": "traitement_anticoagulants",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ],
               "actionReports": [
                 {
                   "targetKey": "risques_liste",
-                  "triggerValue": "oui",
+                  "triggerValue": "Oui",
                   "valueToReport": "Hémorragie"
                 }
               ]
@@ -170,8 +170,8 @@
               "label": "Vitamine D",
               "key": "traitement_vitamine_d",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ]
             },
             {
@@ -180,7 +180,7 @@
               "label": "Insuffisance rénale",
               "key": "traitement_insuf_renale",
               "options": [
-                "NON",
+                "Non",
                 "Modérée",
                 "Sévère"
               ]
@@ -193,13 +193,13 @@
           "label": "Risque iatrogène",
           "key": "traitement_risque_iatrogene",
           "options": [
-            "oui",
-            "NON"
+            "Oui",
+            "Non"
           ],
           "actionReports": [
             {
               "targetKey": "risques_liste",
-              "triggerValue": "oui",
+              "triggerValue": "Oui",
               "valueToReport": "Iatrogénie"
             }
           ]
@@ -221,8 +221,8 @@
               "label": "DTPC",
               "key": "vaccin_dtpc",
               "options": [
-                "A jour",
-                "A prévoir",
+                "À jour",
+                "À prévoir",
                 "Refus"
               ]
             },
@@ -232,8 +232,8 @@
               "label": "Pneumocoque",
               "key": "vaccin_pneumocoque",
               "options": [
-                "A jour",
-                "A prévoir",
+                "À jour",
+                "À prévoir",
                 "Refus"
               ]
             },
@@ -243,8 +243,8 @@
               "label": "Zona",
               "key": "vaccin_zona",
               "options": [
-                "A jour",
-                "A prévoir",
+                "À jour",
+                "À prévoir",
                 "Refus"
               ]
             }
@@ -343,9 +343,9 @@
           "label": "Marche",
           "key": "mobilite_marche",
           "options": [
-            "libre",
-            "aides techniques",
-            "fauteuil roulant"
+            "Libre",
+            "Aides techniques",
+            "Fauteuil roulant"
           ]
         },
         {
@@ -354,9 +354,9 @@
           "label": "Lever de chaise",
           "key": "mobilite_lever",
           "options": [
-            "facile",
-            "difficile",
-            "impossible"
+            "Facile",
+            "Difficile",
+            "Impossible"
           ]
         },
         {
@@ -369,13 +369,13 @@
               "label": "Chute < 6 mois",
               "key": "mobilite_chute",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ],
               "actionReports": [
                 {
                   "targetKey": "risques_liste",
-                  "triggerValue": "oui",
+                  "triggerValue": "Oui",
                   "valueToReport": "Chutes"
                 }
               ]
@@ -386,13 +386,13 @@
               "label": "Risque de chute",
               "key": "mobilite_risque_chute",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ],
               "actionReports": [
                 {
                   "targetKey": "risques_liste",
-                  "triggerValue": "oui",
+                  "triggerValue": "Oui",
                   "valueToReport": "Chutes"
                 }
               ]
@@ -412,10 +412,10 @@
           "label": "Trouble neuro-cognitif",
           "key": "cognitif_tnc",
           "options": [
-            "NON",
-            "léger",
+            "Non",
+            "Léger",
             "Majeur",
-            "non objectivable"
+            "Non objectivable"
           ]
         },
         {
@@ -438,7 +438,7 @@
           "showIf": {
             "dependsOn": "cognitif_tnc",
             "value": [
-              "léger",
+              "Léger",
               "Majeur"
             ]
           }
@@ -449,7 +449,7 @@
           "label": "Troubles du comportement",
           "key": "comportement_list",
           "options": [
-            "NON",
+            "Non",
             "Sorties inopinées / fugues",
             "Idées délirantes",
             "Hallucinations",
@@ -481,7 +481,7 @@
           "label": "Désorientation temporo-spatiale",
           "key": "cognitif_dts",
           "options": [
-            "NON",
+            "Non",
             "Partielle",
             "Totale",
             "Non objectivable"
@@ -503,13 +503,13 @@
           "label": "Refus de soins",
           "key": "cognitif_refus_soins",
           "options": [
-            "oui",
-            "non"
+            "Oui",
+            "Non"
           ],
           "actionReports": [
             {
               "targetKey": "risques_liste",
-              "triggerValue": "oui",
+              "triggerValue": "Oui",
               "valueToReport": "Refus de soins"
             }
           ]
@@ -524,14 +524,14 @@
               "label": "Dépression",
               "key": "psy_depression",
               "options": [
-                "oui",
-                "non",
-                "non objectivable"
+                "Oui",
+                "Non",
+                "Non objectivable"
               ],
               "actionReports": [
                 {
                   "targetKey": "risques_liste",
-                  "triggerValue": "oui",
+                  "triggerValue": "Oui",
                   "valueToReport": "Dépression / Anxiété"
                 }
               ]
@@ -542,13 +542,13 @@
               "label": "Anxiété",
               "key": "psy_anxiete",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ],
               "actionReports": [
                 {
                   "targetKey": "risques_liste",
-                  "triggerValue": "oui",
+                  "triggerValue": "Oui",
                   "valueToReport": "Dépression / Anxiété"
                 }
               ]
@@ -574,7 +574,7 @@
           ],
           "showIf": {
             "dependsOn": "psy_depression",
-            "value": "oui"
+            "value": "Oui"
           }
         },
         {
@@ -587,8 +587,8 @@
               "label": "Troubles du sommeil",
               "key": "psy_sommeil",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ]
             },
             {
@@ -597,14 +597,14 @@
               "label": "Risque suicidaire",
               "key": "psy_suicide",
               "options": [
-                "oui",
-                "non",
-                "non objectivable"
+                "Oui",
+                "Non",
+                "Non objectivable"
               ],
               "actionReports": [
                 {
                   "targetKey": "risques_liste",
-                  "triggerValue": "oui",
+                  "triggerValue": "Oui",
                   "valueToReport": "Risque suicidaire"
                 }
               ]
@@ -630,7 +630,7 @@
           ],
           "showIf": {
             "dependsOn": "psy_suicide",
-            "value": "oui"
+            "value": "Oui"
           }
         }
       ]
@@ -682,8 +682,8 @@
         {
           "type": "input",
           "inputType": "radio",
-          "label": "CONCLUSION",
-          "key": "nutri_conclusion",
+          "label": "Nutrition",
+          "key": "nutrition",
           "options": [
             "Bon état nutritionnel",
             "Dénutrition modérée",
@@ -710,13 +710,13 @@
               "label": "Troubles de la déglutition",
               "key": "nutri_deglutition",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ],
               "actionReports": [
                 {
                   "targetKey": "risques_liste",
-                  "triggerValue": "oui",
+                  "triggerValue": "Oui",
                   "valueToReport": "Fausse route"
                 }
               ]
@@ -727,8 +727,8 @@
               "label": "Troubles de la mastication",
               "key": "nutri_mastication",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ]
             }
           ]
@@ -743,8 +743,8 @@
               "label": "Aide aux repas",
               "key": "nutri_aide_repas",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ]
             },
             {
@@ -753,16 +753,16 @@
               "label": "Hydratation",
               "key": "nutri_hydratation",
               "options": [
-                "spontanée",
-                "à stimuler",
-                "aide totale"
+                "Spontanée",
+                "À stimuler",
+                "Aide totale"
               ],
               "actionReports": [
                 {
                   "targetKey": "risques_liste",
                   "triggerValue": [
-                    "à stimuler",
-                    "aide totale"
+                    "À stimuler",
+                    "Aide totale"
                   ],
                   "valueToReport": "Déshydratation"
                 }
@@ -783,13 +783,13 @@
           "label": "Douleur chronique",
           "key": "douleur_chronique",
           "options": [
-            "oui",
-            "non"
+            "Oui",
+            "Non"
           ],
           "actionReports": [
             {
               "targetKey": "risques_liste",
-              "triggerValue": "oui",
+              "triggerValue": "Oui",
               "valueToReport": "Douleur"
             }
           ]
@@ -813,7 +813,7 @@
           ],
           "showIf": {
             "dependsOn": "douleur_chronique",
-            "value": "oui"
+            "value": "Oui"
           }
         },
         {
@@ -832,8 +832,8 @@
               "label": "Traitement efficace",
               "key": "douleur_traitement_efficace",
               "options": [
-                "oui",
-                "non"
+                "Oui",
+                "Non"
               ]
             }
           ]
@@ -851,13 +851,13 @@
           "label": "Risque d'escarres",
           "key": "risque_escarres",
           "options": [
-            "oui",
-            "non"
+            "Oui",
+            "Non"
           ],
           "actionReports": [
             {
               "targetKey": "risques_liste",
-              "triggerValue": "oui",
+              "triggerValue": "Oui",
               "valueToReport": "Escarres"
             }
           ]
@@ -895,9 +895,9 @@
               "label": "Lunettes",
               "key": "sensoriel_lunettes",
               "options": [
-                "oui",
-                "non",
-                "à réévaluer"
+                "Oui",
+                "Non",
+                "À réévaluer"
               ]
             }
           ]
@@ -928,9 +928,9 @@
               "label": "Appareils auditifs",
               "key": "sensoriel_appareils",
               "options": [
-                "oui",
-                "non",
-                "à réévaluer"
+                "Oui",
+                "Non",
+                "À réévaluer"
               ]
             }
           ]
@@ -1089,7 +1089,7 @@
     {
       "type": "box",
       "direction": "column",
-      "title": "PLAN ACTION",
+      "title": "Plan d'action",
       "children": [
         {
           "type": "input",

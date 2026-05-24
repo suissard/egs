@@ -2,41 +2,33 @@
   <div class="input-wrapper">
     <!-- Text Input -->
     <div v-if="['text', 'email', 'tel', 'number', 'password'].includes(node.inputType)" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <div class="d-flex align-center gap-2">
-          <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
-            <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
-              <span v-if="isLoadingAI" class="spinner"></span>
-              <span v-else>✨ Générer par IA</span>
-            </button>
-            <button @click.prevent="openPromptEditor(node)" class="btn btn-secondary btn-sm px-2" :disabled="readonly" type="button" title="Configurer le prompt">
-              ⚙️
-            </button>
-          </div>
-        </div>
-      </label>
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+          <span v-if="isLoadingAI" class="spinner-small"></span>
+          <span v-else>✨</span>
+        </button>
+        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+          ⚙️
+        </button>
+      </div>
       <input v-model="node.value" :type="node.inputType" :required="node.required" class="input-field" :disabled="readonly || isLoadingAI" />
     </div>
 
     <!-- Select Input -->
     <div v-else-if="node.inputType === 'select'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <div class="d-flex align-center gap-2">
-          <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
-            <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
-              <span v-if="isLoadingAI" class="spinner"></span>
-              <span v-else>✨ Générer par IA</span>
-            </button>
-            <button @click.prevent="openPromptEditor(node)" class="btn btn-secondary btn-sm px-2" :disabled="readonly" type="button" title="Configurer le prompt">
-              ⚙️
-            </button>
-          </div>
-        </div>
-      </label>
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+          <span v-if="isLoadingAI" class="spinner-small"></span>
+          <span v-else>✨</span>
+        </button>
+        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+          ⚙️
+        </button>
+      </div>
       <select v-model="node.value" :required="node.required" class="input-field" :multiple="node.multiple" :disabled="readonly">
         <option v-for="opt in node.options" :key="opt" :value="opt">{{ opt }}</option>
       </select>
@@ -44,21 +36,17 @@
 
     <!-- Radio Group -->
     <div v-else-if="node.inputType === 'radio'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <div class="d-flex align-center gap-2">
-          <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
-            <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
-              <span v-if="isLoadingAI" class="spinner"></span>
-              <span v-else>✨ Générer par IA</span>
-            </button>
-            <button @click.prevent="openPromptEditor(node)" class="btn btn-secondary btn-sm px-2" :disabled="readonly" type="button" title="Configurer le prompt">
-              ⚙️
-            </button>
-          </div>
-        </div>
-      </label>
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+          <span v-if="isLoadingAI" class="spinner-small"></span>
+          <span v-else>✨</span>
+        </button>
+        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+          ⚙️
+        </button>
+      </div>
       <div class="d-flex flex-wrap gap-3">
         <label v-for="opt in node.options" :key="opt" class="d-flex align-center" style="gap: 0.5rem; cursor: pointer;">
           <input type="radio" v-model="node.value" :value="opt" :name="'radio-group-' + node.id" :disabled="readonly">
@@ -69,21 +57,22 @@
 
     <!-- Switch -->
     <div v-else-if="node.inputType === 'switch'" class="input-group">
-      <div class="d-flex justify-space-between align-center">
+      <div class="d-flex align-center gap-2">
         <label class="d-flex align-center mb-0" style="gap: 0.5rem; cursor: pointer;">
           <input type="checkbox" v-model="node.value" :disabled="readonly">
           <span class="font-weight-bold">{{ node.label }}</span>
         </label>
-        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
       </div>
     </div>
 
     <!-- Checkbox (Single or Multiple) -->
     <div v-else-if="node.inputType === 'checkbox'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center" v-if="node.options && node.options.length > 0">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-      </label>
+      <!-- Multiple checkboxes header -->
+      <div class="input-label-container" v-if="node.options && node.options.length > 0">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+      </div>
 
       <!-- Multiple checkboxes -->
       <div v-if="node.options && node.options.length > 0" class="d-flex flex-wrap gap-3">
@@ -94,119 +83,107 @@
       </div>
 
       <!-- Single checkbox -->
-      <div v-else class="d-flex justify-space-between align-center">
+      <div v-else class="d-flex align-center gap-2">
         <label class="d-flex align-center mb-0" style="gap: 0.5rem; cursor: pointer;">
           <input type="checkbox" v-model="node.value" :required="node.required" :disabled="readonly">
-          <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
+          <span class="font-weight-bold">{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
         </label>
-        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
       </div>
     </div>
 
     <!-- Date Input -->
     <div v-else-if="node.inputType === 'date'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <div class="d-flex align-center gap-2">
-          <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
-            <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
-              <span v-if="isLoadingAI" class="spinner"></span>
-              <span v-else>✨ Générer par IA</span>
-            </button>
-            <button @click.prevent="openPromptEditor(node)" class="btn btn-secondary btn-sm px-2" :disabled="readonly" type="button" title="Configurer le prompt">
-              ⚙️
-            </button>
-          </div>
-        </div>
-      </label>
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+          <span v-if="isLoadingAI" class="spinner-small"></span>
+          <span v-else>✨</span>
+        </button>
+        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+          ⚙️
+        </button>
+      </div>
       <input v-model="node.value" type="date" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
 
     <!-- Textarea -->
     <div v-else-if="node.inputType === 'textarea'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <div class="d-flex align-center gap-2">
-          <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
-            <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
-              <span v-if="isLoadingAI" class="spinner"></span>
-              <span v-else>✨ Générer par IA</span>
-            </button>
-            <button @click.prevent="openPromptEditor(node)" class="btn btn-secondary btn-sm px-2" :disabled="readonly" type="button" title="Configurer le prompt">
-              ⚙️
-            </button>
-          </div>
-        </div>
-      </label>
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+          <span v-if="isLoadingAI" class="spinner-small"></span>
+          <span v-else>✨</span>
+        </button>
+        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+          ⚙️
+        </button>
+      </div>
       <textarea v-model="node.value" :required="node.required" class="input-field" rows="3" :disabled="readonly || isLoadingAI" @input="autoResize" ref="textareaRef" style="overflow:hidden;"></textarea>
     </div>
 
     <!-- Slider -->
     <div v-else-if="node.inputType === 'slider'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }}: {{ node.value }}</span>
-        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-      </label>
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }}: {{ node.value }}</label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+      </div>
       <input type="range" v-model="node.value" :min="node.min" :max="node.max" :step="node.step" class="w-100" :disabled="readonly" />
     </div>
 
     <!-- File Input -->
     <div v-else-if="node.inputType === 'file'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-      </label>
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+      </div>
       <input type="file" @change="(e: any) => node.value = e.target.files[0]" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
 
     <!-- Table Input -->
     <div v-else-if="node.inputType === 'table'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <div class="d-flex align-center gap-2">
-          <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-          <div v-if="node.aiPrompt" class="d-flex align-center gap-1 no-print">
-            <button @click.prevent="generateAI" class="btn btn-ai btn-sm" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
-              <span v-if="isLoadingAI" class="spinner"></span>
-              <span v-else>✨ Générer par IA</span>
-            </button>
-            <button @click.prevent="openPromptEditor(node)" class="btn btn-secondary btn-sm px-2" :disabled="readonly" type="button" title="Configurer le prompt">
-              ⚙️
-            </button>
-          </div>
-        </div>
-      </label>
-      <div class="table-responsive">
-        <table class="w-100 border-collapse">
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+          <span v-if="isLoadingAI" class="spinner-small"></span>
+          <span v-else>✨</span>
+        </button>
+        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+          ⚙️
+        </button>
+      </div>
+      <div class="table-responsive shadow-sm">
+        <table class="w-100">
           <thead>
             <tr>
-              <th v-for="col in node.columns" :key="col" class="text-left pa-2 border-bottom">{{ col }}</th>
-              <th class="pa-2 border-bottom w-50px"></th>
+              <th v-for="col in node.columns" :key="col" class="text-left">{{ col }}</th>
+              <th class="w-50px"></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(_, rowIndex) in node.value" :key="rowIndex">
-              <td v-for="(_, colIndex) in node.columns" :key="colIndex" class="pa-1 border-bottom">
-                <textarea v-model="node.value[rowIndex][colIndex]" class="input-field py-1 px-2 cell-textarea" rows="1" :disabled="readonly" @input="autoResize" style="overflow:hidden; resize:none;"></textarea>
+            <tr v-for="(_, rowIndex) in node.value" :key="rowIndex" class="table-row-hover">
+              <td v-for="(_, colIndex) in node.columns" :key="colIndex">
+                <textarea v-model="node.value[rowIndex][colIndex]" class="cell-textarea" rows="1" :disabled="readonly" @input="autoResize" placeholder="..."></textarea>
               </td>
-              <td class="pa-1 border-bottom text-center">
-                <button type="button" @click="node.value.splice(rowIndex, 1)" class="btn btn-sm btn-error" :disabled="readonly" title="Supprimer la ligne">X</button>
+              <td class="text-center" style="padding-right: 8px;">
+                <button type="button" @click="node.value.splice(rowIndex, 1)" class="btn btn-sm btn-error px-2" :disabled="readonly" title="Supprimer la ligne">🗑️</button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <button type="button" @click="addTableRow" class="btn btn-sm btn-secondary mt-2" :disabled="readonly">+ Ajouter une ligne</button>
+      <button type="button" @click="addTableRow" class="btn btn-sm btn-secondary mt-3" :disabled="readonly">➕ Ajouter une ligne</button>
     </div>
 
     <!-- Time Input -->
     <div v-else-if="node.inputType === 'time'" class="input-group">
-      <label class="input-label d-flex justify-space-between align-center">
-        <span>{{ node.label }} <span v-if="node.required" class="text-error">*</span></span>
-        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡ Report</span>
-      </label>
+      <div class="input-label-container">
+        <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
+        <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
+      </div>
       <input v-model="node.value" type="time" :required="node.required" class="input-field" :disabled="readonly" />
     </div>
   </div>
@@ -475,45 +452,118 @@ async function generateAI() {
   color: var(--error);
 }
 
-.badge-action-report {
-  background-color: #ff9800;
-  color: white;
-  font-size: 0.7em;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: 8px;
-  vertical-align: middle;
-  cursor: help;
-  display: inline-block;
-  white-space: nowrap;
+.input-label-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
 }
+
+.input-label-container .input-label {
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+.badge-action-report {
+  background-color: #f59e0b;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+  flex-shrink: 0;
+}
+
+.btn-ai-circle {
+  background-color: #8b5cf6;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.btn-ai-circle:hover {
+  background-color: #7c3aed;
+  transform: scale(1.08);
+}
+
+.btn-ai-circle:active {
+  transform: scale(0.92);
+}
+
+.btn-ai-circle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary-circle {
+  background-color: #f1f5f9;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.btn-secondary-circle:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+  transform: scale(1.08);
+}
+
+.btn-secondary-circle:active {
+  transform: scale(0.92);
+}
+
+.btn-secondary-circle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner-small {
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border-left-color: white;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
 .btn-sm {
-  padding: 4px 8px;
+  padding: 5px 10px;
   font-size: 0.8rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.btn-ai {
-  background-color: #8b5cf6 !important;
-  color: white !important;
-  border: none !important;
-  transition: background-color 0.2s;
-}
-
-.btn-ai:hover {
-  background-color: #7c3aed !important;
-}
-
-.spinner {
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border-left-color: var(--primary);
-  animation: spin 1s linear infinite;
-  display: inline-block;
 }
 
 @keyframes spin {
@@ -521,22 +571,72 @@ async function generateAI() {
   100% { transform: rotate(360deg); }
 }
 
-.cell-textarea {
-  min-height: 32px;
-  height: 100%;
-  resize: none;
-  overflow: hidden;
-  line-height: 1.4;
+/* Elegant grid styles for tables */
+.table-responsive {
   width: 100%;
-  box-sizing: border-box;
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  margin-top: 0.5rem;
 }
 
-table td {
-  vertical-align: top;
-  height: 100%;
+table {
+  border-collapse: collapse;
 }
 
 table th {
-  vertical-align: top;
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table-row-hover:hover {
+  background-color: #f8fafc;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+.cell-textarea {
+  min-height: 34px;
+  height: 100%;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.5;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  background-color: transparent;
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 0.925rem;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.cell-textarea:hover {
+  background-color: #f1f5f9;
+}
+
+.cell-textarea:focus {
+  outline: none;
+  background-color: white;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 </style>

@@ -77,21 +77,21 @@ function toggleDrawer() {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
   cursor: pointer;
   z-index: 1000;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fab-btn:hover {
-  transform: scale(1.05);
-  background-color: #1976D2;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 28px -4px rgba(59, 130, 246, 0.5);
 }
 
 .overlay {
@@ -100,20 +100,23 @@ function toggleDrawer() {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 1001;
+  transition: opacity 0.3s ease;
 }
 
 .drawer {
   position: fixed;
   top: 0;
-  right: -350px;
-  width: 350px;
+  right: -380px;
+  width: 380px;
   height: 100vh;
   background-color: white;
-  box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+  box-shadow: -10px 0 30px rgba(15, 23, 42, 0.08);
   z-index: 1002;
-  transition: right 0.3s ease-in-out;
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
 }
@@ -124,21 +127,22 @@ function toggleDrawer() {
 
 .drawer-header {
   padding: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--background);
+  background-color: #f8fafc;
 }
 
 .btn-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   cursor: pointer;
-  color: var(--text-color);
+  color: var(--text-muted);
   padding: 0 0.5rem;
   line-height: 1;
+  transition: color 0.2s;
 }
 
 .btn-close:hover {

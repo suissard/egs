@@ -7,28 +7,35 @@
 
           <div class="card pa-4 mb-8 sticky-header shadow-sm no-print">
             <div class="d-flex justify-space-between align-center flex-wrap gap-4">
-                <div class="input-group mb-0 flex-grow-1 mr-4" style="min-width: 250px;">
-                  <label class="input-label font-weight-bold">Choisir un modèle</label>
-
-              <select v-model="selectedModelKey" class="input-field" @change="loadSelectedModel">
-                <option v-for="item in availableModels" :key="item.key" :value="item.key">
-                  {{ item.title }}
-                </option>
-              </select>
-                </div>
-                <div v-if="!isFormVierge && !isEditMode && !showDocumentation" class="d-flex align-center">
-                  <button type="button" class="btn btn-error btn-sm rounded-pill px-4" style="padding: 0.5rem 1rem; font-size: 0.85rem;" @click="triggerResetForm">
-                    🗑️ Effacer les données
-                  </button>
-                </div>
-                <div class="d-flex align-center gap-3 bg-grey-lighten-4 pa-2 rounded-pill px-4 border">
-                  <label class="font-weight-bold mb-0">Mode Édition</label>
-                  <label class="switch">
-                    <input type="checkbox" v-model="isEditMode">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
+              <div class="input-group mb-0 flex-grow-1 mr-4" style="min-width: 250px;">
+                <label class="input-label font-weight-bold">Choisir un modèle</label>
+                <select v-model="selectedModelKey" class="input-field" @change="loadSelectedModel">
+                  <option v-for="item in availableModels" :key="item.key" :value="item.key">
+                    {{ item.title }}
+                  </option>
+                </select>
               </div>
+              <div class="d-flex align-center gap-3">
+                <button
+                  v-if="!isFormVierge && !isEditMode && !showDocumentation"
+                  type="button"
+                  class="btn-clear-data"
+                  @click="triggerResetForm"
+                  title="Effacer toutes les données du formulaire"
+                >
+                  🗑️
+                </button>
+                <button
+                  type="button"
+                  class="btn-edit-structure"
+                  :class="{ 'active': isEditMode }"
+                  @click="isEditMode = !isEditMode"
+                  title="Modifier la structure du formulaire"
+                >
+                  ⚙️
+                </button>
+              </div>
+            </div>
           </div>
 
 
@@ -49,26 +56,26 @@
             <form ref="form" @submit.prevent="submitForm">
               <FormRenderer :node="formRoot" :root-data="formData" />
 
-              <div class="card mt-8 pa-4 bg-grey-lighten-5 no-print" style="border: none;">
-                <button type="submit" class="btn btn-primary btn-block btn-lg text-uppercase mb-4">
-                  Valider le formulaire
+              <div class="card mt-8 pa-4 bg-grey-lighten-5 border no-print" style="box-shadow: none;">
+                <button type="submit" class="btn btn-primary btn-block btn-lg text-uppercase mb-4" style="letter-spacing: 0.05em;">
+                  ✅ Valider le formulaire
                 </button>
 
                 <div class="d-flex gap-3 mt-4 flex-wrap justify-center">
                   <button type="button" class="btn btn-secondary" @click="handleCopy">
-                    Presse-papier
+                    📋 Copier Presse-papier
                   </button>
 
                   <button type="button" class="btn btn-error" @click="handlePdf">
-                    PDF (Visuel)
+                    📄 Générer PDF
                   </button>
 
                   <button type="button" class="btn btn-success" @click="handleExportJson">
-                    Export JSON
+                    📥 Exporter JSON
                   </button>
 
                   <button type="button" class="btn btn-warning" @click="triggerImportJson">
-                    Import JSON
+                    📤 Importer JSON
                   </button>
                 </div>
               </div>
@@ -231,178 +238,218 @@ function findNodeByKey(node: FormNode, key: string): FormNode | null {
   return null;
 }
 
-// Fonction de process des actionReports
-function processActionReports(node: FormNode, oldData: Record<string, any>, newData: Record<string, any>, root: FormNode) {
-  if (node instanceof InputNode && node.actionReports && node.actionReports.length > 0) {
-    const oldValue = oldData[node.key];
-    const newValue = newData[node.key];
+// Fonction de propagation récursive des actionReports avec détection de cycles
+function propagateChange(
+  sourceKey: string,
+  oldValue: any,
+  newValue: any,
+  root: FormNode,
+  propagationPath: string[],
+  propagatedKeys: Set<string>
+) {
+  // Enregistrer que cette clé est en cours de propagation
+  propagatedKeys.add(sourceKey);
 
-    // Si la valeur a changé
-    if (JSON.stringify(oldValue) !== JSON.stringify(newValue)) {
-      for (const report of node.actionReports) {
-        let isTriggeredOld = false;
-        let isTriggeredNew = false;
-
-        // Handle empty triggerValue: triggers on ANY change
-        const isEmptyTrigger = report.triggerValue === "" || report.triggerValue === null || report.triggerValue === undefined;
-
-        // Check old trigger
-        if (isEmptyTrigger) {
-           // If it's an empty trigger, it was 'triggered' if the old value was not empty
-           isTriggeredOld = oldValue !== "" && oldValue !== null && oldValue !== undefined;
-        } else if (Array.isArray(report.triggerValue)) {
-          isTriggeredOld = Array.isArray(oldValue)
-              ? report.triggerValue.some(t => oldValue.includes(t))
-              : report.triggerValue.includes(oldValue);
-        } else {
-          isTriggeredOld = Array.isArray(oldValue)
-              ? oldValue.includes(report.triggerValue)
-              : oldValue === report.triggerValue;
-        }
-
-        // Check new trigger
-        if (isEmptyTrigger) {
-           // If it's an empty trigger, it is 'triggered' if the new value is not empty
-           isTriggeredNew = newValue !== "" && newValue !== null && newValue !== undefined;
-        } else if (Array.isArray(report.triggerValue)) {
-          isTriggeredNew = Array.isArray(newValue)
-              ? report.triggerValue.some(t => newValue.includes(t))
-              : report.triggerValue.includes(newValue);
-        } else {
-          isTriggeredNew = Array.isArray(newValue)
-              ? newValue.includes(report.triggerValue)
-              : newValue === report.triggerValue;
-        }
-
-        const targetNode = findNodeByKey(root, report.targetKey);
-
-        if (targetNode && targetNode instanceof InputNode) {
-          // Trigger devenu VRAI
-          if (!isTriggeredOld && isTriggeredNew) {
-            if (targetNode.inputType === 'checkbox') {
-              if (targetNode.options && targetNode.options.length > 0) {
-                 if (!targetNode.value) targetNode.value = [];
-                 if (!targetNode.value.includes(report.valueToReport)) {
-                    targetNode.value.push(report.valueToReport);
-                 }
-              } else {
-                 targetNode.value = report.valueToReport;
-              }
-            } else if (targetNode.inputType === 'table') {
-              if (!targetNode.value) targetNode.value = [];
-
-              let rowToAdd: any[];
-              if (Array.isArray(report.valueToReport)) {
-                rowToAdd = report.valueToReport;
-              } else if (typeof report.valueToReport === 'string' && report.valueToReport.includes(',')) {
-                rowToAdd = report.valueToReport.split(',').map(item => item.trim());
-              } else {
-                rowToAdd = [report.valueToReport];
-              }
-
-              const exists = targetNode.value.some((row: any[]) => {
-                if (!Array.isArray(row) || row.length === 0) return false;
-                const targetVal = String(rowToAdd[0] || '').trim();
-                return String(row[0] || '').trim() === targetVal;
-              });
-              if (!exists) {
-                targetNode.value.push(rowToAdd);
-              }
-            } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
-               const currentText = targetNode.value || '';
-               if (!currentText.includes(report.valueToReport)) {
-                 targetNode.value = currentText ? currentText + '\n- ' + report.valueToReport : '- ' + report.valueToReport;
-               }
-            } else {
-               targetNode.value = report.valueToReport;
-            }
-          }
-          // Trigger devenu FAUX
-          else if (isTriggeredOld && !isTriggeredNew) {
-            if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
-              const index = targetNode.value.indexOf(report.valueToReport);
-              if (index > -1) {
-                targetNode.value.splice(index, 1);
-              }
-            } else if (targetNode.inputType === 'table') {
-              if (targetNode.value && Array.isArray(targetNode.value)) {
-
-                let rowToRemove: any[];
-                if (Array.isArray(report.valueToReport)) {
-                  rowToRemove = report.valueToReport;
-                } else if (typeof report.valueToReport === 'string' && report.valueToReport.includes(',')) {
-                  rowToRemove = report.valueToReport.split(',').map(item => item.trim());
-                } else {
-                  rowToRemove = [report.valueToReport];
-                }
-
-                const index = targetNode.value.findIndex((row: any[]) => {
-                  if (!Array.isArray(row) || row.length === 0) return false;
-                  const targetVal = String(rowToRemove[0] || '').trim();
-                  return String(row[0] || '').trim() === targetVal;
-                });
-                if (index > -1) {
-                  const existingRow = targetNode.value[index];
-                  // Check if the user modified any of the other columns in this row
-                  let isModified = false;
-                  for (let i = 1; i < Math.max(existingRow.length, rowToRemove.length); i++) {
-                    const existingVal = String(existingRow[i] || '').trim();
-                    const originalVal = String(rowToRemove[i] || '').trim();
-                    if (existingVal !== originalVal) {
-                      isModified = true;
-                      break;
-                    }
-                  }
-                  if (!isModified) {
-                    targetNode.value.splice(index, 1);
-                  }
-                }
-              }
-            } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
-              let currentText = targetNode.value || '';
-              const strToRemove1 = "\n- " + report.valueToReport;
-              const strToRemove2 = "- " + report.valueToReport + "\n";
-              const strToRemove3 = "- " + report.valueToReport;
-
-              if (currentText.includes(strToRemove1)) {
-                 currentText = currentText.replace(strToRemove1, "");
-              } else if (currentText.includes(strToRemove2)) {
-                 currentText = currentText.replace(strToRemove2, "");
-              } else if (currentText.includes(strToRemove3)) {
-                 currentText = currentText.replace(strToRemove3, "");
-              }
-              targetNode.value = currentText;
-            } else {
-               if (targetNode.value === report.valueToReport) {
-                  targetNode.value = null;
-               }
-            }
-          }
-        }
-      }
-    }
+  // Trouver le nœud source
+  const sourceNode = findNodeByKey(root, sourceKey);
+  if (!sourceNode || !(sourceNode instanceof InputNode) || !sourceNode.actionReports) {
+    return;
   }
 
-  if (node instanceof BoxNode) {
-    for (const child of node.children) {
-      processActionReports(child, oldData, newData, root);
+  for (const report of sourceNode.actionReports) {
+    let isTriggeredOld = false;
+    let isTriggeredNew = false;
+
+    // Détermine si le triggerValue est vide (déclenchement sur n'importe quel changement)
+    const isEmptyTrigger = report.triggerValue === "" || report.triggerValue === null || report.triggerValue === undefined;
+
+    // Évalue l'ancien état du déclencheur
+    if (isEmptyTrigger) {
+       isTriggeredOld = oldValue !== "" && oldValue !== null && oldValue !== undefined;
+    } else if (Array.isArray(report.triggerValue)) {
+      isTriggeredOld = Array.isArray(oldValue)
+          ? report.triggerValue.some(t => oldValue.includes(t))
+          : report.triggerValue.includes(oldValue);
+    } else {
+      isTriggeredOld = Array.isArray(oldValue)
+          ? oldValue.includes(report.triggerValue)
+          : oldValue === report.triggerValue;
+    }
+
+    // Évalue le nouvel état du déclencheur
+    if (isEmptyTrigger) {
+       isTriggeredNew = newValue !== "" && newValue !== null && newValue !== undefined;
+    } else if (Array.isArray(report.triggerValue)) {
+      isTriggeredNew = Array.isArray(newValue)
+          ? report.triggerValue.some(t => newValue.includes(t))
+          : report.triggerValue.includes(newValue);
+    } else {
+      isTriggeredNew = Array.isArray(newValue)
+          ? newValue.includes(report.triggerValue)
+          : newValue === report.triggerValue;
+    }
+
+    // Si l'état du déclencheur n'a pas changé, on ignore
+    if (isTriggeredOld === isTriggeredNew) {
+      continue;
+    }
+
+    const targetNode = findNodeByKey(root, report.targetKey);
+    if (!targetNode || !(targetNode instanceof InputNode)) {
+      continue;
+    }
+
+    // --- DÉTECTION DE RÉACTION CIRCULAIRE (CYCLE) ---
+    if (propagationPath.includes(targetNode.key)) {
+      console.warn(`[ActionReport] Boucle circulaire de report évitée : ${propagationPath.join(' -> ')} -> ${targetNode.key}.`);
+      showSnackbar(`Attention : Boucle de report circulaire évitée vers "${targetNode.label || targetNode.key}"`, 'warning');
+      continue;
+    }
+
+    // Capture de la valeur existante avant modification pour vérifier s'il y a un changement réel
+    const targetOldValue = JSON.parse(JSON.stringify(targetNode.value));
+
+    // Application du report (Trigger devenu VRAI)
+    if (!isTriggeredOld && isTriggeredNew) {
+      if (targetNode.inputType === 'checkbox') {
+        if (targetNode.options && targetNode.options.length > 0) {
+           if (!targetNode.value) targetNode.value = [];
+           if (!targetNode.value.includes(report.valueToReport)) {
+              targetNode.value.push(report.valueToReport);
+           }
+        } else {
+           targetNode.value = report.valueToReport;
+        }
+      } else if (targetNode.inputType === 'table') {
+        if (!targetNode.value) targetNode.value = [];
+
+        let rowToAdd: any[];
+        if (Array.isArray(report.valueToReport)) {
+          rowToAdd = report.valueToReport;
+        } else if (typeof report.valueToReport === 'string' && report.valueToReport.includes(',')) {
+          rowToAdd = report.valueToReport.split(',').map(item => item.trim());
+        } else {
+          rowToAdd = [report.valueToReport];
+        }
+
+        const exists = targetNode.value.some((row: any[]) => {
+          if (!Array.isArray(row) || row.length === 0) return false;
+          const targetVal = String(rowToAdd[0] || '').trim();
+          return String(row[0] || '').trim() === targetVal;
+        });
+        if (!exists) {
+          targetNode.value.push(rowToAdd);
+        }
+      } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
+         const currentText = targetNode.value || '';
+         if (!currentText.includes(report.valueToReport)) {
+           targetNode.value = currentText ? currentText + '\n- ' + report.valueToReport : '- ' + report.valueToReport;
+         }
+      } else {
+         targetNode.value = report.valueToReport;
+      }
+    }
+    // Application du report (Trigger devenu FAUX)
+    else if (isTriggeredOld && !isTriggeredNew) {
+      if (targetNode.inputType === 'checkbox' && Array.isArray(targetNode.value)) {
+        const index = targetNode.value.indexOf(report.valueToReport);
+        if (index > -1) {
+          targetNode.value.splice(index, 1);
+        }
+      } else if (targetNode.inputType === 'table') {
+        if (targetNode.value && Array.isArray(targetNode.value)) {
+          let rowToRemove: any[];
+          if (Array.isArray(report.valueToReport)) {
+            rowToRemove = report.valueToReport;
+          } else if (typeof report.valueToReport === 'string' && report.valueToReport.includes(',')) {
+            rowToRemove = report.valueToReport.split(',').map(item => item.trim());
+          } else {
+            rowToRemove = [report.valueToReport];
+          }
+
+          const index = targetNode.value.findIndex((row: any[]) => {
+            if (!Array.isArray(row) || row.length === 0) return false;
+            const targetVal = String(rowToRemove[0] || '').trim();
+            return String(row[0] || '').trim() === targetVal;
+          });
+          if (index > -1) {
+            const existingRow = targetNode.value[index];
+            // Vérifie si l'utilisateur a modifié d'autres colonnes de cette ligne
+            let isModified = false;
+            for (let i = 1; i < Math.max(existingRow.length, rowToRemove.length); i++) {
+              const existingVal = String(existingRow[i] || '').trim();
+              const originalVal = String(rowToRemove[i] || '').trim();
+              if (existingVal !== originalVal) {
+                isModified = true;
+                break;
+              }
+            }
+            if (!isModified) {
+              targetNode.value.splice(index, 1);
+            }
+          }
+        }
+      } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
+        let currentText = targetNode.value || '';
+        const strToRemove1 = "\n- " + report.valueToReport;
+        const strToRemove2 = "- " + report.valueToReport + "\n";
+        const strToRemove3 = "- " + report.valueToReport;
+
+        if (currentText.includes(strToRemove1)) {
+           currentText = currentText.replace(strToRemove1, "");
+        } else if (currentText.includes(strToRemove2)) {
+           currentText = currentText.replace(strToRemove2, "");
+        } else if (currentText.includes(strToRemove3)) {
+           currentText = currentText.replace(strToRemove3, "");
+        }
+        targetNode.value = currentText;
+      } else {
+         if (targetNode.value === report.valueToReport) {
+            targetNode.value = null;
+         }
+      }
+    }
+
+    const targetNewValue = targetNode.value;
+
+    // Si la valeur a réellement changé, on propage la modification récursivement !
+    if (JSON.stringify(targetOldValue) !== JSON.stringify(targetNewValue)) {
+      propagateChange(
+        targetNode.key,
+        targetOldValue,
+        targetNewValue,
+        root,
+        [...propagationPath, targetNode.key],
+        propagatedKeys
+      );
     }
   }
 }
-
-
-
-
 
 function updateFormData() {
   if (formRoot.value && formRoot.value instanceof BoxNode) {
     const oldData = { ...formData.value };
     const newData = formRoot.value.getData();
 
-    // Process action reports if there are changes
+    // Traite les reports d'action s'il y a des changements de données
     if (Object.keys(oldData).length > 0) {
-      processActionReports(formRoot.value, oldData, newData, formRoot.value);
-      // Re-fetch data as processActionReports might have mutated other nodes
+      const changedKeys: string[] = [];
+      for (const key of Object.keys(newData)) {
+        if (JSON.stringify(oldData[key]) !== JSON.stringify(newData[key])) {
+          changedKeys.push(key);
+        }
+      }
+
+      if (changedKeys.length > 0) {
+        const propagatedKeys = new Set<string>();
+        for (const key of changedKeys) {
+          if (!propagatedKeys.has(key)) {
+            propagateChange(key, oldData[key], newData[key], formRoot.value, [key], propagatedKeys);
+          }
+        }
+      }
+
+      // Re-fetch des données car la propagation récursive a pu modifier d'autres nœuds
       formData.value = formRoot.value.getData();
     } else {
       formData.value = newData;
@@ -653,17 +700,19 @@ function handleSaveModel(model: { name: string, data: any }) {
 
 </script>
 
+<style>
 .sticky-header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   margin-top: -10px; /* Offset some padding */
-  border-bottom: 2px solid var(--primary-light, #e0e0e0);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
 }
 
-<style>
 .min-h-screen {
   min-height: 100vh;
 }
@@ -673,17 +722,20 @@ function handleSaveModel(model: { name: string, data: any }) {
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #333;
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(8px);
   color: white;
-  padding: 12px 24px;
-  border-radius: 4px;
+  padding: 10px 20px;
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
   z-index: 9999;
-  min-width: 300px;
+  min-width: 320px;
   justify-content: space-between;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
 }
 
 .snackbar-info {
@@ -777,6 +829,73 @@ input:checked + .slider:before {
 
 .editor-container-transition {
   transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-edit-structure {
+  background-color: white;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn-edit-structure:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: rotate(30deg) scale(1.05);
+}
+
+.btn-edit-structure:active {
+  transform: scale(0.95);
+}
+
+.btn-edit-structure.active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-edit-structure.active:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: rotate(90deg) scale(1.05);
+}
+
+.btn-clear-data {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: var(--error);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);
+}
+
+.btn-clear-data:hover {
+  background-color: var(--error);
+  color: white;
+  border-color: var(--error);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.btn-clear-data:active {
+  transform: scale(0.95);
 }
 </style>
 
