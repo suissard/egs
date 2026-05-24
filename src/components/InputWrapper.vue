@@ -242,23 +242,6 @@ function getReportTooltip(node: InputNode): string {
   return `⚡ Report automatique :\n` + targets.join('\n');
 }
 
-onMounted(() => {
-  nextTick(() => {
-     if(textareaRef.value) {
-         // trigger resize on load if there's initial value
-         textareaRef.value.style.height = 'auto';
-         textareaRef.value.style.height = textareaRef.value.scrollHeight + 'px';
-     }
-     // Auto-resize table cell textareas on load
-     const textareas = document.querySelectorAll('textarea.cell-textarea');
-     textareas.forEach((ta) => {
-       const el = ta as HTMLTextAreaElement;
-       el.style.height = 'auto';
-       el.style.height = el.scrollHeight + 'px';
-     });
-  });
-});
-
 const props = defineProps<{
   node: InputNode;
   readonly?: boolean;
@@ -267,12 +250,34 @@ const props = defineProps<{
 
 const triggerDataUpdate = inject<() => void>('triggerDataUpdate');
 
+function resizeTextarea() {
+  nextTick(() => {
+     if(textareaRef.value) {
+         // trigger resize on load/update if there's initial value
+         textareaRef.value.style.height = 'auto';
+         textareaRef.value.style.height = textareaRef.value.scrollHeight + 'px';
+     }
+     // Auto-resize table cell textareas on load/update
+     const textareas = document.querySelectorAll('textarea.cell-textarea');
+     textareas.forEach((ta) => {
+       const el = ta as HTMLTextAreaElement;
+       el.style.height = 'auto';
+       el.style.height = el.scrollHeight + 'px';
+     });
+  });
+}
+
+onMounted(() => {
+  resizeTextarea();
+});
+
 watch(
   () => props.node.value,
   () => {
     if (triggerDataUpdate) {
       triggerDataUpdate();
     }
+    resizeTextarea();
   },
   { deep: true }
 );

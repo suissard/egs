@@ -1,65 +1,100 @@
 <template>
   <div
-    class="editor-node pa-3 mb-3 border rounded transition-all"
-    :class="{
-      'bg-white shadow-sm': isBox,
-      'bg-grey-lighten-5': !isBox,
-      'border-primary border-2 shadow-md': isSelected,
-      'border-dashed border-grey': !isSelected && isBox,
-    }"
+    class="editor-node pa-4 mb-3 border rounded-xl transition-all"
+    :class="[
+      getNodeBorderClass,
+      {
+        'bg-white shadow-sm': isBox,
+        'bg-slate-50 border-slate-200': !isBox,
+        'editor-node-selected': isSelected,
+      }
+    ]"
     @click.stop="selectNode"
   >
-    <div class="header-container d-flex justify-space-between align-center mb-2 pe-16">
-      <div class="font-weight-bold d-flex align-center gap-2">
-        <span class="mdi mdi-drag cursor-grab drag-handle text-grey-darken-1"></span>
-                <span v-if="isBox" class="text-primary">{{ node.title || 'Box' }} ({{ node.direction || 'column' }})</span>
-        <span v-else class="text-secondary">{{ node.label || 'Champ' }} ({{ node.inputType }})</span>
-        <div v-if="!isBox && node.aiPrompt" title="Remplissage par IA configuré" class="d-flex align-center justify-center text-white rounded-circle" style="background-color: #38bdf8; width: 20px; height: 20px; font-size: 12px; flex-shrink: 0;">
-          <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+    <div class="header-container d-flex justify-space-between align-center mb-2 position-relative">
+      <div class="font-weight-bold d-flex align-center gap-2 flex-wrap flex-grow-1 pe-16">
+        <!-- Modern Grip SVG Drag Handle -->
+        <div class="drag-handle d-flex align-center justify-center cursor-grab text-slate-400 hover:text-slate-600">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
         </div>
-        <div v-if="!isBox && node.actionReports && node.actionReports.length > 0" title="Mécanique de report configurée" class="d-flex align-center justify-center text-white rounded-circle" style="background-color: #ff9800; width: 20px; height: 20px; font-size: 12px; flex-shrink: 0;">
-          <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        
+        <!-- Component Label -->
+        <span v-if="isBox" class="text-slate-800 font-weight-bold">{{ node.title || 'Section sans titre' }}</span>
+        <span v-else class="text-slate-800 font-weight-semibold">{{ node.label || 'Champ sans étiquette' }}</span>
+        
+        <!-- Technical Key badge -->
+        <span v-if="!isBox && node.key" class="badge-key text-caption bg-slate-100 text-slate-600 rounded px-1.5 py-0.5 border border-slate-200">{{ node.key }}</span>
+
+        <!-- Layout Direction / Component Type Badge -->
+        <span v-if="isBox" class="badge-type bg-indigo-light text-indigo rounded-full px-2 py-0.5 text-caption font-weight-medium">
+          {{ node.direction === 'row' ? 'Ligne ↔' : 'Colonne ↕' }}
+        </span>
+        <span v-else class="badge-type rounded-full px-2 py-0.5 text-caption font-weight-medium" :class="getTypeBadgeClass(node.inputType)">
+          {{ getFriendlyTypeLabel(node.inputType) }}
+        </span>
+
+        <!-- Obligatoire Indicator -->
+        <span v-if="!isBox && node.required" class="badge-required bg-rose-light text-rose rounded-full px-2 py-0.5 text-caption font-weight-medium">Obligatoire</span>
+
+        <!-- AI active Indicator -->
+        <div v-if="!isBox && node.aiPrompt" title="Génération IA configurée" class="status-indicator bg-sky text-white rounded-full px-2 py-0.5 d-flex align-center gap-1 text-caption font-weight-medium">
+          <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          IA
+        </div>
+
+        <!-- Action Report active Indicator -->
+        <div v-if="!isBox && node.actionReports && node.actionReports.length > 0" title="Mécanique de report active" class="status-indicator bg-amber text-white rounded-full px-2 py-0.5 d-flex align-center gap-1 text-caption font-weight-medium">
+          <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Report
         </div>
       </div>
-      <div class="actions d-flex gap-2 position-absolute" style="top: 12px; right: 12px;">
-        <button class="btn-icon bg-emerald text-white rounded-circle d-flex align-center justify-center p-0" style="width: 32px; height: 32px; border: none; cursor: pointer; background-color: #10b981; flex: 0 0 32px;" @click.stop="toggleEdit" title="Éditer">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+
+      <!-- Action Pill (Floating Toolbar) -->
+      <div class="actions d-flex gap-1.5 position-absolute" style="top: -2px; right: 0px; z-index: 10;">
+        <button class="node-btn-action btn-edit rounded-lg d-flex align-center justify-center p-0" @click.stop="toggleEdit" title="Éditer les propriétés">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
         </button>
-        <button class="btn-icon bg-rose text-white rounded-circle d-flex align-center justify-center p-0" style="width: 32px; height: 32px; border: none; cursor: pointer; background-color: #f43f5e; flex: 0 0 32px;" @click.stop="deleteNode" title="Supprimer">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+        <button class="node-btn-action btn-delete rounded-lg d-flex align-center justify-center p-0" @click.stop="deleteNode" title="Supprimer le composant">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         </button>
       </div>
     </div>
 
-    <!-- In-place Editor Form -->
-    <div v-if="isEditing" class="in-place-editor pa-3 mt-2 bg-white rounded border border-grey-lighten-2 shadow-sm" @click.stop>
-      <h4 class="text-subtitle-2 mb-3">Éditer les propriétés</h4>
+    <!-- In-place Editor Form (Popup Panel style) -->
+    <div v-if="isEditing" class="in-place-editor pa-4 mt-3 rounded-xl border border-slate-200 shadow-md bg-white" @click.stop>
+      <div class="d-flex justify-space-between align-center mb-4 pb-2 border-bottom">
+        <h4 class="text-subtitle-2 font-weight-bold text-slate-800 d-flex align-center gap-1.5">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          Configuration du composant
+        </h4>
+        <span class="text-caption text-slate-400 font-weight-medium">ID: {{ node.id }}</span>
+      </div>
 
-      <div class="row d-flex flex-wrap gap-3">
-        <!-- Box Properties -->
+      <div class="row flex-wrap gap-4">
+        <!-- Box/Section Properties -->
         <template v-if="isBox">
-          <div class="input-group flex-1 min-w-200">
-            <label class="input-label text-caption font-weight-bold">Titre</label>
-            <input v-model="node.title" type="text" class="input-field py-1 px-2 text-body-2" />
+          <div class="input-group flex-grow-1 min-w-200 mb-0">
+            <label class="input-label text-caption font-weight-bold text-slate-600 mb-1">Titre de la section</label>
+            <input v-model="node.title" type="text" class="input-field py-1.5 px-3 text-body-2" placeholder="Ex: Informations Médicales" />
           </div>
-          <div class="input-group flex-1 min-w-200">
-            <label class="input-label text-caption font-weight-bold">Direction</label>
-            <select v-model="node.direction" class="input-field py-1 px-2 text-body-2">
-              <option value="column">Colonne (Vertical)</option>
-              <option value="row">Ligne (Horizontal)</option>
+          <div class="input-group flex-grow-1 min-w-200 mb-0">
+            <label class="input-label text-caption font-weight-bold text-slate-600 mb-1">Orientation de mise en page</label>
+            <select v-model="node.direction" class="input-field py-1.5 px-3 text-body-2">
+              <option value="column">Colonne (Alignement Vertical)</option>
+              <option value="row">Ligne (Alignement Horizontal)</option>
             </select>
           </div>
         </template>
 
         <!-- Input Properties -->
         <template v-else>
-          <div class="input-group flex-1 min-w-200">
-            <label class="input-label text-caption font-weight-bold">Label</label>
-            <input v-model="node.label" type="text" class="input-field py-1 px-2 text-body-2" />
+          <div class="input-group flex-grow-1 min-w-200 mb-0">
+            <label class="input-label text-caption font-weight-bold text-slate-600 mb-1">Étiquette (Label)</label>
+            <input v-model="node.label" type="text" class="input-field py-1.5 px-3 text-body-2" />
           </div>
-          <div class="input-group flex-1 min-w-200">
-            <label class="input-label text-caption font-weight-bold">Type de champ</label>
-            <select v-model="node.inputType" class="input-field py-1 px-2 text-body-2">
+          <div class="input-group flex-grow-1 min-w-200 mb-0">
+            <label class="input-label text-caption font-weight-bold text-slate-600 mb-1">Type de champ</label>
+            <select v-model="node.inputType" class="input-field py-1.5 px-3 text-body-2">
               <option value="text">Texte Court</option>
               <option value="textarea">Texte Long</option>
               <option value="number">Nombre</option>
@@ -67,82 +102,85 @@
               <option value="radio">Boutons Radio</option>
               <option value="select">Liste Déroulante</option>
               <option value="date">Date</option>
-              <option value="table">Tableau</option>
+              <option value="table">Tableau Dynamique</option>
             </select>
           </div>
-          <div class="input-group flex-1 min-w-200">
-            <label class="input-label text-caption font-weight-bold">Clé JSON</label>
-            <input v-model="node.key" type="text" class="input-field py-1 px-2 text-body-2" />
+          <div class="input-group flex-grow-1 min-w-200 mb-0">
+            <label class="input-label text-caption font-weight-bold text-slate-600 mb-1">Clé d'export JSON</label>
+            <input v-model="node.key" type="text" class="input-field py-1.5 px-3 text-body-2" placeholder="Ex: score_mna, ddn_patient" />
           </div>
 
-          <div class="w-100 d-flex gap-4 align-center mt-2">
-            <label class="d-flex align-center gap-1 cursor-pointer">
-              <input type="checkbox" v-model="node.required" />
-              <span class="text-caption">Obligatoire</span>
-            </label>
-            <div class="d-flex align-center gap-1">
-              <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report px-2 py-1 rounded bg-warning text-white text-caption">⚡ Report actif (éditer en JSON)</span>
-            </div>
-            <div class="d-flex align-center gap-1">
-              <button class="btn btn-sm btn-info d-flex align-center gap-1 py-1" @click="editAiPrompt">
-                <span class="text-caption">Prompt IA</span>
-                <span class="badge-help rounded-circle bg-info text-white d-inline-flex align-center justify-center" style="width: 14px; height: 14px; font-size: 10px;" title="Configurer un prompt d'Intelligence Artificielle pour pré-remplir ce champ.">?</span>
-              </button>
-            </div>
-            <div class="d-flex align-center gap-1">
-              <button class="btn btn-sm btn-warning d-flex align-center gap-1 py-1 text-white" style="background-color: #ff9800;" @click="editReport">
-                <span class="text-caption">⚡ Report</span>
-                <span class="badge-help rounded-circle bg-white text-warning d-inline-flex align-center justify-center" style="width: 14px; height: 14px; font-size: 10px; color: #ff9800;" title="Configurer des rapports d'action pour ce champ.">?</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="input-group w-100 mt-2" v-if="node.inputType === 'table'">
-            <label class="input-label text-caption font-weight-bold">Colonnes (Une par ligne)</label>
-            <textarea
-              :value="node.columns ? node.columns.join('\n') : ''"
-              @input="updateColumns($event)"
-              class="input-field py-1 px-2 text-body-2"
-              rows="3"
-            ></textarea>
-          </div>
-
-          <div class="input-group w-100 mt-2" v-if="['select', 'radio', 'checkbox'].includes(node.inputType)">
-            <label class="input-label text-caption font-weight-bold">Options (Une par ligne)</label>
+          <!-- Options Config (Select, Radio, Checkbox) -->
+          <div class="input-group w-100 mb-0 mt-1" v-if="['select', 'radio', 'checkbox'].includes(node.inputType)">
+            <label class="input-label text-caption font-weight-bold text-slate-600 mb-1">Options configurées (Une par ligne)</label>
             <textarea
               :value="node.options ? node.options.join('\n') : ''"
               @input="updateOptions($event)"
-              class="input-field py-1 px-2 text-body-2"
+              class="input-field py-2 px-3 text-body-2 font-mono"
               rows="3"
+              placeholder="Option 1&#10;Option 2&#10;Option 3"
             ></textarea>
           </div>
 
-          <div class="input-group w-100 mt-2" v-if="node.aiPrompt !== undefined && node.aiPrompt !== ''">
-             <label class="input-label text-caption font-weight-bold text-primary">Aperçu du Prompt IA:</label>
-             <div class="text-caption bg-grey-lighten-4 pa-2 rounded text-truncate" :title="node.aiPrompt">{{ node.aiPrompt }}</div>
+          <!-- Table Columns Config -->
+          <div class="input-group w-100 mb-0 mt-1" v-if="node.inputType === 'table'">
+            <label class="input-label text-caption font-weight-bold text-slate-600 mb-1">Colonnes du tableau (Une par ligne)</label>
+            <textarea
+              :value="node.columns ? node.columns.join('\n') : ''"
+              @input="updateColumns($event)"
+              class="input-field py-2 px-3 text-body-2 font-mono"
+              rows="3"
+              placeholder="Colonne 1&#10;Colonne 2"
+            ></textarea>
+          </div>
+
+          <!-- Advanced Actions Toolbar (Tonal style) -->
+          <div class="w-100 bg-slate-50 pa-3 rounded-lg border border-slate-100 d-flex flex-wrap gap-4 align-center mt-2">
+            <span class="text-caption font-weight-bold text-slate-500">PARAMÈTRES :</span>
+            
+            <label class="d-flex align-center gap-1.5 cursor-pointer mb-0">
+              <input type="checkbox" v-model="node.required" class="checkbox-input" />
+              <span class="text-caption text-slate-700 font-weight-medium">Obligatoire</span>
+            </label>
+
+            <button type="button" class="btn btn-sm btn-info-tonal py-1.5 px-3 d-flex align-center gap-1 text-sky rounded" @click="editAiPrompt">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              Génération IA
+              <span v-if="node.aiPrompt" class="rounded-circle bg-sky" style="width: 6px; height: 6px; display: inline-block;"></span>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-warning-tonal py-1.5 px-3 d-flex align-center gap-1 text-amber rounded" @click="editReport">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              Report Auto (⚡)
+              <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-dot-amber"></span>
+            </button>
+          </div>
+
+          <!-- AI Prompt Preview if configured -->
+          <div class="input-group w-100 mb-0 mt-3" v-if="node.aiPrompt !== undefined && node.aiPrompt !== ''">
+             <label class="input-label text-caption font-weight-bold text-sky mb-1">Aperçu du Prompt IA :</label>
+             <div class="text-caption bg-sky-50 text-sky-800 pa-2.5 rounded-lg border border-sky-100 text-truncate" :title="node.aiPrompt">
+               {{ node.aiPrompt }}
+             </div>
           </div>
         </template>
-
-        <div class="input-group w-100 mt-2">
-          <label class="d-flex align-center gap-2 cursor-pointer">
-            <input v-model="node.pageBreakBefore" type="checkbox" />
-            <span class="text-caption font-weight-bold">Saut de page (avant impression)</span>
-          </label>
-        </div>
       </div>
 
-      <div class="d-flex justify-end mt-3">
-        <button class="btn btn-sm btn-emerald text-white" style="background-color: #10b981;" @click="toggleEdit">Terminer l'édition</button>
+      <div class="d-flex justify-end gap-2 mt-4 pt-3 border-top">
+        <button type="button" class="btn btn-sm btn-primary rounded-lg" @click="toggleEdit">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Appliquer et fermer
+        </button>
       </div>
     </div>
 
-    <!-- Recursive Box Content -->
-    <div v-if="isBox" class="box-content mt-2 pa-2 bg-grey-lighten-4 rounded" :class="{'d-flex gap-3': node.direction === 'row'}">
+    <!-- Recursive Box Content (Nested Draggable Canvas Area) -->
+    <div v-if="isBox" class="box-content mt-3 pa-3 rounded-xl" :class="{'d-flex gap-3': node.direction === 'row'}">
       <draggable
         :list="node.children"
         item-key="id"
         group="form-builder"
-        class="min-h-50 w-100"
+        class="min-h-50 w-100 d-flex flex-column gap-2"
         handle=".drag-handle"
         ghost-class="ghost"
       >
@@ -159,37 +197,43 @@
         </template>
       </draggable>
 
-      <div v-if="!node.children || node.children.length === 0" class="text-center text-grey py-4 border-dashed border-grey rounded w-100">
-        Glissez des composants ici
+      <div v-if="!node.children || node.children.length === 0" class="empty-box-placeholder text-center text-slate-400 py-6 border-dashed rounded-lg w-100">
+        Glissez-déposez des champs ou des conteneurs ici
       </div>
     </div>
 
-    <!-- Input Preview (Non-interactive in editor) -->
-    <div v-else class="input-preview mt-2">
+    <!-- Input Preview (Non-interactive inside builder canvas) -->
+    <div v-else class="input-preview mt-3">
       <input v-if="['text', 'number', 'date'].includes(node.inputType)" type="text" class="input-field disabled-input" :placeholder="node.placeholder || '...'" disabled />
       <textarea v-if="node.inputType === 'textarea'" class="input-field disabled-input" rows="2" disabled></textarea>
       <select v-if="node.inputType === 'select'" class="input-field disabled-input" disabled>
-        <option>Sélectionnez une option</option>
+        <option>Option de la liste...</option>
       </select>
-      <div v-if="node.inputType === 'radio' || node.inputType === 'checkbox'" class="d-flex gap-2">
-        <div v-for="opt in node.options" :key="opt" class="d-flex align-center gap-1">
-          <input :type="node.inputType" disabled />
-          <label class="text-caption mb-0">{{ opt }}</label>
+      
+      <!-- Radio / Checkbox preview -->
+      <div v-if="node.inputType === 'radio' || node.inputType === 'checkbox'" class="d-flex flex-wrap gap-3 py-1">
+        <div v-for="opt in node.options" :key="opt" class="d-flex align-center gap-1.5 opacity-60">
+          <input :type="node.inputType" disabled class="disabled-input-element" />
+          <label class="text-caption mb-0 text-slate-600 font-weight-medium">{{ opt }}</label>
         </div>
       </div>
+      
+      <!-- Table preview -->
       <div v-if="node.inputType === 'table'" class="mt-2">
-        <table class="w-100 border-collapse text-caption disabled-input" style="border: 1px solid #ccc;">
-          <thead>
-            <tr>
-              <th v-for="col in node.columns" :key="col" style="border: 1px solid #ccc; padding: 2px;">{{ col }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td v-for="col in node.columns" :key="'td-'+col" style="border: 1px solid #ccc; padding: 2px;">...</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive rounded-lg border border-slate-200">
+          <table class="w-100 border-collapse text-caption" style="border: none;">
+            <thead>
+              <tr class="bg-slate-100 border-bottom border-slate-200">
+                <th v-for="col in node.columns" :key="col" class="text-left pa-2 text-slate-600 font-weight-semibold">{{ col }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="bg-white">
+                <td v-for="col in node.columns" :key="'td-'+col" class="pa-2 text-slate-400">Exemple de données...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -240,12 +284,10 @@ const updateOptions = (event: Event) => {
   props.node.options = target.value.split('\n').filter(o => o.trim() !== '');
 };
 
-// Assuming openPromptEditor is available globally or we import it
 import { openPromptEditor } from '../../utils/promptEditorState';
 import { openReportEditor } from '../../utils/reportEditorState';
 
 const editAiPrompt = () => {
-    // If it's undefined, initialize it to empty string so it's reactive
     if (props.node.aiPrompt === undefined) {
         props.node.aiPrompt = '';
     }
@@ -261,70 +303,234 @@ const selectNode = () => {
 };
 
 const deleteNode = () => {
-  // Try to delete from immediate parent first
   const idx = props.parentList.indexOf(props.node);
   if (idx !== -1) {
     props.parentList.splice(idx, 1);
   } else {
-      // If deeply nested, rely on global event
       emit('delete-node', props.node);
   }
 };
+
+const getFriendlyTypeLabel = (type: string) => {
+  switch (type) {
+    case 'text': return 'Texte Court';
+    case 'textarea': return 'Texte Long';
+    case 'number': return 'Nombre';
+    case 'date': return 'Date';
+    case 'checkbox': return 'Case à cocher';
+    case 'radio': return 'Radio';
+    case 'select': return 'Liste déroulante';
+    case 'table': return 'Tableau';
+    default: return type;
+  }
+};
+
+const getTypeBadgeClass = (type: string) => {
+  switch (type) {
+    case 'text':
+    case 'textarea':
+      return 'bg-cyan-light text-cyan';
+    case 'number':
+    case 'date':
+      return 'bg-emerald-light text-emerald';
+    case 'checkbox':
+    case 'radio':
+    case 'select':
+      return 'bg-amber-light text-amber';
+    case 'table':
+      return 'bg-violet-light text-violet';
+    default:
+      return 'bg-slate-100 text-slate-600';
+  }
+};
+
+const getNodeBorderClass = computed(() => {
+  if (isBox.value) return 'border-layout';
+  switch (props.node.inputType) {
+    case 'text':
+    case 'textarea':
+      return 'border-text';
+    case 'number':
+    case 'date':
+      return 'border-number';
+    case 'checkbox':
+    case 'radio':
+    case 'select':
+      return 'border-choice';
+    case 'table':
+      return 'border-advanced';
+    default:
+      return '';
+  }
+});
 </script>
 
 <style scoped>
 .editor-node {
   position: relative;
+  background-color: #ffffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e2e8f0;
+  cursor: pointer;
 }
+
+.editor-node:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Color Coding Borders mapped to Sidebar themes */
+.border-layout {
+  border-left: 4px solid #6366f1 !important;
+}
+.border-text {
+  border-left: 4px solid #06b6d4 !important;
+}
+.border-number {
+  border-left: 4px solid #10b981 !important;
+}
+.border-choice {
+  border-left: 4px solid #f59e0b !important;
+}
+.border-advanced {
+  border-left: 4px solid #a855f7 !important;
+}
+
+/* Selected Node outline and glow */
+.editor-node-selected {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+  transform: translateY(-1px);
+}
+
 .header-container {
-  min-height: 40px;
+  min-height: 28px;
 }
+
 .pe-16 {
-  padding-right: 80px !important;
+  padding-right: 76px !important;
 }
 
-/* Explicit positioning and shape rules */
-.actions {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 10;
+/* Technical & Functional Badges */
+.badge-key {
+  font-family: monospace;
+  font-size: 0.7rem;
+}
+.badge-type {
+  font-size: 0.7rem;
+  letter-spacing: -0.01em;
+}
+.bg-indigo-light { background-color: #eeebff; color: #4f46e5; }
+.bg-cyan-light { background-color: #ecfeff; color: #0891b2; }
+.bg-emerald-light { background-color: #f0fdf4; color: #059669; }
+.bg-amber-light { background-color: #fffbeb; color: #d97706; }
+.bg-violet-light { background-color: #faf5ff; color: #9333ea; }
+.bg-rose-light { background-color: #fef2f2; color: #e11d48; }
+
+.bg-sky { background-color: #0ea5e9; }
+.bg-amber { background-color: #f59e0b; }
+
+/* Actions Bar Buttons */
+.node-btn-action {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.node-btn-action:hover {
+  color: #1e293b;
+  background-color: #f8fafc;
+}
+.btn-edit:hover {
+  border-color: #10b981;
+  color: #10b981;
+  background-color: #f0fdf4;
+}
+.btn-delete:hover {
+  border-color: #f43f5e;
+  color: #f43f5e;
+  background-color: #fff1f2;
 }
 
-.rounded-circle {
-  border-radius: 50% !important;
+.drag-handle {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.drag-handle:hover {
+  background-color: #f1f5f9;
 }
 
-.btn-icon {
-  transition: transform 0.2s, background-color 0.2s;
-}
-.btn-icon:hover {
-  transform: scale(1.1);
-}
-
-
-.border-2 {
-  border-width: 2px !important;
-}
-.cursor-grab {
-  cursor: grab;
-}
-.cursor-grab:active {
-  cursor: grabbing;
-}
 .disabled-input {
-  background-color: #f5f5f5;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.5rem;
+  color: #94a3b8;
   cursor: not-allowed;
-  opacity: 0.7;
-}
-.min-h-50 {
-  min-height: 50px;
-}
-.ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
+  font-size: 0.875rem;
 }
 
-.btn-info { background-color: #38bdf8; color: white; }
-.btn-info:hover { background-color: #0284c7; }
+.box-content {
+  border: 1.5px dashed #cbd5e1;
+  background-color: #f8fafc;
+  min-height: 60px;
+}
+.box-content:hover {
+  border-color: #94a3b8;
+}
+
+.empty-box-placeholder {
+  border: 1.5px dashed #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  background-color: #ffffff;
+}
+
+.checkbox-input {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+}
+
+.btn-info-tonal {
+  background-color: #f0f9ff;
+  border: 1px solid #e0f2fe;
+}
+.btn-info-tonal:hover {
+  background-color: #e0f2fe;
+}
+.btn-warning-tonal {
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+}
+.btn-warning-tonal:hover {
+  background-color: #fef3c7;
+}
+
+.badge-dot-amber {
+  width: 6px;
+  height: 6px;
+  background-color: #f59e0b;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ghost {
+  opacity: 0.4;
+  background-color: #e0e7ff;
+  border: 2px dashed #4f46e5 !important;
+}
+
+.disabled-input-element {
+  pointer-events: none;
+  cursor: not-allowed;
+}
 </style>

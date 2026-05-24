@@ -203,8 +203,6 @@ export async function generateVisualPdf(
 	// Replace textareas with div elements to preserve formatting and allow html2canvas to render text wrap correctly
 	const clonedTextareas = Array.from(clone.querySelectorAll("textarea"));
 	clonedTextareas.forEach((clonedTextarea) => {
-		const originalTextarea = originalInputs[clonedInputs.indexOf(clonedTextarea)] as HTMLTextAreaElement;
-
 		const replacementDiv = document.createElement("div");
 		replacementDiv.className = clonedTextarea.className;
 
@@ -223,11 +221,8 @@ export async function generateVisualPdf(
 		}
 		replacementDiv.style.display = "block";
 
-		if (originalTextarea && originalTextarea.style.height) {
-			replacementDiv.style.height = originalTextarea.style.height;
-		} else {
-			replacementDiv.style.height = "auto";
-		}
+		replacementDiv.style.height = "auto";
+		replacementDiv.style.overflow = "visible";
 
 		// Transfer text content preserving formatting (newlines)
 		replacementDiv.innerText = clonedTextarea.value;

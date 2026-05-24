@@ -2,7 +2,7 @@
   <div class="app-container bg-grey-lighten-4 min-h-screen">
     <div class="container py-10">
       <div class="row justify-center">
-        <div class="col" style="max-width: 900px; width: 100%;">
+        <div class="col editor-container-transition" :style="{ 'max-width': isEditMode ? '1400px' : '900px', 'width': '100%' }">
           <h1 class="text-h3 mb-8 text-center font-weight-bold text-primary">Formulaire Dynamique</h1>
 
           <div class="card pa-4 mb-8 sticky-header shadow-sm no-print">
@@ -342,7 +342,20 @@ function processActionReports(node: FormNode, oldData: Record<string, any>, newD
                   return String(row[0] || '').trim() === targetVal;
                 });
                 if (index > -1) {
-                  targetNode.value.splice(index, 1);
+                  const existingRow = targetNode.value[index];
+                  // Check if the user modified any of the other columns in this row
+                  let isModified = false;
+                  for (let i = 1; i < Math.max(existingRow.length, rowToRemove.length); i++) {
+                    const existingVal = String(existingRow[i] || '').trim();
+                    const originalVal = String(rowToRemove[i] || '').trim();
+                    if (existingVal !== originalVal) {
+                      isModified = true;
+                      break;
+                    }
+                  }
+                  if (!isModified) {
+                    targetNode.value.splice(index, 1);
+                  }
                 }
               }
             } else if (targetNode.inputType === 'textarea' || targetNode.inputType === 'text') {
@@ -761,4 +774,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.editor-container-transition {
+  transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 </style>
+

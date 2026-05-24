@@ -975,6 +975,113 @@
             "Hémorragie",
             "Insuffisance cardiaque",
             "Déficit sensoriel"
+          ],
+          "actionReports": [
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Chutes",
+              "valueToReport": "Chutes,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Altération de l'état cutané",
+              "valueToReport": "Altération de l'état cutané,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Escarres",
+              "valueToReport": "Escarres,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Dénutrition",
+              "valueToReport": "Dénutrition,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Fausse route",
+              "valueToReport": "Fausse route,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Iatrogénie",
+              "valueToReport": "Iatrogénie,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Dépression",
+              "valueToReport": "Dépression,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Anxiété",
+              "valueToReport": "Anxiété,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Risque suicidaire",
+              "valueToReport": "Risque suicidaire,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Douleur",
+              "valueToReport": "Douleur,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Infectieux",
+              "valueToReport": "Infectieux,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "DTS",
+              "valueToReport": "DTS,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Déambulation / comportements moteurs aberrants",
+              "valueToReport": "Déambulation / comportements moteurs aberrants,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Refus de soins",
+              "valueToReport": "Refus de soins,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Sortie inopinée / fugue",
+              "valueToReport": "Sortie inopinée / fugue,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Agitation / agressivité",
+              "valueToReport": "Agitation / agressivité,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Déshydratation",
+              "valueToReport": "Déshydratation,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Hypo / hyperglycémie",
+              "valueToReport": "Hypo / hyperglycémie,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Hémorragie",
+              "valueToReport": "Hémorragie,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Insuffisance cardiaque",
+              "valueToReport": "Insuffisance cardiaque,,"
+            },
+            {
+              "targetKey": "plan_action_tableau",
+              "triggerValue": "Déficit sensoriel",
+              "valueToReport": "Déficit sensoriel,,"
+            }
           ]
         }
       ]
