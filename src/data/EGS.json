@@ -87,6 +87,20 @@
     {
       "type": "box",
       "direction": "column",
+      "title": "Examen clinique",
+      "children": [
+        {
+          "type": "input",
+          "inputType": "textarea",
+          "label": "Examen clinique",
+          "key": "examen_clinique",
+          "aiPrompt": "Tu es un assistant médical. Reformule et structure l'examen clinique suivant de façon professionnelle, claire et concise :\n\n{{ examen_clinique }}"
+        }
+      ]
+    },
+    {
+      "type": "box",
+      "direction": "column",
       "title": "Analyse du traitement",
       "children": [
         {
