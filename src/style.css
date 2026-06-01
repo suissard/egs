@@ -176,6 +176,8 @@ h6 {
 
 .card-title,
 .v-card-title {
+	page-break-after: avoid;
+	break-after: avoid;
 	padding: 1.25rem 1.5rem;
 	border-bottom: 1px solid var(--border);
 	background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -437,6 +439,21 @@ input[type="radio"]:checked {
     border: 1px solid #cbd5e1 !important;
     box-shadow: none !important;
     margin-bottom: 1.5rem !important;
+  }
+
+  .card-title {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .table-responsive {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   /* Hide specific UI elements that shouldn't be printed */
