@@ -66,8 +66,20 @@
                     📋 Copier Presse-papier
                   </button>
 
-                  <button type="button" class="btn btn-error" @click="handlePdf">
-                    📄 Générer PDF
+                                    <button type="button" class="btn btn-error" @click="handlePdf('high')">
+                    📄 PDF (Haute Qualité)
+                  </button>
+
+                  <button type="button" class="btn btn-error" @click="handlePdf('low')">
+                    📄 PDF (Basse Qualité)
+                  </button>
+
+                  <button type="button" class="btn btn-secondary" @click="handleTextPdf">
+                    📄 PDF (Texte simple)
+                  </button>
+
+                  <button type="button" class="btn btn-info" @click="handlePrint">
+                    🖨️ Imprimer / PDF Natif
                   </button>
 
                   <button type="button" class="btn btn-success" @click="handleExportJson">
@@ -128,7 +140,7 @@ import geriatricAssessment from './data/EGS.json';
 import psychologicalAnalysis from './data/psychologicalAnalysis.json';
 import type { FormConfig } from './types/FormConfig';
 
-import { copyToClipboard, generateVisualPdf, exportToJson, importFromJson } from './utils/exportUtils';
+import { copyToClipboard, generateVisualPdf, generatePdf, exportToJson, importFromJson } from './utils/exportUtils';
 import { formAvailableKeys, currentFormData } from './utils/promptEditorState';
 import { isOrphanDrawerOpen, orphanedData } from './utils/orphanImportState';
 
@@ -584,7 +596,7 @@ async function handleCopy() {
   }
 }
 
-function handlePdf() {
+function handlePdf(quality: 'high' | 'low' = 'high') {
   if (formContainer.value) {
     const now = new Date();
     const day = String(now.getDate()).padStart(2, '0');
@@ -596,9 +608,30 @@ function handlePdf() {
 
     const filename = `formulaire_${year}-${month}-${day}_${hours}h${minutes}m${seconds}s.pdf`;
 
-    generateVisualPdf(formContainer.value, filename);
+    generateVisualPdf(formContainer.value, filename, quality);
     showSnackbar('PDF (Visuel) généré !', 'success');
   }
+}
+
+function handleTextPdf() {
+  if (formRoot.value) {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    const filename = `formulaire_text_${year}-${month}-${day}_${hours}h${minutes}m${seconds}s.pdf`;
+
+    generatePdf(formRoot.value, filename);
+    showSnackbar('PDF (Texte) généré !', 'success');
+  }
+}
+
+function handlePrint() {
+  window.print();
 }
 
 function handleExportJson() {

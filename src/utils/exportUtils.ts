@@ -113,15 +113,15 @@ export async function copyToClipboard(rootNode: FormNode): Promise<void> {
 
 /**
  * Generates a PDF from the form data (Text based).
- * @deprecated Use generateVisualPdf for WYSIWYG
  */
-export function generatePdf(rootNode: FormNode) {
+export function generatePdf(rootNode: FormNode, filename: string = "formulaire_text.pdf") {
 	const data = extractExportData(rootNode);
 	const doc = new jsPDF();
 
 	let y = 10;
-	const lineHeight = 10;
+	const lineHeight = 7;
 	const pageHeight = doc.internal.pageSize.height;
+	const maxWidth = 190; // 210mm (A4 width) - 2 * 10mm margins
 
 	doc.setFontSize(16);
 	doc.text("Récapitulatif du Formulaire", 10, y);
@@ -129,16 +129,21 @@ export function generatePdf(rootNode: FormNode) {
 
 	doc.setFontSize(12);
 	for (const item of data) {
-		if (y > pageHeight - 10) {
+		const text = `${item.label}: ${item.value}`;
+		// Split text to fit within page width
+		const splitText = doc.splitTextToSize(text, maxWidth);
+
+		// Check if we need a new page for this block of text
+		if (y + (splitText.length * lineHeight) > pageHeight - 10) {
 			doc.addPage();
 			y = 10;
 		}
-		const text = `${item.label}: ${item.value}`;
-		doc.text(text, 10, y);
-		y += lineHeight;
+
+		doc.text(splitText, 10, y);
+		y += (splitText.length * lineHeight) + 2; // Extra padding between items
 	}
 
-	doc.save("formulaire_text.pdf");
+	doc.save(filename);
 }
 
 /**
@@ -147,6 +152,7 @@ export function generatePdf(rootNode: FormNode) {
 export async function generateVisualPdf(
 	element: HTMLElement,
 	filename: string = "formulaire.pdf",
+	quality: "high" | "low" = "high"
 ) {
 	const pdf = new jsPDF({
 		orientation: "p",
@@ -240,12 +246,17 @@ export async function generateVisualPdf(
 	clone.style.padding = "20px";
 	clone.style.backgroundColor = "#ffffff";
 	clone.style.boxSizing = "border-box";
+
+	if (quality === "low") {
+		clone.style.filter = "grayscale(100%)";
+	}
+
 	document.body.appendChild(clone);
 
 	try {
 		// Capture the ENTIRE cloned form in a single canvas
 		const canvas = await html2canvas(clone, {
-			scale: 2,
+			scale: quality === "high" ? 2 : 1,
 			useCORS: true,
 			logging: false,
 			backgroundColor: "#ffffff"
@@ -345,13 +356,23 @@ export async function generateVisualPdf(
 			}
 
 			const sliceHeightMm = sliceHeightPx * pxToMm;
-			const imgData = tempCanvas.toDataURL("image/png");
+
+			let imgData: string;
+			let imgFormat: "PNG" | "JPEG";
+
+			if (quality === "high") {
+				imgData = tempCanvas.toDataURL("image/png");
+				imgFormat = "PNG";
+			} else {
+				imgData = tempCanvas.toDataURL("image/jpeg", 0.6);
+				imgFormat = "JPEG";
+			}
 
 			if (currentSliceStart > 0) {
 				pdf.addPage();
 			}
 
-			pdf.addImage(imgData, "PNG", margin, margin, finalWidth, sliceHeightMm);
+			pdf.addImage(imgData, imgFormat, margin, margin, finalWidth, sliceHeightMm);
 			
 			// Advance to next slice
 			currentSliceStart = sliceEnd;
