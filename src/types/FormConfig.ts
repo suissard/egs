@@ -56,6 +56,7 @@ export interface InputElement extends FormElement {
 	columns?: string[]; // For table
 	actionReports?: ActionReport[];
 	aiPrompt?: string;
+	aiButtonLabel?: string;
 }
 
 export type FormConfig = BoxElement;

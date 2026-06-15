@@ -138,12 +138,34 @@
             {
               "type": "input",
               "inputType": "radio",
-              "label": "Anticholinergiques",
-              "key": "traitement_anticholinergiques",
+              "label": "Charge anticholinergique",
+              "key": "traitement_charge_anticholinergique",
               "options": [
                 "Oui",
                 "Non"
               ]
+            },
+            {
+              "type": "box",
+              "direction": "row",
+              "children": [
+                {
+                  "type": "input",
+                  "inputType": "number",
+                  "label": "Centraux",
+                  "key": "traitement_charge_anticholinergique_centraux"
+                },
+                {
+                  "type": "input",
+                  "inputType": "number",
+                  "label": "Périphériques",
+                  "key": "traitement_charge_anticholinergique_peripheriques"
+                }
+              ],
+              "showIf": {
+                "dependsOn": "traitement_charge_anticholinergique",
+                "value": "Oui"
+              }
             },
             {
               "type": "input",
@@ -575,15 +597,36 @@
           "children": [
             {
               "type": "input",
-              "inputType": "number",
-              "label": "GDS / 15",
-              "key": "psy_gds"
+              "inputType": "radio",
+              "label": "Réalisation du GDS",
+              "key": "psy_gds_realise",
+              "options": [
+                "Réalisé",
+                "Non évaluable",
+                "Refus"
+              ]
             },
             {
-              "type": "input",
-              "inputType": "date",
-              "label": "le",
-              "key": "psy_gds_date"
+              "type": "box",
+              "direction": "row",
+              "children": [
+                {
+                  "type": "input",
+                  "inputType": "number",
+                  "label": "GDS / 15",
+                  "key": "psy_gds"
+                },
+                {
+                  "type": "input",
+                  "inputType": "date",
+                  "label": "le",
+                  "key": "psy_gds_date"
+                }
+              ],
+              "showIf": {
+                "dependsOn": "psy_gds_realise",
+                "value": "Réalisé"
+              }
             }
           ],
           "showIf": {
@@ -1123,7 +1166,7 @@
     {
       "type": "input",
       "inputType": "textarea",
-      "label": "Commentaire libre",
+      "label": "Conclusion",
       "id": "9ldap1l",
       "key": "commentaire_libre",
       "required": false
