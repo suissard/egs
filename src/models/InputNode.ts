@@ -15,6 +15,7 @@ export class InputNode extends FormNode {
 	columns: string[];
 	actionReports: ActionReport[];
 	aiPrompt?: string;
+	aiButtonLabel?: string;
 	value: any = null; // To hold the user input
 
 	constructor(config: InputElement) {
@@ -32,6 +33,7 @@ export class InputNode extends FormNode {
 		this.columns = config.columns || [];
 		this.actionReports = config.actionReports || [];
 		this.aiPrompt = config.aiPrompt;
+		this.aiButtonLabel = config.aiButtonLabel;
 
 		if (this.inputType === "checkbox" && this.options.length > 0) {
 			this.value = [];

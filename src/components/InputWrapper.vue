@@ -5,11 +5,11 @@
       <div class="input-label-container">
         <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
         <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
-        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" :class="[node.aiButtonLabel ? 'btn-ai-labeled' : 'btn-ai-circle', 'no-print']" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
           <span v-if="isLoadingAI" class="spinner-small"></span>
-          <span v-else>✨</span>
+          <span v-else>✨<span v-if="node.aiButtonLabel" class="ai-btn-text">{{ node.aiButtonLabel }}</span></span>
         </button>
-        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="openPromptEditor(node)" :class="[node.aiButtonLabel ? 'btn-secondary-labeled' : 'btn-secondary-circle', 'no-print']" :disabled="readonly" type="button" title="Configurer le prompt">
           ⚙️
         </button>
       </div>
@@ -21,11 +21,11 @@
       <div class="input-label-container">
         <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
         <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
-        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" :class="[node.aiButtonLabel ? 'btn-ai-labeled' : 'btn-ai-circle', 'no-print']" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
           <span v-if="isLoadingAI" class="spinner-small"></span>
-          <span v-else>✨</span>
+          <span v-else>✨<span v-if="node.aiButtonLabel" class="ai-btn-text">{{ node.aiButtonLabel }}</span></span>
         </button>
-        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="openPromptEditor(node)" :class="[node.aiButtonLabel ? 'btn-secondary-labeled' : 'btn-secondary-circle', 'no-print']" :disabled="readonly" type="button" title="Configurer le prompt">
           ⚙️
         </button>
       </div>
@@ -39,11 +39,11 @@
       <div class="input-label-container">
         <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
         <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
-        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" :class="[node.aiButtonLabel ? 'btn-ai-labeled' : 'btn-ai-circle', 'no-print']" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
           <span v-if="isLoadingAI" class="spinner-small"></span>
-          <span v-else>✨</span>
+          <span v-else>✨<span v-if="node.aiButtonLabel" class="ai-btn-text">{{ node.aiButtonLabel }}</span></span>
         </button>
-        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="openPromptEditor(node)" :class="[node.aiButtonLabel ? 'btn-secondary-labeled' : 'btn-secondary-circle', 'no-print']" :disabled="readonly" type="button" title="Configurer le prompt">
           ⚙️
         </button>
       </div>
@@ -97,11 +97,11 @@
       <div class="input-label-container">
         <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
         <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
-        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" :class="[node.aiButtonLabel ? 'btn-ai-labeled' : 'btn-ai-circle', 'no-print']" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
           <span v-if="isLoadingAI" class="spinner-small"></span>
-          <span v-else>✨</span>
+          <span v-else>✨<span v-if="node.aiButtonLabel" class="ai-btn-text">{{ node.aiButtonLabel }}</span></span>
         </button>
-        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="openPromptEditor(node)" :class="[node.aiButtonLabel ? 'btn-secondary-labeled' : 'btn-secondary-circle', 'no-print']" :disabled="readonly" type="button" title="Configurer le prompt">
           ⚙️
         </button>
       </div>
@@ -113,11 +113,11 @@
       <div class="input-label-container">
         <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
         <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
-        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" :class="[node.aiButtonLabel ? 'btn-ai-labeled' : 'btn-ai-circle', 'no-print']" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
           <span v-if="isLoadingAI" class="spinner-small"></span>
-          <span v-else>✨</span>
+          <span v-else>✨<span v-if="node.aiButtonLabel" class="ai-btn-text">{{ node.aiButtonLabel }}</span></span>
         </button>
-        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="openPromptEditor(node)" :class="[node.aiButtonLabel ? 'btn-secondary-labeled' : 'btn-secondary-circle', 'no-print']" :disabled="readonly" type="button" title="Configurer le prompt">
           ⚙️
         </button>
       </div>
@@ -147,11 +147,11 @@
       <div class="input-label-container">
         <label class="input-label">{{ node.label }} <span v-if="node.required" class="text-error">*</span></label>
         <span v-if="node.actionReports && node.actionReports.length > 0" class="badge-action-report no-print" :title="getReportTooltip(node)">⚡</span>
-        <button v-if="node.aiPrompt" @click.prevent="generateAI" class="btn-ai-circle no-print" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="generateAI" :class="[node.aiButtonLabel ? 'btn-ai-labeled' : 'btn-ai-circle', 'no-print']" :disabled="isLoadingAI || readonly" type="button" title="Générer avec l'IA">
           <span v-if="isLoadingAI" class="spinner-small"></span>
-          <span v-else>✨</span>
+          <span v-else>✨<span v-if="node.aiButtonLabel" class="ai-btn-text">{{ node.aiButtonLabel }}</span></span>
         </button>
-        <button v-if="node.aiPrompt" @click.prevent="openPromptEditor(node)" class="btn-secondary-circle no-print" :disabled="readonly" type="button" title="Configurer le prompt">
+        <button v-if="node.aiPrompt && openRouterApiKey" @click.prevent="openPromptEditor(node)" :class="[node.aiButtonLabel ? 'btn-secondary-labeled' : 'btn-secondary-circle', 'no-print']" :disabled="readonly" type="button" title="Configurer le prompt">
           ⚙️
         </button>
       </div>
@@ -638,5 +638,72 @@ table tr:last-child td {
   background-color: white;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+</style>
+
+<style scoped>
+.btn-ai-labeled {
+  background-color: #8b5cf6;
+  color: white;
+  height: 22px;
+  border-radius: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+  padding: 0 8px;
+}
+
+.btn-ai-labeled:hover {
+  background-color: #7c3aed;
+  transform: scale(1.05);
+}
+
+.btn-ai-labeled:active {
+  transform: scale(0.95);
+}
+
+.btn-ai-labeled:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary-labeled {
+  background-color: #f1f5f9;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  height: 22px;
+  border-radius: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0 8px;
+}
+
+.btn-secondary-labeled:hover {
+  background-color: #e2e8f0;
+  transform: scale(1.05);
+}
+
+.btn-secondary-labeled:active {
+  transform: scale(0.95);
+}
+
+.btn-secondary-labeled:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ai-btn-text {
+  margin-left: 4px;
 }
 </style>

@@ -142,11 +142,26 @@
 					"children": [
 						{
 							"type": "input",
+							"inputType": "radio",
+							"label": "Réalisation du MMSE",
+							"key": "cognitif_mmse_realise",
+							"options": [
+								"Réalisé",
+								"Non évaluable",
+								"Refus"
+							]
+						},
+						{
+							"type": "input",
 							"inputType": "number",
-							"label": "Score MMSE (si réalisé) / 30",
+							"label": "Score MMSE / 30",
 							"key": "cognitif_mmse",
 							"min": 0,
-							"max": 30
+							"max": 30,
+							"showIf": {
+								"dependsOn": "cognitif_mmse_realise",
+								"value": "Réalisé"
+							}
 						},
 						{
 							"type": "input",
