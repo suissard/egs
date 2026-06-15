@@ -460,15 +460,38 @@
           "children": [
             {
               "type": "input",
+              "inputType": "radio",
+              "label": "Réalisation du MMS",
+              "key": "cognitif_mms_realise",
+              "options": [
+                "Réalisé",
+                "Non évaluable",
+                "Refus"
+              ]
+            },
+            {
+              "type": "input",
               "inputType": "number",
               "label": "MMS / 30",
-              "key": "cognitif_mms"
+              "key": "cognitif_mms",
+              "showIf": {
+                "dependsOn": "cognitif_mms_realise",
+                "value": "Réalisé"
+              }
             },
             {
               "type": "input",
               "inputType": "date",
               "label": "le",
-              "key": "cognitif_mms_date"
+              "key": "cognitif_mms_date",
+              "showIf": {
+                "dependsOn": "cognitif_mms_realise",
+                "value": [
+                  "Réalisé",
+                  "Non évaluable",
+                  "Refus"
+                ]
+              }
             }
           ],
           "showIf": {
@@ -607,25 +630,27 @@
               ]
             },
             {
-              "type": "box",
-              "direction": "row",
-              "children": [
-                {
-                  "type": "input",
-                  "inputType": "number",
-                  "label": "GDS / 15",
-                  "key": "psy_gds"
-                },
-                {
-                  "type": "input",
-                  "inputType": "date",
-                  "label": "le",
-                  "key": "psy_gds_date"
-                }
-              ],
+              "type": "input",
+              "inputType": "number",
+              "label": "GDS / 15",
+              "key": "psy_gds",
               "showIf": {
                 "dependsOn": "psy_gds_realise",
                 "value": "Réalisé"
+              }
+            },
+            {
+              "type": "input",
+              "inputType": "date",
+              "label": "le",
+              "key": "psy_gds_date",
+              "showIf": {
+                "dependsOn": "psy_gds_realise",
+                "value": [
+                  "Réalisé",
+                  "Non évaluable",
+                  "Refus"
+                ]
               }
             }
           ],
