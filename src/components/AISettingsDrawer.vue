@@ -34,6 +34,11 @@
             placeholder="sk-or-v1-..."
           />
           <small class="text-muted d-block mt-1">La clé est sauvegardée localement dans votre navigateur.</small>
+          <div class="mt-2" v-if="openRouterApiKey">
+             <button class="btn btn-secondary btn-block" @click="copyTokenLink">
+               {{ copyButtonText }}
+             </button>
+          </div>
         </div>
 
         <div class="input-group">
@@ -42,7 +47,7 @@
             type="text"
             v-model="openRouterModel"
             class="input-field"
-            placeholder="Ex: nvidia/nemotron-3-super-120b-a12b:free"
+            placeholder="Ex: google/gemma-4-31b-it:free"
           />
         </div>
       </div>
@@ -63,6 +68,22 @@ function openDoc(mode: 'usage' | 'editor') {
 }
 
 const isOpen = ref(false);
+const copyButtonText = ref('🔗 Partager le token via un lien');
+
+async function copyTokenLink() {
+  if (!openRouterApiKey.value) return;
+  const currentUrl = window.location.origin + window.location.pathname;
+  const urlWithToken = `${currentUrl}?aiToken=${encodeURIComponent(openRouterApiKey.value)}`;
+  try {
+    await navigator.clipboard.writeText(urlWithToken);
+    copyButtonText.value = '✅ Lien copié !';
+    setTimeout(() => {
+      copyButtonText.value = '🔗 Partager le token via un lien';
+    }, 2000);
+  } catch (e) {
+    console.error('Failed to copy', e);
+  }
+}
 
 function toggleDrawer() {
   isOpen.value = !isOpen.value;

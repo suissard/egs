@@ -4,7 +4,7 @@ const API_KEY_STORAGE_KEY = 'openrouter-api-key';
 const MODEL_STORAGE_KEY = 'openrouter-model';
 
 export const openRouterApiKey = ref(localStorage.getItem(API_KEY_STORAGE_KEY) || '');
-export const openRouterModel = ref(localStorage.getItem(MODEL_STORAGE_KEY) || 'nvidia/nemotron-3-super-120b-a12b:free');
+export const openRouterModel = ref(localStorage.getItem(MODEL_STORAGE_KEY) || 'google/gemma-4-31b-it:free');
 
 watch(openRouterApiKey, (newValue) => {
   localStorage.setItem(API_KEY_STORAGE_KEY, newValue);
