@@ -46,7 +46,7 @@
         <ul class="troubleshoot-list pl-4">
           <li>Vérifiez votre <strong>clé API OpenRouter</strong> dans les préférences (icône ⚙️ en bas à droite).</li>
           <li>Assurez-vous d'avoir une connexion internet active.</li>
-          <li>Vérifiez si le modèle sélectionné (par exemple <code>nvidia/nemotron-3-super-120b-a12b:free</code>) est disponible et gratuit ou si votre compte a des crédits suffisants.</li>
+          <li>Vérifiez si le modèle sélectionné (par exemple <code>google/gemma-4-31b-it:free</code>) est disponible et gratuit ou si votre compte a des crédits suffisants.</li>
         </ul>
       </div>
     </div>

@@ -363,7 +363,7 @@ async function generateAI() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: openRouterModel.value || "nvidia/nemotron-3-super-120b-a12b:free",
+        model: openRouterModel.value || "google/gemma-4-31b-it:free",
         messages: [
           { role: "user", content: finalPrompt }
         ]

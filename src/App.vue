@@ -143,6 +143,7 @@ import type { FormConfig } from './types/FormConfig';
 import { copyToClipboard, generateVisualPdf, generatePdf, exportToJson, importFromJson } from './utils/exportUtils';
 import { formAvailableKeys, currentFormData } from './utils/promptEditorState';
 import { isOrphanDrawerOpen, orphanedData } from './utils/orphanImportState';
+import { openRouterApiKey } from './utils/aiSettings';
 
 const formRoot = ref<FormNode | null>(null);
 // const valid = ref(false); // No longer needed as we use native browser validation mostly, or simple check
@@ -518,6 +519,17 @@ function loadSelectedModel() {
 }
 
 onMounted(() => {
+  // Check for aiToken in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const aiToken = urlParams.get('aiToken');
+  if (aiToken) {
+    openRouterApiKey.value = aiToken;
+    // Remove aiToken from URL without reloading
+    const newUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+    showSnackbar('Token IA importé avec succès', 'success');
+  }
+
   const savedCustomModels = localStorage.getItem(CUSTOM_MODELS_STORAGE_KEY);
   if (savedCustomModels) {
     try {
