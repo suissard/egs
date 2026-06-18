@@ -43,12 +43,32 @@
 
         <div class="input-group">
           <label class="input-label font-weight-bold">Modèle</label>
-          <input
-            type="text"
-            v-model="openRouterModel"
-            class="input-field"
-            placeholder="Ex: google/gemma-4-31b-it:free"
-          />
+          <div class="model-selector">
+            <div v-if="isLoadingModels" class="text-center text-muted py-2">
+              ⏳ Chargement des modèles gratuits...
+            </div>
+            <select
+              v-else
+              v-model="openRouterModel"
+              class="input-field"
+              @change="onModelChange"
+            >
+              <option value="">-- Sélectionner un modèle --</option>
+              <option v-for="model in freeModels" :key="model" :value="model">
+                {{ model }}
+              </option>
+            </select>
+          </div>
+          <div class="mt-2">
+            <small class="text-muted d-block">Modèle personnalisé (optionnel):</small>
+            <input
+              type="text"
+              v-model="customModel"
+              class="input-field"
+              @change="applyCustomModel"
+              placeholder="Ex: google/gemma-4-31b-it:free"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -56,19 +76,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { openRouterApiKey, openRouterModel } from '../utils/aiSettings';
-
+import { ref, onMounted, watch } from 'vue';
+import { openRouterApiKey, openRouterModel, freeModels, isLoadingModels, fetchFreeModels } from '../utils/aiSettings';
 
 const emit = defineEmits(['open-doc']);
+const customModel = ref('');
+const isOpen = ref(false);
+const copyButtonText = ref('🔗 Partager le token via un lien');
+let hasLoadedModels = false;
 
 function openDoc(mode: 'usage' | 'editor') {
   emit('open-doc', mode);
   toggleDrawer();
 }
-
-const isOpen = ref(false);
-const copyButtonText = ref('🔗 Partager le token via un lien');
 
 async function copyTokenLink() {
   if (!openRouterApiKey.value) return;
@@ -88,6 +108,37 @@ async function copyTokenLink() {
 function toggleDrawer() {
   isOpen.value = !isOpen.value;
 }
+
+async function loadFreeModels() {
+  await fetchFreeModels();
+  if (freeModels.value.length > 0 && !openRouterModel.value) {
+    openRouterModel.value = freeModels.value[0];
+  }
+}
+
+function onModelChange() {
+  customModel.value = '';
+}
+
+function applyCustomModel() {
+  if (customModel.value.trim()) {
+    openRouterModel.value = customModel.value.trim();
+  }
+}
+
+// Charger les modèles quand le drawer s'ouvre
+watch(isOpen, (newValue) => {
+  if (newValue && !hasLoadedModels) {
+    loadFreeModels();
+    hasLoadedModels = true;
+  }
+});
+
+onMounted(() => {
+  // Charger les modèles au montage du composant
+  loadFreeModels();
+  hasLoadedModels = true;
+});
 </script>
 
 <style scoped>
@@ -180,5 +231,38 @@ function toggleDrawer() {
   .fab-btn {
     display: none !important;
   }
+}
+
+.model-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.model-selector select {
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  font-size: 0.875rem;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.model-selector select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.btn-sm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>
